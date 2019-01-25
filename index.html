@@ -1,0 +1,113 @@
+<head>
+    <style>
+
+        @keyframes scrolling {
+            from {
+                transform: translateX(-5vw);
+            }
+
+            to {
+                transform: translateX(5vw);
+            }
+        }
+
+        body {
+            background: blue;
+            overflow: hidden;
+        }
+
+        #main {
+            perspective: 10vw;
+            height: 50vw;
+            width: 100vw;
+            border: none;
+            background: black;
+            overflow: hidden;
+        }
+
+        #main img {
+            position:absolute;
+            top: -9999px;
+            bottom: -9999px;
+            left: -9999px;
+            right: -9999px;
+            margin: auto;
+            xtransition: transform 0.1s;
+        }
+
+        .plan {
+            height: 50vw;
+            width: 150vw;
+        }
+
+        #cible {
+            height: auto;
+            width: 9vw;
+            transform: translate3d(40vw, 20vw, 1vw);
+        }
+
+        #arc {
+            margin: auto;
+            height: 100%;
+            width: auto;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="main">
+        <img id="plan1" class="plan" src="fond.png">
+        <img id="cible" src="cible.png">
+        <img id="plan2" class="plan" src="plan1.png">
+        <img id="arc" src="arc.png">
+    </div>
+
+    <div style="text-align: center">
+        <button type="button" onclick="move(+0.02)">&lt;</button> 
+        <button type="button" onclick="move(-0.02)">&gt;</button> 
+    </div>>
+
+    <script>
+
+        var nb_plans = 2
+        var position = 0
+
+        function updateScreen() {
+            updatePlansNodes(position)
+            updateCibleNode(position)
+        }
+
+        function updatePlansNodes(position) {
+            for(var i=1; i <=nb_plans; i++) {
+                var planId = "plan"+i
+                var planNode = document.getElementById(planId)
+                planNode.style.transform = 
+                    "translate3d("+(position*100)+"vw, 0, "+planNumberToZ(i)+"vw)"
+
+                console.log(planId, planNode.style.transform)
+            }
+        }
+
+        function updateCibleNode(position) {
+            var cibleNode = document.getElementById("cible")
+            cibleNode.style.transform = 
+                "translate3d("+(position*100)+"vw, 15vw, "+planNumberToZ(1.5)+"vw)"
+        }
+
+        function planNumberToZ(n) {
+            return (n-1)*2
+        }
+
+        function move(x) {
+            position += x
+            updateScreen()
+        }
+
+        window.addEventListener('DOMContentLoaded', updateScreen)
+        
+    </script>
+
+
+</body>
