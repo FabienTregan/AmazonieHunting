@@ -1,16 +1,6 @@
 <head>
     <style>
 
-        @keyframes scrolling {
-            from {
-                transform: translateX(-5vw);
-            }
-
-            to {
-                transform: translateX(5vw);
-            }
-        }
-
         body {
             background: blue;
             overflow: hidden;
@@ -18,7 +8,7 @@
 
         #mainCanvas {
             height: 40vw;
-            width: 80vw;
+            width: 71.1vw;
             border: none;
             background: black;
             overflow: hidden;
@@ -39,20 +29,24 @@
         <img id="plan3" src="plan3.png">
         <img id="plan4" src="plan4.png">
         <img id="cible" src="cible.png">
-        <img id="arc" src="arc.png">
+        <img id="fleche" src="fleche.png">
     </div>
 
     <canvas id="mainCanvas" height="1080" width="1920"></canvas>
 
     <div style="text-align: center">
-        <button type="button" onclick="move(+0.02)">&lt;</button> 
-        <button type="button" onclick="move(-0.02)">&gt;</button> 
-    </div>>
+        <button type="button" onmouseenter="move(-1)" onmouseleave="move(0)">&lt;</button> 
+        <button type="button" onmouseenter="move(+1)" onmouseleave="move(0)">&gt;</button> 
+    </div>
 
     <script>
 
         var nbPlans = 4
         var position = -50
+        var scrollSpeed = 0
+        var flecheP = null
+        var flecheV = null
+        var flecheA = {x: 0, y: 0.2, z: 0}
 
         function updateScreen() {
             updatePlansNodes(position)
@@ -62,7 +56,9 @@
         function updatePlansNodes(position) {
             var mainCanvas = document.getElementById("mainCanvas")
             var ctx = mainCanvas.getContext('2d')
+            var flecheDrawn = false
 
+            // remove this when done
             ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height)
 
             for(var i=nbPlans; i>0; i--) {
@@ -70,23 +66,52 @@
                 var planId = "plan"+i
                 var planNode = document.getElementById(planId)
 
-                var startX = (2500 - 1920)/2 + position * ((nbPlans - i)/3 + 2)
+                var distancePlan = 6 + i;
+                                
+                var startX = (2500 - 1920)/2 + position * 30 / distancePlan
                 ctx.drawImage(planNode, startX, 0, 1920, 1080, 0, 0, 1920, 1080)
-                console.log(position)
+
+                // dessin fleche
+                if ((!flecheDrawn) && ((i==1) || (flecheP.z > distancePlan)) ) {
+                    var flecheId = "fleche"
+                    var flecheNode = document.getElementById(flecheId)
+                    var flecheWidth = flecheNode.width
+                    var flecheHeight = fleche.height
+                    var flecheApparentWidth = flecheNode.width * 5 / flecheP.z
+                    var flecheApparentHeight = flecheNode.height * 5 / flecheP.z
+                    ctx.globalAlpha = 0.9
+                    ctx.drawImage(flecheNode, 0, 0, 64, 64, (1920 - flecheApparentWidth) / 2 + flecheP.x / flecheP.z, (1080 - flecheApparentHeight) / 2 + flecheP.y / flecheP.z, flecheApparentWidth, flecheApparentHeight)
+                    ctx.globalAlpha = 1
+
+                    flecheDrawn = true
+                }
             }
+
         }
 
         function updateCibleNode(position) {
         }
 
         function move(x) {
-            position += x
-            updateScreen()
+            scrollSpeed = x
         }
 
         function autoScroll(timestamp) {
-            position = position + 1
-            if (position > 50) position = -50;
+            position += scrollSpeed
+
+            if ((flecheP==null) || (flecheP.z > 11)) {
+                flecheP = {x: 0, y: 0, z: 5}
+                flecheV = {x: 0, y: -13, z: 0.05}
+            }
+
+            flecheV.x += flecheA.x
+            flecheV.y += flecheA.y
+            flecheV.z += flecheA.z
+
+            flecheP.x += flecheV.x
+            flecheP.y += flecheV.y
+            flecheP.z += flecheV.z
+
             updateScreen()
             requestAnimationFrame(autoScroll)
         }
