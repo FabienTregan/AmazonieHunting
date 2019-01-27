@@ -46,7 +46,7 @@
         var scrollSpeed = 0
         var flecheP = null
         var flecheV = null
-        var flecheA = {x: 0, y: 0.2, z: 0}
+        var flecheA = {x: 0, y: 2, z: 0}
 
         function updateScreen() {
             updatePlansNodes(position)
@@ -66,9 +66,9 @@
                 var planId = "plan"+i
                 var planNode = document.getElementById(planId)
 
-                var distancePlan = 6 + i;
+                var distancePlan = (6 + i)*10;
                                 
-                var startX = (2500 - 1920)/2 + position * 30 / distancePlan
+                var startX = (2500 - 1920)/2 + position * 300 / distancePlan
                 ctx.drawImage(planNode, startX, 0, 1920, 1080, 0, 0, 1920, 1080)
 
                 // dessin fleche
@@ -77,8 +77,8 @@
                     var flecheNode = document.getElementById(flecheId)
                     var flecheWidth = flecheNode.width
                     var flecheHeight = fleche.height
-                    var flecheApparentWidth = flecheNode.width * 5 / flecheP.z
-                    var flecheApparentHeight = flecheNode.height * 5 / flecheP.z
+                    var flecheApparentWidth = flecheNode.width * 50 / flecheP.z
+                    var flecheApparentHeight = flecheNode.height * 50 / flecheP.z
                     ctx.globalAlpha = 0.9
                     ctx.drawImage(flecheNode, 0, 0, 64, 64, (1920 - flecheApparentWidth) / 2 + flecheP.x / flecheP.z, (1080 - flecheApparentHeight) / 2 + flecheP.y / flecheP.z, flecheApparentWidth, flecheApparentHeight)
                     ctx.globalAlpha = 1
@@ -99,9 +99,9 @@
         function autoScroll(timestamp) {
             position += scrollSpeed
 
-            if ((flecheP==null) || (flecheP.z > 11)) {
-                flecheP = {x: 0, y: 0, z: 5}
-                flecheV = {x: 0, y: -13, z: 0.05}
+            if ((flecheP==null) || (flecheP.z > 120)) {
+                flecheP = {x: 0, y: 0, z: 50}
+                flecheV = {x: 0, y: -150, z: 0.6}
             }
 
             flecheV.x += flecheA.x
@@ -111,6 +111,8 @@
             flecheP.x += flecheV.x
             flecheP.y += flecheV.y
             flecheP.z += flecheV.z
+
+            console.log(position + " " + flecheP.z)
 
             updateScreen()
             requestAnimationFrame(autoScroll)
