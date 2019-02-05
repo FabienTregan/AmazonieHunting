@@ -1,0 +1,213 @@
+<head>
+    <style>
+        body {
+            user-select: none;
+
+            background: blue;
+            overflow: hidden;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #main {
+            height: 40vw;
+            width: 71.1vw;
+            border: none;
+            padding: 0;
+        }
+
+        #main_canvas {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            border: none;
+            padding: 0;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        #preload {
+            display: none
+        }
+
+        #joypad {
+            user-select: none;
+
+            position: absolute;
+            right: 10%;
+            bottom: 10%;
+            height: 10vw;
+            width: 10vw;
+            user-select: none;
+        }
+
+        #joypad_left {
+            top: 33%;
+            left: 0%;
+            transform: rotate(-90deg);
+        }
+
+        #joypad_right {
+            top: 33%;
+            right: 0%;
+            transform: rotate(+90deg);
+        }
+
+        #joypad_up {
+            top: 0%;
+            left: 33%;
+            transform: rotate(+00deg);
+        }
+
+        #joypad_down {
+            bottom: 0%;
+            left: 33%;
+            transform: rotate(+180deg);
+        }
+    </style>
+</head>
+
+<body onmousedown="mouseButtonDown(event)" onmouseup="mouseButtonUp(event)" oncontextmenu="event.preventDefault()">
+
+    <div id="preload">
+        <img id="map" src="map.png">
+        <img id="tracks" src="tracks.png">
+        <img id="mask" src="mask.png">
+        <img id="character" src="character.png">
+    </div>
+
+    <div id="main">
+        <canvas id="main_canvas" height="1080" width="1920"></canvas>
+        <img id="joypad" src="joypad.png" ondragstart="event.preventDefault()" ontouchstart="touchStart(event)" ontouchend="touchEnd(event)" ontouchmove="touchMove(event)" onmouseenter="joypadMouseIsOver=true" onmouseleave="joypadMouseIsOver=false" onmousemove="joypadChanged(event)" onmouseevent="console.log(event)">
+    </div>
+
+    <script>
+        "use strict";
+
+        var initialized = false
+        var position
+        var joypadDirection
+        var joypadMouseIsOver
+        var joypad
+        var leftMouseButtonDown
+        var mainCanvas
+        var revealedCanvas
+        var mask
+        var map
+        var character
+        var tracks
+        var moveTimeoutId
+        var vitesse
+
+        function initGame() {
+
+            console.log("Game initializing...")
+
+            position = { x: 100, y: 500 }
+            vitesse = 5
+
+            leftMouseButtonDown = false
+
+            mainCanvas = document.getElementById("main_canvas")
+            mask = document.getElementById("mask")
+            tracks = document.getElementById("tracks")
+            map = document.getElementById("map")
+            character = document.getElementById("character")
+            joypad = document.getElementById("joypad")
+
+            revealedCanvas = document.createElement('canvas')
+            revealedCanvas.height = mainCanvas.height
+            revealedCanvas.width = mainCanvas.width
+
+
+            initialized = true
+            updateScreen()
+            move()
+            console.log("Game initialize!")
+        }
+
+        function updateScreen() {
+
+            if(!initialized) {
+                return
+            }
+
+            var mainContext2D = mainCanvas.getContext('2d')
+
+            mainContext2D.clearRect(0, 0, mainCanvas.width, mainCanvas.height)
+            mainContext2D.drawImage(map, 0, 0)
+
+            var revealedContext2D = revealedCanvas.getContext("2d")
+            revealedContext2D.globalCompositeOperation = "source-over"
+            revealedContext2D.drawImage(mask, position.x - mask.width / 2, position.y - mask.height / 2)
+            revealedContext2D.globalCompositeOperation = "source-in"
+            revealedContext2D.drawImage(tracks, 0, 0)
+
+            mainContext2D.drawImage(revealedCanvas, 0, 0)
+
+            mainContext2D.drawImage(character, position.x - character.width / 2, position.y - character.height)
+        }
+
+        function move() {
+            if(leftMouseButtonDown && joypadMouseIsOver) {
+                position.x += joypadDirection.x * vitesse
+                position.y += joypadDirection.y * vitesse
+
+                updateScreen()
+            }
+            moveTimeoutId = window.setTimeout(move, 25)
+        }
+
+        function joypadChanged(e) {
+
+            var x = (e.clientX - e.target.offsetLeft- joypad.width/2) / joypad.width * 2
+            var y = (e.clientY - e.target.offsetTop - joypad.height/2) / joypad.height * 2
+            var radius = Math.sqrt(x*x + y*y)
+
+            if ((radius < 0.5) || (radius > 1)){
+                return
+            }
+
+            x /= radius
+            y /= radius
+            
+            joypadDirection = {x: x, y: y}
+        }
+
+        function touchStart(e) {
+            e.preventDefault()
+            joypadMouseIsOver = true
+            leftMouseButtonDown = true;
+            joypadChanged(event.touches[0])
+        }
+
+        function touchEnd(e) {
+            e.preventDefault()
+            leftMouseButtonDown = false;
+        }
+
+        function touchMove(e) {
+            e.preventDefault()
+            joypadChanged(event.touches[0])
+        }
+
+        function mouseButtonDown(e) {
+            if (e.button == 0) {
+                leftMouseButtonDown = true;
+            }
+        }
+
+        function mouseButtonUp(e) {
+            if (e.button == 0) {
+                leftMouseButtonDown = false;
+            }
+        }
+
+        window.addEventListener('load', initGame)
+
+        document.documentElement.addEventListener("mouseevent", "console.log", event)
+
+    </script>
+
+
+</body>
