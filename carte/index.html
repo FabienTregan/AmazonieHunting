@@ -42,6 +42,7 @@
         <img id='tracks' src='tracks.png'>
         <img id='mask' src='mask.png'>
         <img id='character' src='character.png'>
+        <img id='areas' src='areas.png'>
     </div>
 
     <div id='main'>
@@ -50,6 +51,8 @@
 
     <script>
         'use strict';
+
+        const AREA_FOREST = 248
 
         var initialized = false
         var mouseCoordinates
@@ -61,13 +64,15 @@
         var bufferCanvas
         var revealedImageData
         var maskImageData
+        var areasImageData
+        var currentArea
         var map
         var character
 
         function initGame() {
             console.log('Game initializing...')
 
-            position = { x: 100, y: 500 }
+            position = { x: 100, y: 550 }
             moveSpeed = 0
 
             initCanvasAndImageData()
@@ -85,10 +90,12 @@
 
             map = document.getElementById('map')
             var mask = document.getElementById('mask')
+            var areas = document.getElementById('areas')
+            var mask = document.getElementById('mask')
             var tracks = document.getElementById('tracks')
 
-            mask.crossOrigin = "Anonymous"
             maskImageData = imageToImageData(mask)
+            areasImageData = imageToImageData(areas)
 
             // Drawing the map beneath the tracks instead of loading the tracks with map already painted reduces the size a lot.
             var revealedContext2d = imageToContext2d(tracks)
@@ -158,11 +165,18 @@
             mainContext2d.drawImage(character, position.x - character.width / 2, position.y - character.height)
         }
 
-
         function move() {
             var moveDirection = calculateMoveDirection()
-            position.x += moveDirection.x * moveSpeed
-            position.y += moveDirection.y * moveSpeed
+
+            var destination = { x: Math.trunc(position.x + moveDirection.x * moveSpeed), y: Math.trunc(position.y + moveDirection.y * moveSpeed) }
+            var destinationArea = area(destination)
+
+            console.log(destinationArea)
+
+            if (destinationArea != AREA_FOREST) {
+                position.x += moveDirection.x * moveSpeed
+                position.y += moveDirection.y * moveSpeed
+            }
         }
 
         function updateMouseCoordinates(e) {
@@ -245,6 +259,10 @@
                 }
                 revealedIndex += (revealedImageData.width - maskImageData.width) * 4
             }
+        }
+
+        function area(position) {
+            return areasImageData.data[(position.x + position.y * areasImageData.width) * 4]
         }
 
     </script>
