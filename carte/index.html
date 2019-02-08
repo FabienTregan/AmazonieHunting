@@ -1,6 +1,7 @@
 <head>
 
     <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
 
     <style>
         body {
@@ -36,7 +37,7 @@
             left: 0px;
             width: 33.3333vw;
             height: 6.25vw;
-            
+
             box-sizing: border-box;
             padding: 3.9vw 1vw 1vw 12.40vw;
 
@@ -54,7 +55,7 @@
             left: 0px;
             width: 36.302083vw;
             height: 14.6875vw;
-            
+
             box-sizing: border-box;
             padding: 3vw 3vw 3vw 11.14vw;
 
@@ -90,6 +91,21 @@
 
     <script>
         'use strict';
+
+        const advices = {
+            24: {
+                name: 'Tapir du Brésil',
+                description: 'Le tapir se nourrit de nombreux fruits dont ceux des palmiers.<br>Sa chasse est réglementée.'
+            },
+            40: {
+                name: 'Précari à collier',
+                description: 'A la saison sèche, il est difficile de prévoir où se trouve la pécari. Il se déplace, recherchant les graines, gousses et noix enterrées près de nombreux points d’eau résiduels.'
+            },
+            56: {
+                name: 'Daguet rouge',
+                description: 'Cet animal discret et craintif est difficile à rencontrer. Les fleurs de certains arbres peuvent toutefois l’attirer.'
+            },
+        }
 
         const AREA_FOREST = 248
 
@@ -184,8 +200,24 @@
             if (mouseCoordinates && moveSpeed) {
                 move()
                 drawScreen()
+                updateAdvice()
             }
             window.requestAnimationFrame(mainLoop)
+        }
+
+        function updateAdvice() {
+            var advisor = document.getElementById('advisor')
+            var currentArea = area(position)
+            var advice = advices[currentArea]
+
+            var innerHTML
+            if (advice) {
+                innerHTML = advice.name + '<br><br>' + advice.description
+            } else {
+                innerHTML = "..."
+            }
+
+            advisor.innerHTML = innerHTML
         }
 
         function drawScreen() {
@@ -207,10 +239,8 @@
         function move() {
             var moveDirection = calculateMoveDirection()
 
-            var destination = { x: Math.trunc(position.x + moveDirection.x * moveSpeed), y: Math.trunc(position.y + moveDirection.y * moveSpeed) }
+            var destination = { x: position.x + moveDirection.x * moveSpeed, y: position.y + moveDirection.y * moveSpeed }
             var destinationArea = area(destination)
-
-            console.log(destinationArea)
 
             if (destinationArea != AREA_FOREST) {
                 position.x += moveDirection.x * moveSpeed
@@ -301,6 +331,7 @@
         }
 
         function area(position) {
+            position = {x: Math.round(position.x), y: Math.round(position.y)}
             return areasImageData.data[(position.x + position.y * areasImageData.width) * 4]
         }
 
