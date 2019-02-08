@@ -13,8 +13,9 @@
         }
 
         #main {
-            height: 40vw;
-            width: 71.1vw;
+            position: absolute;
+            height: 56.25vw;
+            width: 100vw;
             border: none;
             padding: 0;
         }
@@ -29,8 +30,26 @@
             overflow: hidden;
         }
 
+        #advisor {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 36.302083vw;
+            height: 14.6875vw;
+            
+            box-sizing: border-box;
+            padding: 3vw 3vw 3vw 11.14vw;
+
+            background-origin: padding-box;
+            background-image: url('advisor.png');
+            background-size: 100% 100%;
+
+            color: white;
+            font-size: 1vw;
+        }
+
         #preload {
-            display: none
+            display: none;
         }
     </style>
 </head>
@@ -47,6 +66,7 @@
 
     <div id='main'>
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
+        <div id='advisor'>blablabla</div>
     </div>
 
     <script>
