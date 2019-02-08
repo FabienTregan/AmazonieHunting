@@ -30,6 +30,24 @@
             overflow: hidden;
         }
 
+        #breadcrumbs {
+            position: absolute;
+            top: 2.0833vw;
+            left: 0px;
+            width: 33.3333vw;
+            height: 6.25vw;
+            
+            box-sizing: border-box;
+            padding: 3.9vw 1vw 1vw 12.40vw;
+
+            background-origin: padding-box;
+            background-image: url('breadcrumbs.png');
+            background-size: 100% 100%;
+
+            color: white;
+            font-size: 1.5vw;
+        }
+
         #advisor {
             position: absolute;
             bottom: 0px;
@@ -66,7 +84,8 @@
 
     <div id='main'>
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
-        <div id='advisor'>blablabla</div>
+        <div id='breadcrumbs'>Sur la carte</div>
+        <div id='advisor'>Blablabla</div>
     </div>
 
     <script>
