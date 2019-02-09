@@ -84,14 +84,6 @@
 
 <body oncontextmenu='event.preventDefault()'>
 
-    <div id='preload'>
-        <img id='map' src='map.png'>
-        <img id='tracks' src='tracks.png'>
-        <img id='mask' src='mask.png'>
-        <img id='character' src='character.png'>
-        <img id='areas' src='areas.png'>
-    </div>
-
     <div id='main'>
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
         <div id='breadcrumbs'>Sur la carte</div>
@@ -133,13 +125,13 @@
         var map
         var character
 
-        function initGame() {
+        function initGame(loadedImages) {
             console.log('Game initializing...')
 
             position = { x: 100, y: 550 }
             moveSpeed = 0
 
-            initCanvasAndImageData()
+            initCanvasAndImageData(loadedImages)
 
             addEventListenersOnMainCanvas()
 
@@ -149,23 +141,19 @@
             console.log('Game initialize!')
         }
 
-        function initCanvasAndImageData() {
+        function initCanvasAndImageData(loadedImages) {
             character = document.getElementById('character')
 
-            map = document.getElementById('map')
-            var mask = document.getElementById('mask')
-            var areas = document.getElementById('areas')
-            var mask = document.getElementById('mask')
-            var tracks = document.getElementById('tracks')
-
-            maskImageData = imageToImageData(mask)
-            areasImageData = imageToImageData(areas)
+            map = loadedImages.map
+            character = loadedImages.character
+            maskImageData = imageToImageData(loadedImages.mask)
+            areasImageData = imageToImageData(loadedImages.areas)
 
             // Drawing the map beneath the tracks instead of loading the tracks with map already painted reduces the size a lot.
-            var revealedContext2d = imageToContext2d(tracks)
+            var revealedContext2d = imageToContext2d(loadedImages.tracks)
             revealedContext2d.globalCompositeOperation = 'destination-over'
             revealedContext2d.drawImage(map, 0, 0)
-            revealedImageData = revealedContext2d.getImageData(0, 0, tracks.width, tracks.height)
+            revealedImageData = revealedContext2d.getImageData(0, 0, loadedImages.tracks.width, loadedImages.tracks.height)
             setTransparency(revealedImageData, 0)
 
             mainCanvas = document.getElementById('main_canvas')
@@ -173,8 +161,8 @@
             mainCanvasContext2d.drawImage(map, 0, 0)
 
             bufferCanvas = document.createElement('canvas')
-            bufferCanvas.width = mask.width
-            bufferCanvas.height = mask.height
+            bufferCanvas.width = loadedImages.mask.width
+            bufferCanvas.height = loadedImages.mask.height
         }
 
         function imageToContext2d(image) {
@@ -304,8 +292,6 @@
             moveSpeed = 0
         }
 
-        window.addEventListener('load', initGame)
-
         function preventDefault(e) {
             e.preventDefault()
         }
@@ -344,6 +330,17 @@
             return areasImageData.data[(position.x + position.y * areasImageData.width) * 4]
         }
 
+
+        loadImages(
+            {
+                map: 'map.png',
+                tracks: 'tracks.png',
+                mask: 'mask.png',
+                character: 'character.png',
+                areas: 'areas.png',
+            },
+            initGame
+        )
     </script>
 
 
