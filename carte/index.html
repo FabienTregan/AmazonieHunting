@@ -61,14 +61,14 @@
             height: 14.6875vw;
 
             box-sizing: border-box;
-            padding: 3vw 3vw 3vw 11.14vw;
+            padding: 2.5vw 3vw 3vw 11.14vw;
 
             background-origin: padding-box;
             background-image: url('advisor.png');
             background-size: 100% 100%;
 
             color: white;
-            font-size: 1vw;
+            font-size: 0.9vw;
         }
 
         #preload {
@@ -87,7 +87,11 @@
     <div id='main'>
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
         <div id='breadcrumbs'>Sur la carte</div>
-        <div id='advisor'>Blablabla</div>
+        <div id='advisor'>
+            <div style='height: 45%; width: 0px; float: right;'></div>
+            <div style='height: 45%; width: 25%; float: right; clear: right; '></div>
+            <span id='advisor_text'></span>
+        </div>
     </div>
 
     <script>
@@ -203,13 +207,13 @@
         }
 
         function updateAdvice() {
-            var advisor = document.getElementById('advisor')
+            var advisor = document.getElementById('advisor_text')
             var currentArea = area(position)
             var advice = advices[currentArea]
 
             var innerHTML
             if (advice) {
-                innerHTML = 'Ce sont des traces de ' + advice.name + '<br><br>' + advice.description
+                innerHTML = 'Ce sont des traces de <b>' + advice.name + '</b><br><br>' + advice.description
             } else {
                 innerHTML = "..."
             }
