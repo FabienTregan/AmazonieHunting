@@ -3,6 +3,8 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
+    <script src="../lib/preloader.js"></script>
+
     <style>
         body {
             user-select: none;
@@ -11,6 +13,8 @@
             overflow: hidden;
             padding: 0px;
             margin: 0px;
+
+            font-family: "Source Sans";
         }
 
         #main {
@@ -69,6 +73,11 @@
 
         #preload {
             display: none;
+        }
+
+        @font-face {
+            font-family: "Source Sans";
+            src: url("../font/SourceSansPro-Regular.otf") format("woff");
         }
     </style>
 </head>
@@ -212,7 +221,7 @@
 
             var innerHTML
             if (advice) {
-                innerHTML = advice.name + '<br><br>' + advice.description
+                innerHTML = 'Ce sont des traces de ' + advice.name + '<br><br>' + advice.description
             } else {
                 innerHTML = "..."
             }
@@ -331,7 +340,7 @@
         }
 
         function area(position) {
-            position = {x: Math.round(position.x), y: Math.round(position.y)}
+            position = { x: Math.round(position.x), y: Math.round(position.y) }
             return areasImageData.data[(position.x + position.y * areasImageData.width) * 4]
         }
 
