@@ -1,0 +1,5 @@
+.clickArea {
+    position: absolute;
+    cursor: pointer;
+    z-index: 1000;
+}

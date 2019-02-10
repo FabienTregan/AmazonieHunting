@@ -1,0 +1,36 @@
+<head>
+    <meta charset='UTF-8'>
+
+    <script src="lib/16-9.js"></script>
+
+    <style>
+        @import 'lib/16-9.css';
+        @import 'lib/clickArea.css';
+
+        body {
+            font-family: 'Source Sans';
+            color: white;
+        }
+
+        #main img {
+            height: 100%;
+            width: 100%;
+        }
+
+        .clickArea {
+            position: absolute;
+            cursor: pointer;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main">
+        <img src="screen.jpg" alt="MDN infographic" />
+
+        <div class="clickArea" style="top: 70%; left: 46%; width: 8.1%; height: 7.5%;" onclick="window.location.href='./selection-animal'""></div>
+    </div>
+
+</body>

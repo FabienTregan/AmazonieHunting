@@ -1,0 +1,28 @@
+body {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+
+    font-size: 2vw;
+
+    background: lime;
+}
+
+body.screenTooWide {
+    font-size: 3.5556vh;
+}
+
+#main {
+    position: relative;
+    height: 56.25vw;
+    width: 100vw;
+}
+
+.screenTooWide #main {
+    height: 100vh;
+    width: 177.78vh;
+}
