@@ -3,26 +3,29 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
+    <script src="../lib/16-9.js"></script> 
     <script src="../lib/preloader.js"></script>
 
     <style>
-        body {
-            user-select: none;
 
-            background: blue;
-            overflow: hidden;
-            padding: 0px;
-            margin: 0px;
+        @import '../lib/window.css';
+        @import '../lib/16-9.css';
+        @import '../lib/clickArea.css';
 
-            font-family: "Source Sans";
+        @font-face {
+            font-family: 'Source Sans';
+            src: url('../font/SourceSansPro-Regular.otf') format('woff');
         }
 
-        #main {
+        body {
+            font-family: 'Source Sans';
+            color: white;
+        }
+
+        .clickArea {
             position: absolute;
-            height: 56.25vw;
-            width: 100vw;
-            border: none;
-            padding: 0;
+            cursor: pointer;
+            z-index: 1000;
         }
 
         #main_canvas {
@@ -32,43 +35,39 @@
             border: none;
             padding: 0;
             background: transparent;
-            overflow: hidden;
         }
 
         #breadcrumbs {
             position: absolute;
-            top: 2.0833vw;
-            left: 0px;
-            width: 33.3333vw;
-            height: 6.25vw;
-
-            box-sizing: border-box;
-            padding: 3.9vw 1vw 1vw 12.40vw;
+            top: 2.0833%;
+            left: 0;
+            width: 33.3333%;
+            height: 11.1111%;
 
             background-origin: padding-box;
             background-image: url('breadcrumbs.png');
             background-size: 100% 100%;
 
             color: white;
-            font-size: 1.5vw;
+            font-size: 0.66em;
         }
 
         #advisor {
             position: absolute;
             bottom: 0px;
             left: 0px;
-            width: 36.302083vw;
-            height: 14.6875vw;
+            width: 36.3021%;
+            height: 26.1111%;
 
             box-sizing: border-box;
-            padding: 2.5vw 3vw 3vw 11.14vw;
+            padding: 2.8% 3% 2.8% 11.14%;
 
             background-origin: padding-box;
             background-image: url('advisor.png');
             background-size: 100% 100%;
 
             color: white;
-            font-size: 0.9vw;
+            font-size: 0.45em;
         }
 
         @font-face {
@@ -82,7 +81,7 @@
 
     <div id='main'>
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
-        <div id='breadcrumbs'>Sur la carte</div>
+        <div id='breadcrumbs'></div>
         <div id='advisor'>
             <div style='height: 45%; width: 0px; float: right;'></div>
             <div style='height: 45%; width: 25%; float: right; clear: right; '></div>
@@ -247,8 +246,8 @@
 
         function updateMouseCoordinates(e) {
             mouseCoordinates = {
-                x: (e.clientX - e.target.offsetLeft) * mainCanvas.width / mainCanvas.offsetWidth
-                , y: (e.clientY - e.target.offsetTop) * mainCanvas.height / mainCanvas.offsetHeight
+                x: e.layerX * mainCanvas.width / mainCanvas.offsetWidth
+                , y: e.layerY * mainCanvas.height / mainCanvas.offsetHeight
             }
         }
 
