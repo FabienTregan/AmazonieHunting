@@ -3,11 +3,10 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
-    <script src="../lib/16-9.js"></script> 
+    <script src="../lib/16-9.js"></script>
     <script src="../lib/preloader.js"></script>
 
     <style>
-
         @import '../lib/window.css';
         @import '../lib/16-9.css';
         @import '../lib/clickArea.css';
@@ -20,12 +19,6 @@
         body {
             font-family: 'Source Sans';
             color: white;
-        }
-
-        .clickArea {
-            position: absolute;
-            cursor: pointer;
-            z-index: 1000;
         }
 
         #main_canvas {
@@ -47,9 +40,6 @@
             background-origin: padding-box;
             background-image: url('breadcrumbs.png');
             background-size: 100% 100%;
-
-            color: white;
-            font-size: 0.66em;
         }
 
         #advisor {
@@ -66,14 +56,9 @@
             background-image: url('advisor.png');
             background-size: 100% 100%;
 
-            color: white;
             font-size: 0.45em;
         }
 
-        @font-face {
-            font-family: "Source Sans";
-            src: url("../font/SourceSansPro-Regular.otf") format("woff");
-        }
     </style>
 </head>
 
@@ -81,11 +66,15 @@
 
     <div id='main'>
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
-        <div id='breadcrumbs'></div>
+        <div id='breadcrumbs'>
+            <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
+        </div>
         <div id='advisor'>
-            <div style='height: 45%; width: 0px; float: right;'></div>
+            <div comment="this div is just here to move down the next one and allow text wrapping." style='height: 45%; width: 0px; float: right;'></div>
             <div style='height: 45%; width: 25%; float: right; clear: right; '></div>
             <span id='advisor_text'></span>
+            <div id="more_information" class="clickArea" style="left: 77%; top: 50%; width: 23%; height: 28%;" onclick="alert('le pécari il est trop mignon !')"></div>
+
         </div>
     </div>
 
@@ -245,9 +234,10 @@
         }
 
         function updateMouseCoordinates(e) {
+            var targetClientRect = e.target.getClientRects()[0]
             mouseCoordinates = {
-                x: e.layerX * mainCanvas.width / mainCanvas.offsetWidth
-                , y: e.layerY * mainCanvas.height / mainCanvas.offsetHeight
+                x: (e.clientX - targetClientRect.x) * mainCanvas.width / targetClientRect.width
+                , y: (e.clientY - targetClientRect.y) * mainCanvas.height / targetClientRect.height
             }
         }
 
