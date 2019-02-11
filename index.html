@@ -2,10 +2,10 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
-    <script src="lib/16-9.js"></script>
+    <script src="lib/wideScreen.js"></script>
 
     <style>
-        @import 'lib/16-9.css';
+        @import 'lib/wideScreen.css';
         @import 'lib/clickArea.css';
 
         body {
@@ -18,20 +18,15 @@
             width: 100%;
         }
 
-        .clickArea {
-            position: absolute;
-            cursor: pointer;
-            z-index: 1000;
-        }
     </style>
 </head>
 
 <body oncontextmenu='event.preventDefault()'>
 
-    <div id="main">
+    <div id="main" class="wideScreen">
         <img src="screen.jpg" alt="MDN infographic" />
 
-        <div class="clickArea" style="top: 70%; left: 46%; width: 8.1%; height: 7.5%;" onclick="window.location.href='./selection-animal'""></div>
+        <div class="clickArea" style="top: 70%; left: 46%; width: 8.1%; height: 7.5%;" onclick="window.location.href='./selection-animal'"></div>
     </div>
 
 </body>

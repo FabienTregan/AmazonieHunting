@@ -2,11 +2,12 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
-    <script src="../lib/16-9.js"></script> 
+    <script src="../lib/wideScreen.js"></script> 
+    <script src="../lib/popup.js"></script> 
 
     <style>
-        @import '../lib/window.css';
-        @import '../lib/16-9.css';
+        @import '../lib/popup.css';
+        @import '../lib/wideScreen.css';
         @import '../lib/clickArea.css';
 
         @font-face {
@@ -24,22 +25,34 @@
             width: 100%;
         }
 
-        .clickArea {
-            position: absolute;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
     </style>
 </head>
 
 <body oncontextmenu='event.preventDefault()'>
 
-    <div id="main">
+    <div id="main" class="wideScreen">
         <img src="screen.jpg" alt="MDN infographic" />
+
+        <div class="clickArea" style="left: 11.4%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+        <div class="clickArea" style="left: 26.0%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+
+        <div class="clickArea" style="left: 18.7%; top: 59.2%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+
+        <div class="clickArea" style="left: 54.1%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+        <div class="clickArea" style="left: 68.7%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+        <div class="clickArea" style="left: 83.3%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+
+        <div class="clickArea" style="left: 61.4%; top: 59.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+        <div class="clickArea" style="left: 76.0%; top: 59.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
+
 
         <div id="saison_seche"  class="clickArea" style="left: 15%; top: 87%; width: 20%; height: 7.5%;" onclick="window.location.href='../carte'"></div>
         <div id="saison_humide" class="clickArea" style="left: 65%; top: 87%; width: 20%; height: 7.5%;" onclick="window.location.href='../carte'"></div>
     </div>
 
+    <div id="popups" class="wideScreen displayed">
+        <div class="popup">
+            <div id="close_popup"  class="clickArea" style="position: relative; left: 41.6%; top: 84.7%; width: 16.8%; height: 8.8%;" onclick="popup_hide()"></div>
+        </div>
+    </div>
 </body>

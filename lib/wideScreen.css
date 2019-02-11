@@ -16,13 +16,13 @@ body.screenTooWide {
     font-size: 3.5556vh;
 }
 
-#main {
+.wideScreen {
     position: relative;
     height: 56.25vw;
     width: 100vw;
 }
 
-.screenTooWide #main {
+.screenTooWide .wideScreen {
     height: 100vh;
     width: 177.78vh;
 }

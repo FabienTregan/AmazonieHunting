@@ -3,12 +3,11 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
-    <script src="../lib/16-9.js"></script>
+    <script src="../lib/wideScreen.js"></script>
     <script src="../lib/preloader.js"></script>
 
     <style>
-        @import '../lib/window.css';
-        @import '../lib/16-9.css';
+        @import '../lib/wideScreen.css';
         @import '../lib/clickArea.css';
 
         @font-face {
@@ -64,7 +63,7 @@
 
 <body oncontextmenu='event.preventDefault()'>
 
-    <div id='main'>
+    <div id='main' class="wideScreen">
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
         <div id='breadcrumbs'>
             <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
@@ -74,7 +73,6 @@
             <div style='height: 45%; width: 25%; float: right; clear: right; '></div>
             <span id='advisor_text'></span>
             <div id="more_information" class="clickArea" style="left: 77%; top: 50%; width: 23%; height: 28%;" onclick="alert('le pécari il est trop mignon !')"></div>
-
         </div>
     </div>
 

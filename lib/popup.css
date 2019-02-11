@@ -1,0 +1,29 @@
+#popups {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2000;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background: rgba(0, 0, 0, 0.8);
+
+    display: none;
+}
+
+#popups.shown {
+    display: flex;
+    position: absolute;
+}
+
+.popup {
+    height: 85.1852vh;
+    width: 66.6667vh;
+
+    background-image: url("popup_background.jpg");
+    background-size: cover;
+}
