@@ -2,8 +2,8 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
-    <script src="../lib/wideScreen.js"></script> 
-    <script src="../lib/popup.js"></script> 
+    <script src="../lib/wideScreen.js"></script>
+    <script src="../lib/popup.js"></script>
 
     <style>
         @import '../lib/popup.css';
@@ -14,6 +14,14 @@
             font-family: 'Source Sans';
             src: url('../font/SourceSansPro-Regular.otf') format('woff');
         }
+        @font-face {
+            font-family: 'Source Sans Black';
+            src: url('../font/SourceSansPro-Black.otf') format('woff');
+        }
+        @font-face {
+            font-family: 'Source Sans Italic';
+            src: url('../font/SourceSansPro-It.otf') format('woff');
+        }
 
         body {
             font-family: 'Source Sans';
@@ -21,17 +29,52 @@
         }
 
         #main img {
-            height: 100%;
             width: 100%;
+            height: 100%;
         }
 
+        .fiche {
+            position: absolute;
+        }
+
+        .fiche>* {
+            position: absolute;
+            left: 8.5%;
+            width: 83%;
+        }
+
+        .fiche .title {
+            top: 5%;
+        }
+
+        .fiche .name {
+            margin-right: 0.20em;
+            font-size: 1.45em;
+            font-family: 'Source Sans Black';
+        }
+
+        .fiche .latin {
+            font-size: 0.63em;
+            font-family: 'Source Sans Italic';
+            color: #513D70;
+        }
+
+        .fiche .photo {
+            top: 15.2%;
+        }
+
+        .fiche .info {
+            top: 63.0%;
+            font-size: 0.63em;
+            line-height: 1.5em;
+        }
     </style>
 </head>
 
 <body oncontextmenu='event.preventDefault()'>
 
     <div id="main" class="wideScreen">
-        <img src="screen.jpg"/>
+        <img src="screen.jpg" />
 
         <div class="clickArea" style="left: 4.1%; top: 5.5%; width: 5.7%; height: 7.5%;" onclick="window.location.href='..'"></div>
 
@@ -48,13 +91,24 @@
         <div class="clickArea" style="left: 76.0%; top: 59.1%; width: 12.6%; height: 20.5%;" onclick="popup_show()"></div>
 
 
-        <div id="saison_seche"  class="clickArea" style="left: 15%; top: 87%; width: 20%; height: 7.5%;" onclick="window.location.href='../carte'"></div>
+        <div id="saison_seche" class="clickArea" style="left: 15%; top: 87%; width: 20%; height: 7.5%;" onclick="window.location.href='../carte'"></div>
         <div id="saison_humide" class="clickArea" style="left: 65%; top: 87%; width: 20%; height: 7.5%;" onclick="window.location.href='../carte'"></div>
     </div>
 
     <div id="popups" class="wideScreen displayed">
-        <div class="popup">
-            <div id="close_popup"  class="clickArea" style="position: relative; left: 41.6%; top: 84.7%; width: 16.8%; height: 8.8%;" onclick="popup_hide()"></div>
+        <div class="popup fiche">
+            <div class="title">
+                <span class="name">Le Pécari</span><span class="latin">Tayassu tajau</span>
+            </div>
+            <img class="photo" src="pecari.jpg">
+            <div class="info">
+                Il est chassé toute l’année. C’est une espèce abondante mais difficilement prévisible de part ses
+                nombreux déplacements.<br>
+                <br>
+                Gibier de taille moyenne.
+            </div>
+            <img src="close_button.png" class="clickArea" style="left: 41.6%; top: 87.0%; width: 16.8%;" onclick="popup_hide()">
         </div>
+    </div>
     </div>
 </body>
