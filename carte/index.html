@@ -57,7 +57,6 @@
 
             font-size: 0.45em;
         }
-
     </style>
 </head>
 
@@ -79,22 +78,44 @@
     <script>
         'use strict';
 
-        const advices = {
-            24: {
-                name: 'Tapir du Brésil',
-                description: 'Le tapir se nourrit de nombreux fruits dont ceux des palmiers.<br>Sa chasse est réglementée.'
-            },
-            40: {
-                name: 'Précari à collier',
-                description: 'A la saison sèche, il est difficile de prévoir où se trouve la pécari. Il se déplace, recherchant les graines, gousses et noix enterrées près de nombreux points d’eau résiduels.'
-            },
-            56: {
-                name: 'Daguet rouge',
-                description: 'Cet animal discret et craintif est difficile à rencontrer. Les fleurs de certains arbres peuvent toutefois l’attirer.'
-            },
+        const mapDescriptions = {
+            map1: {
+                tracksId : "tracks1"
+                ,areasId: "areas1"
+                ,entry1: { x: 100, y: 550 } 
+                ,entry2: { x: 100, y: 550 } 
+                ,entry3: { x: 100, y: 550 } 
+            }
+            , map2: {
+                tracksId : "tracks2"
+                ,areasId: "areas2"
+                ,entry1: { x: 1550, y: 550 } 
+                ,entry2: { x: 100, y: 550 } 
+            }
+            , map3: {
+                tracksId : "tracks3"
+                ,areasId: "areas3"
+                ,entry1: { x: 100, y: 550 } 
+                ,entry2: { x: 100, y: 550 } 
+            }
+            , map4: {
+                tracksId : "tracks4"
+                ,areasId: "areas4"
+                ,entry1: { x: 100, y: 550 } 
+                ,entry2: { x: 100, y: 550 } 
+            }
         }
 
-        const AREA_FOREST = 248
+        var areasDescription = {
+            0x000000: {}
+            , 0xFF0000: {blocking: true}
+            , 0x0000F0: {advice: {name: "Tapir du Brésil", description: "Le tapir se nourrit de nombreux fruits dont ceux des palmiers.<br>Sa chasse est réglementée."}}
+            , 0x0000B0: {advice: {name: "Précari à collier", description: "A la saison sèche, il est difficile de prévoir où se trouve la pécari. Il se déplace, recherchant les graines, gousses et noix enterrées près de nombreux points d’eau résiduels."}}
+            , 0x000070: {advice: {name: "Daguet rouge", description: "Cet animal discret et craintif est difficile à rencontrer. Les fleurs de certains arbres peuvent toutefois l’attirer."}}
+            , 0x00F000: {goto: {mapId: "map1", entryId: "entry1" }}
+        }
+
+        const AREA_FOREST = 0xFF0000
 
         var initialized = false
         var mouseCoordinates
@@ -110,45 +131,54 @@
         var currentArea
         var map
         var character
+        var images
 
         function initGame(loadedImages) {
-            console.log('Game initializing...')
+            images = loadedImages
 
-            position = { x: 100, y: 550 }
-            moveSpeed = 0
+            initCanvasAndImageData()
 
-            initCanvasAndImageData(loadedImages)
+            initMap("map2", "entry1")
 
             addEventListenersOnMainCanvas()
 
-            drawScreen()
             window.requestAnimationFrame(mainLoop)
-
-            console.log('Game initialize!')
         }
 
-        function initCanvasAndImageData(loadedImages) {
-            character = document.getElementById('character')
+        function initMap(mapId, entryId) {
 
-            map = loadedImages.map
-            character = loadedImages.character
-            maskImageData = imageToImageData(loadedImages.mask)
-            areasImageData = imageToImageData(loadedImages.areas)
+            position = mapDescriptions[mapId][entryId]
+            moveSpeed = 0
+
+            map = images[mapId]
+            areasImageData = imageToImageData(images[mapDescriptions[mapId].areasId])
 
             // Drawing the map beneath the tracks instead of loading the tracks with map already painted reduces the size a lot.
-            var revealedContext2d = imageToContext2d(loadedImages.tracks)
+            var tracksImage = images[mapDescriptions[mapId].tracksId]
+            var revealedContext2d = imageToContext2d(tracksImage)
             revealedContext2d.globalCompositeOperation = 'destination-over'
             revealedContext2d.drawImage(map, 0, 0)
-            revealedImageData = revealedContext2d.getImageData(0, 0, loadedImages.tracks.width, loadedImages.tracks.height)
+            revealedImageData = revealedContext2d.getImageData(0, 0, tracksImage.width, tracksImage.height)
             setTransparency(revealedImageData, 0)
 
-            mainCanvas = document.getElementById('main_canvas')
             var mainCanvasContext2d = mainCanvas.getContext('2d')
             mainCanvasContext2d.drawImage(map, 0, 0)
 
+            drawScreen()
+        }
+
+        function initCanvasAndImageData() {
+            character = document.getElementById('character')
+
+            character = images.character
+            maskImageData = imageToImageData(images.mask)
+
+            mainCanvas = document.getElementById('main_canvas')
+
             bufferCanvas = document.createElement('canvas')
-            bufferCanvas.width = loadedImages.mask.width
-            bufferCanvas.height = loadedImages.mask.height
+            bufferCanvas.width = images.mask.width
+            bufferCanvas.height = images.mask.height
+
         }
 
         function imageToContext2d(image) {
@@ -183,15 +213,12 @@
             if (mouseCoordinates && moveSpeed) {
                 move()
                 drawScreen()
-                updateAdvice()
             }
             window.requestAnimationFrame(mainLoop)
         }
 
-        function updateAdvice() {
+        function updateAdvice(advice) {
             var advisor = document.getElementById('advisor_text')
-            var currentArea = area(position)
-            var advice = advices[currentArea]
 
             var innerHTML
             if (advice) {
@@ -225,17 +252,24 @@
             var destination = { x: position.x + moveDirection.x * moveSpeed, y: position.y + moveDirection.y * moveSpeed }
             var destinationArea = area(destination)
 
-            if (destinationArea != AREA_FOREST) {
+            if (! destinationArea.blocking) {
                 position.x += moveDirection.x * moveSpeed
                 position.y += moveDirection.y * moveSpeed
+            
+                var goto = destinationArea.goto
+                if(goto) {
+                    initMap(goto.mapId, goto.entryId)
+                }
+
+                updateAdvice(destinationArea.advice)
             }
         }
 
         function updateMouseCoordinates(e) {
             var targetClientRect = e.target.getClientRects()[0]
             mouseCoordinates = {
-                x: (e.clientX - targetClientRect.x) * mainCanvas.width / targetClientRect.width
-                , y: (e.clientY - targetClientRect.y) * mainCanvas.height / targetClientRect.height
+                x: (e.clientX - targetClientRect.left) * mainCanvas.width / targetClientRect.width
+                , y: (e.clientY - targetClientRect.top) * mainCanvas.height / targetClientRect.height
             }
         }
 
@@ -314,17 +348,36 @@
 
         function area(position) {
             position = { x: Math.round(position.x), y: Math.round(position.y) }
-            return areasImageData.data[(position.x + position.y * areasImageData.width) * 4]
+            var index = (position.x + position.y * areasImageData.width) * 4
+
+            var red = areasImageData.data[index + 0]
+            var green = areasImageData.data[index + 1]
+            var blue = areasImageData.data[index + 2]
+
+            var colorHexCode = red * 0x010000 + green * 0x000100 + blue * 0x000001
+            
+            var area = areasDescription[colorHexCode]
+
+            return area
         }
 
 
         loadImages(
             {
-                map: 'map.jpg',
-                tracks: 'tracks.png',
+                map1: 'map1.jpg',
+                map2: 'map2.jpg',
+                map3: 'map3.jpg',
+                map4: 'map4.jpg',
+                tracks1: 'tracks1.png',
+                tracks2: 'tracks2.png',
+                tracks3: 'tracks3.png',
+                tracks4: 'tracks4.png',
+                areas1: 'areas1.png',
+                areas2: 'areas2.png',
+                areas3: 'areas3.png',
+                areas4: 'areas4.png',
                 mask: 'mask.png',
                 character: 'character.png',
-                areas: 'areas.png',
             },
             initGame
         )
