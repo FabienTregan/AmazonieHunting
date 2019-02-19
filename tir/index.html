@@ -2,6 +2,7 @@
 
     <script src="../lib/wideScreen.js"></script>
     <script src="../lib/preloader.js"></script>
+    <script src="lib/gestures.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
@@ -18,9 +19,8 @@
             border: none;
             padding: 0;
             background: transparent;
+            cursor: none;
         }
-
-
     </style>
 </head>
 
@@ -28,11 +28,6 @@
 
     <div id='main' class="wideScreen">
         <canvas id="main_canvas" height="1080" width="1920"></canvas>
-    </div>
-
-    <div style="text-align: center">
-        <button type="button" onmouseenter="move(-1)" onmouseleave="move(0)">&lt;</button>
-        <button type="button" onmouseenter="move(+1)" onmouseleave="move(0)">&gt;</button>
     </div>
 
     <script>
@@ -45,6 +40,7 @@
         var flecheV = null
         var flecheA = { x: 0, y: 2, z: 0 }
         var images
+        var viseurP = { x: 960, y: 540 }
 
         function initGame(loadedImages) {
             images = loadedImages
@@ -53,7 +49,7 @@
 
         function updateScreen() {
             updatePlansNodes(position)
-            updateCibleNode(position)
+            updateViseur()
         }
 
         function updatePlansNodes(position) {
@@ -90,15 +86,22 @@
 
         }
 
-        function updateCibleNode(position) {
-        }
-
-        function move(x) {
-            scrollSpeed = x
+        function updateViseur() {
+            viseurP = mouseCoordinates
+            if (viseurP) {
+                var mainCanvas = document.getElementById("main_canvas")
+                var ctx = mainCanvas.getContext('2d')
+                ctx.drawImage(images.viseur, viseurP.x - images.viseur.width / 2, viseurP.y - images.viseur.height / 2)
+            }
         }
 
         function autoScroll(timestamp) {
-            position += scrollSpeed
+            if (mouseCoordinates) {
+                position += (mouseCoordinates.x - (1920 / 2)) / 1000
+
+                position = Math.max(position, -65)
+                position = Math.min(position, +65)
+            }
 
             if ((flecheP == null) || (flecheP.z > 120)) {
                 flecheP = { x: 0, y: 0, z: 50 }
