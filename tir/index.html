@@ -1,21 +1,31 @@
 <head>
+    <script src="../lib/wideScreen.js"></script>
+
     <style>
+        @import '../lib/wideScreen.css';
 
         body {
             background: blue;
             overflow: hidden;
         }
 
-        #mainCanvas {
-            height: 40vw;
-            width: 71.1vw;
-            border: none;
-            background: black;
-            overflow: hidden;
+        #main {
+            background-color: pink;
         }
 
-        #preload {
-            display: none
+        #main>* {
+            position: absolute;
+            background-size: cover;
+            background-repeat: no-repeat;
+            left: 0;
+            top: 0;
+        }
+
+        #main>div.plan {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
         }
 
     </style>
@@ -23,20 +33,18 @@
 
 <body>
 
-    <div id="preload">
-        <img id="plan1" src="plan1.png">
-        <img id="plan2" src="plan2.png">
-        <img id="plan3" src="plan3.png">
-        <img id="plan4" src="plan4.png">
-        <img id="cible" src="cible.png">
+    <div id="main" class="wideScreen">
+        <div id="plan4" class="plan" style="background-image: url('plan4.png'); z-index: 60;"></div>
+        <div id="plan3" class="plan" style="background-image: url('plan3.png'); z-index: 70;"></div>
+        <div id="plan2" class="plan" style="background-image: url('plan2.png'); z-index: 80;"></div>
+        <div id="plan1" class="plan" style="background-image: url('plan1.png'); z-index: 90;"></div>
         <img id="fleche" src="fleche.png">
     </div>
-
-    <canvas id="mainCanvas" height="1080" width="1920"></canvas>
+    <br>
 
     <div style="text-align: center">
-        <button type="button" onmouseenter="move(-1)" onmouseleave="move(0)">&lt;</button> 
-        <button type="button" onmouseenter="move(+1)" onmouseleave="move(0)">&gt;</button> 
+        <button type="button" onmouseenter="move(-1)" onmouseleave="move(0)">&lt;</button>
+        <button type="button" onmouseenter="move(+1)" onmouseleave="move(0)">&gt;</button>
     </div>
 
     <script>
@@ -46,47 +54,38 @@
         var scrollSpeed = 0
         var flecheP = null
         var flecheV = null
-        var flecheA = {x: 0, y: 2, z: 0}
+        var flecheA = { x: 0, y: 2, z: 0 }
 
         function updateScreen() {
             updatePlansNodes(position)
-            updateCibleNode(position)
+            updatePlansNodes(position)
         }
 
         function updatePlansNodes(position) {
-            var mainCanvas = document.getElementById("mainCanvas")
-            var ctx = mainCanvas.getContext('2d')
-            var flecheDrawn = false
+            for (var i = nbPlans; i > 0; i--) {
 
-            // remove this when done
-            ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height)
-
-            for(var i=nbPlans; i>0; i--) {
-
-                var planId = "plan"+i
+                var planId = "plan" + i
                 var planNode = document.getElementById(planId)
 
-                var distancePlan = (6 + i)*10;
-                                
-                var startX = (2500 - 1920)/2 + position * 300 / distancePlan
-                ctx.drawImage(planNode, startX, 0, 1920, 1080, 0, 0, 1920, 1080)
+                var distancePlan = (6 + i) * 10;
 
-                // dessin fleche
-                if ((!flecheDrawn) && ((i==1) || (flecheP.z > distancePlan)) ) {
-                    var flecheId = "fleche"
-                    var flecheNode = document.getElementById(flecheId)
-                    var flecheWidth = flecheNode.width
-                    var flecheHeight = fleche.height
-                    var flecheApparentWidth = flecheNode.width * 50 / flecheP.z
-                    var flecheApparentHeight = flecheNode.height * 50 / flecheP.z
-                    ctx.globalAlpha = 0.9
-                    ctx.drawImage(flecheNode, 0, 0, 64, 64, (1920 - flecheApparentWidth) / 2 + flecheP.x / flecheP.z, (1080 - flecheApparentHeight) / 2 + flecheP.y / flecheP.z, flecheApparentWidth, flecheApparentHeight)
-                    ctx.globalAlpha = 1
-
-                    flecheDrawn = true
-                }
+                var startX = (2500 - 1920) / 2 + position * 300 / distancePlan
+                planNode.style.backgroundPositionX = (startX / 1920 * planNode.offsetWidth) + "px";
             }
 
+            // dessin fleche
+            var flecheNode = document.getElementById("fleche")
+            var flecheWidth = flecheNode.naturalWidth
+            var flecheHeight = fleche.naturalHeight
+            var flecheApparentWidth = flecheWidth * 50 / flecheP.z
+            var flecheApparentHeight = flecheHeight * 50 / flecheP.z
+            flecheNode.style.left = (((1920 - flecheApparentWidth) / 2 + flecheP.x / flecheP.z) / 1920 * 100) + "%"
+            flecheNode.style.top = (((1080 - flecheApparentHeight) / 2 + flecheP.y / flecheP.z) / 1080 * 100) + "%"
+            flecheNode.style.width = flecheApparentWidth + "px"
+            flecheNode.style.height = flecheApparentHeight + "px"
+            flecheNode.style.zIndex = Math.round(150 - flecheP.z)
+            flecheNode.style.transform = "rotate3d(1, 0, 0, " + flecheP.z + "deg)"
+            console.log()
         }
 
         function updateCibleNode(position) {
@@ -99,9 +98,9 @@
         function autoScroll(timestamp) {
             position += scrollSpeed
 
-            if ((flecheP==null) || (flecheP.z > 120)) {
-                flecheP = {x: 0, y: 0, z: 50}
-                flecheV = {x: 0, y: -150, z: 0.6}
+            if ((flecheP == null) || (flecheP.z > 120)) {
+                flecheP = { x: 0, y: 0, z: 50 }
+                flecheV = { x: 0, y: -150, z: 0.6 }
             }
 
             flecheV.x += flecheA.x
@@ -112,12 +111,10 @@
             flecheP.y += flecheV.y
             flecheP.z += flecheV.z
 
-            console.log(position + " " + flecheP.z)
-
             updateScreen()
             requestAnimationFrame(autoScroll)
         }
-        
+
         window.addEventListener('load', autoScroll)
 
     </script>
