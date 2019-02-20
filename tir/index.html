@@ -10,7 +10,9 @@
             }
     
             #main {
+                overflow: hidden;
                 background-color: pink;
+                perspective: 100px;
             }
     
             #main>* {
@@ -38,9 +40,8 @@
         <div id="plan3" class="plan" style="background-image: url('plan3.png'); z-index: 70;"></div>
         <div id="plan2" class="plan" style="background-image: url('plan2.png'); z-index: 80;"></div>
         <div id="plan1" class="plan" style="background-image: url('plan1.png'); z-index: 90;"></div>
-        <img id="fleche" src="fleche.png">
+        <img id="fleche" src="fleche.png" style="perspective: 100px; border: 1px solid tomato;">
     </div>
-    <br>
 
     <div style="text-align: center">
         <button type="button" onmouseenter="move(-1)" onmouseleave="move(0)">&lt;</button>
@@ -54,7 +55,7 @@
         var scrollSpeed = 0
         var flecheP = null
         var flecheV = null
-        var flecheA = { x: 0, y: 2, z: 0 }
+        var flecheA = { x: 0, y: 0.1, z: 0 }
 
         function updateScreen() {
             updatePlansNodes(position)
@@ -62,30 +63,41 @@
         }
 
         function updatePlansNodes(position) {
+
             for (var i = nbPlans; i > 0; i--) {
 
                 var planId = "plan" + i
                 var planNode = document.getElementById(planId)
 
-                var distancePlan = (6 + i) * 10;
+                var focale = 60
+                var zPlan = i * 10
+                var distancePlan = (focale + zPlan) / 60
 
-                var startX = (2500 - 1920) / 2 + position * 300 / distancePlan
-                planNode.style.backgroundPositionX = (startX / 1920 * planNode.offsetWidth) + "px";
+                var startX = (2500 - 1920) / 2 + position / distancePlan
+                planNode.style.backgroundPositionX = (startX / 1920 * planNode.offsetWidth) + "px"
             }
 
             // dessin fleche
             var flecheNode = document.getElementById("fleche")
-            var flecheWidth = flecheNode.naturalWidth
-            var flecheHeight = fleche.naturalHeight
-            var flecheApparentWidth = flecheWidth * 50 / flecheP.z
-            var flecheApparentHeight = flecheHeight * 50 / flecheP.z
-            flecheNode.style.left = (((1920 - flecheApparentWidth) / 2 + flecheP.x / flecheP.z) / 1920 * 100) + "%"
-            flecheNode.style.top = (((1080 - flecheApparentHeight) / 2 + flecheP.y / flecheP.z) / 1080 * 100) + "%"
-            flecheNode.style.width = flecheApparentWidth + "px"
-            flecheNode.style.height = flecheApparentHeight + "px"
+            flecheNode.style.top = "0"
+            flecheNode.style.left = "0"
             flecheNode.style.zIndex = Math.round(150 - flecheP.z)
-            flecheNode.style.transform = "rotate3d(1, 0, 0, " + flecheP.z + "deg)"
-            console.log()
+
+            flecheNode.style.transformOrigin = "left"
+            var scale = main.offsetWidth / 1920
+
+            var angle = Math.atan(flecheV.y / flecheV.x) / Math.PI * 180
+
+
+            flecheNode.style.transform = ""
+                + " scale(" + scale + ") "                   // mise à la taille de l'écran
+                + " translate3d(1000px, 500px, 0px)"  // deplace la flèche dans son axe
+                + " rotate3d(0, 1, 0, -60deg)"               // angle tire droite-gauche
+                + " translate3d(" + flecheP.x + "px, " + flecheP.y + "px, " + flecheP.z + "px)"  // deplace la flèche dans son axe
+                + " rotate3d(0, 0, 1, " + angle + "deg)"               // angle de tire haut-bas
+                + " scale(0.1)"                              // echelle de la fleche
+                + " translate3d(0%, 50%, 0px)"               // decallage pour avoir les coordonnées par rapport au milieu gauche
+
         }
 
         function updateCibleNode(position) {
@@ -98,9 +110,9 @@
         function autoScroll(timestamp) {
             position += scrollSpeed
 
-            if ((flecheP == null) || (flecheP.z > 120)) {
-                flecheP = { x: 0, y: 0, z: 50 }
-                flecheV = { x: 0, y: -150, z: 0.6 }
+            if ((flecheP == null) || (flecheP.x < -1000)) {
+                flecheP = { x: 000, y: 010, z: 0000 }
+                flecheV = { x: -5, y: -5, z: 0 }
             }
 
             flecheV.x += flecheA.x
