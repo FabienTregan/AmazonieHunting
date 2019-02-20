@@ -1,37 +1,53 @@
 <head>
-
     <script src="../lib/wideScreen.js"></script>
-    <script src="../lib/preloader.js"></script>
-    <script src="lib/gestures.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
-
-        body {
-            background: blue;
-            overflow: hidden;
-        }
-
-        #main_canvas {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            border: none;
-            padding: 0;
-            background: transparent;
-            cursor: none;
-        }
-    </style>
+    
+            body {
+                background: blue;
+                overflow: hidden;
+            }
+    
+            #main {
+                background-color: pink;
+            }
+    
+            #main>* {
+                position: absolute;
+                background-size: cover;
+                background-repeat: no-repeat;
+                left: 0;
+                top: 0;
+            }
+    
+            #main>div.plan {
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
+    
+        </style>
 </head>
 
 <body>
 
-    <div id='main' class="wideScreen">
-        <canvas id="main_canvas" height="1080" width="1920"></canvas>
+    <div id="main" class="wideScreen">
+        <div id="plan4" class="plan" style="background-image: url('plan4.png'); z-index: 60;"></div>
+        <div id="plan3" class="plan" style="background-image: url('plan3.png'); z-index: 70;"></div>
+        <div id="plan2" class="plan" style="background-image: url('plan2.png'); z-index: 80;"></div>
+        <div id="plan1" class="plan" style="background-image: url('plan1.png'); z-index: 90;"></div>
+        <img id="fleche" src="fleche.png">
+    </div>
+    <br>
+
+    <div style="text-align: center">
+        <button type="button" onmouseenter="move(-1)" onmouseleave="move(0)">&lt;</button>
+        <button type="button" onmouseenter="move(+1)" onmouseleave="move(0)">&gt;</button>
     </div>
 
     <script>
-        "use strict"
 
         var nbPlans = 4
         var position = -50
@@ -39,69 +55,48 @@
         var flecheP = null
         var flecheV = null
         var flecheA = { x: 0, y: 2, z: 0 }
-        var images
-        var viseurP = { x: 960, y: 540 }
-
-        function initGame(loadedImages) {
-            images = loadedImages
-            autoScroll()
-        }
 
         function updateScreen() {
             updatePlansNodes(position)
-            updateViseur()
+            updatePlansNodes(position)
         }
 
         function updatePlansNodes(position) {
-            var mainCanvas = document.getElementById("main_canvas")
-            var ctx = mainCanvas.getContext('2d')
-            var flecheDrawn = false
-
-            // remove this when done
-            // ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height)
-
             for (var i = nbPlans; i > 0; i--) {
 
                 var planId = "plan" + i
-                var plan = images[planId]
+                var planNode = document.getElementById(planId)
 
                 var distancePlan = (6 + i) * 10;
 
                 var startX = (2500 - 1920) / 2 + position * 300 / distancePlan
-                ctx.drawImage(plan, startX, 0, 1920, 1080, 0, 0, 1920, 1080)
-
-                // dessin fleche
-                if ((!flecheDrawn) && ((i == 1) || (flecheP.z > distancePlan))) {
-                    var flecheWidth = images.fleche.width
-                    var flecheHeight = images.fleche.height
-                    var flecheApparentWidth = images.width * 50 / flecheP.z
-                    var flecheApparentHeight = images.height * 50 / flecheP.z
-                    ctx.globalAlpha = 0.9
-                    ctx.drawImage(images.fleche, 0, 0, 64, 64, (1920 - flecheApparentWidth) / 2 + flecheP.x / flecheP.z, (1080 - flecheApparentHeight) / 2 + flecheP.y / flecheP.z, flecheApparentWidth, flecheApparentHeight)
-                    ctx.globalAlpha = 1
-
-                    flecheDrawn = true
-                }
+                planNode.style.backgroundPositionX = (startX / 1920 * planNode.offsetWidth) + "px";
             }
 
+            // dessin fleche
+            var flecheNode = document.getElementById("fleche")
+            var flecheWidth = flecheNode.naturalWidth
+            var flecheHeight = fleche.naturalHeight
+            var flecheApparentWidth = flecheWidth * 50 / flecheP.z
+            var flecheApparentHeight = flecheHeight * 50 / flecheP.z
+            flecheNode.style.left = (((1920 - flecheApparentWidth) / 2 + flecheP.x / flecheP.z) / 1920 * 100) + "%"
+            flecheNode.style.top = (((1080 - flecheApparentHeight) / 2 + flecheP.y / flecheP.z) / 1080 * 100) + "%"
+            flecheNode.style.width = flecheApparentWidth + "px"
+            flecheNode.style.height = flecheApparentHeight + "px"
+            flecheNode.style.zIndex = Math.round(150 - flecheP.z)
+            flecheNode.style.transform = "rotate3d(1, 0, 0, " + flecheP.z + "deg)"
+            console.log()
         }
 
-        function updateViseur() {
-            viseurP = mouseCoordinates
-            if (viseurP) {
-                var mainCanvas = document.getElementById("main_canvas")
-                var ctx = mainCanvas.getContext('2d')
-                ctx.drawImage(images.viseur, viseurP.x - images.viseur.width / 2, viseurP.y - images.viseur.height / 2)
-            }
+        function updateCibleNode(position) {
+        }
+
+        function move(x) {
+            scrollSpeed = x
         }
 
         function autoScroll(timestamp) {
-            if (mouseCoordinates) {
-                position += (mouseCoordinates.x - (1920 / 2)) / 1000
-
-                position = Math.max(position, -65)
-                position = Math.min(position, +65)
-            }
+            position += scrollSpeed
 
             if ((flecheP == null) || (flecheP.z > 120)) {
                 flecheP = { x: 0, y: 0, z: 50 }
@@ -120,20 +115,8 @@
             requestAnimationFrame(autoScroll)
         }
 
-        loadImages(
-            {
-                plan1: 'plan1.png',
-                plan2: 'plan2.png',
-                plan3: 'plan3.png',
-                plan4: 'plan4.png',
-                cible: 'cible.png',
-                fleche: 'fleche.png',
-                viseur: 'viseur.png',
-            },
-            initGame
-        )
+        window.addEventListener('load', autoScroll)
 
     </script>
-
 
 </body>
