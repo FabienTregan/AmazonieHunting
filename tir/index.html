@@ -36,6 +36,7 @@
 <body>
 
     <div id="main" class="wideScreen">
+        <div id="plan5" class="plan" style="background-image: url('plan5.jpg'); z-index: 50;"></div>
         <div id="plan4" class="plan" style="background-image: url('plan4.png'); z-index: 60;"></div>
         <div id="plan3" class="plan" style="background-image: url('plan3.png'); z-index: 70;"></div>
         <div id="plan2" class="plan" style="background-image: url('plan2.png'); z-index: 80;"></div>
@@ -44,18 +45,18 @@
     </div>
 
     <div style="text-align: center">
-        <button type="button" onmouseenter="move(-1)" onmouseleave="move(0)">&lt;</button>
-        <button type="button" onmouseenter="move(+1)" onmouseleave="move(0)">&gt;</button>
+        <button type="button" onmouseenter="move(-3)" onmouseleave="move(0)">&lt;</button>
+        <button type="button" onmouseenter="move(+3)" onmouseleave="move(0)">&gt;</button>
     </div>
 
     <script>
 
-        var nbPlans = 4
+        var nbPlans = 5
         var position = -50
         var scrollSpeed = 0
         var flecheP = null
         var flecheV = null
-        var flecheA = { x: 0, y: 0.1, z: 0 }
+        var flecheA = { x: 0, y: 0.05, z: 0 }
 
         function updateScreen() {
             updatePlansNodes(position)
@@ -86,16 +87,16 @@
             flecheNode.style.transformOrigin = "left"
             var scale = main.offsetWidth / 1920
 
-            var angle = Math.atan(flecheV.y / flecheV.x) / Math.PI * 180
+            var angle = Math.atan(flecheV.y / flecheV.x) / Math.PI * 180 * 0.9
 
 
             flecheNode.style.transform = ""
                 + " scale(" + scale + ") "                   // mise à la taille de l'écran
                 + " translate3d(1000px, 500px, 0px)"  // deplace la flèche dans son axe
-                + " rotate3d(0, 1, 0, -60deg)"               // angle tire droite-gauche
+                + " rotate3d(0, 1, 0, -45deg)"               // angle tire droite-gauche
                 + " translate3d(" + flecheP.x + "px, " + flecheP.y + "px, " + flecheP.z + "px)"  // deplace la flèche dans son axe
-                + " rotate3d(0, 0, 1, " + angle + "deg)"               // angle de tire haut-bas
-                + " scale(0.1)"                              // echelle de la fleche
+                + " rotate3d(0, 0, 1, " + angle + "deg)"               // angle de la flèche haut-bas
+                + " scale(0.25)"                              // echelle de la fleche
                 + " translate3d(0%, 50%, 0px)"               // decallage pour avoir les coordonnées par rapport au milieu gauche
 
         }
@@ -111,7 +112,7 @@
             position += scrollSpeed
 
             if ((flecheP == null) || (flecheP.x < -1000)) {
-                flecheP = { x: 000, y: 010, z: 0000 }
+                flecheP = { x: +250, y: -250, z: -500 }
                 flecheV = { x: -5, y: -5, z: 0 }
             }
 
