@@ -1,0 +1,216 @@
+<head>
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="../lib/wideScreen.js"></script>
+    <script src="../lib/popup.js"></script>
+
+    <style>
+        @import '../lib/popup.css';
+        @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
+
+        @font-face {
+            font-family: 'Source Sans';
+            src: url('../font/SourceSansPro-Regular.otf') format('woff');
+        }
+
+        @font-face {
+            font-family: 'Source Sans Black';
+            src: url('../font/SourceSansPro-Black.otf') format('woff');
+        }
+
+        @font-face {
+            font-family: 'Source Sans Italic';
+            src: url('../font/SourceSansPro-It.otf') format('woff');
+        }
+
+        body {
+            font-family: 'Source Sans';
+            color: white;
+        }
+
+        #main img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .fiche {
+            position: absolute;
+        }
+
+        .fiche>* {
+            position: absolute;
+            left: 8.5%;
+            width: 83%;
+        }
+
+        .fiche .title {
+            top: 5%;
+        }
+
+        #animalName {
+            margin-right: 0.20em;
+            font-size: 1.45em;
+            font-family: 'Source Sans Black';
+        }
+
+        #animalLatinName {
+            font-size: 0.63em;
+            font-family: 'Source Sans Italic';
+            color: #513D70;
+        }
+
+        .fiche .photo {
+            top: 15.2%;
+        }
+
+        .fiche .info {
+            top: 63.0%;
+            font-size: 0.63em;
+            line-height: 1.5em;
+        }
+
+        .popups {
+            font-size: 48px;
+        }
+    </style>
+</head>
+
+<body oncontextmenu='event.preventDefault()'>
+
+    <div id="main" class="wideScreen">
+        <img src="index.jpg" />
+
+        <div class="clickArea" style="left: 4.1%; top: 5.5%; width: 5.7%; height: 7.5%;" onclick="window.location.href='..'"></div>
+
+        <div class="clickArea" style="left: 11.4%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('hocco')"></div>
+        <div class="clickArea" style="left: 26.0%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('pecari')"></div>
+
+        <div class="clickArea" style="left: 18.7%; top: 59.2%; width: 12.6%; height: 20.5%;" onclick="show_sheet('tapir')"></div>
+
+        <div class="clickArea" style="left: 54.1%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('hocco')"></div>
+        <div class="clickArea" style="left: 68.7%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('agouti')"></div>
+        <div class="clickArea" style="left: 83.3%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('daguet')"></div>
+
+        <div class="clickArea" style="left: 61.4%; top: 59.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('sapajou')"></div>
+        <div class="clickArea" style="left: 76.0%; top: 59.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('pacu')"></div>
+
+        <div id="saison_seche" class="clickArea" style="left: 19%; top: 87%; width: 12%; height: 7.5%;" onclick="window.location.href='../carte?season=dry'"></div>
+        <div id="saison_humide" class="clickArea" style="left: 69%; top: 87%; width: 12%; height: 7.5%;" onclick="window.location.href='../carte?season=wet'"></div>
+    </div>
+
+    <div id="popups" class="wideScreen displayed">
+        <div class="popup fiche">
+            <div class="title">
+                <span id="animalName">Name</span><span id="animalLatinName">Latin Name</span>
+            </div>
+            <img id="animalPicture" class="photo" src="pecari.jpg">
+            <div id="animalText" class="info">
+                Text
+            </div>
+            <img src="close_button.png" class="clickArea" style="left: 91.67%; top: 94.44%; width: 16.8%;" onclick="popup_hide()">
+        </div>
+    </div>
+
+    <script>
+
+        animals = {
+            template: {
+                name: "Animal"
+                , latinName: "Anima"
+                , text: "<br>" +
+                    "<br>" +
+                    ""
+                , picture: ".jpg"
+            }
+            , hocco: {
+                name: "Hocco Alector"
+                , latinName: "Crax alector"
+                , text: "L’hocco alector a un plumage presque entièrement noir brillant. Seuls le ventre, les flancs et le dessous de la base de la queue sont blancs. <br>" +
+                    "Son allure paraît très élégante car il marche tête haute, pattes jointes et la queue déployée en éventail.<br>" +
+                    "<br>" +
+                    "C’est un grand mangeur de fruits (96 % de son alimentation), de graines, de plantules et de jeunes pousses. Son gésier est muni d’une musculature puissante permettant aux graines d’être écrasées. Le broyage se trouve mécaniquement renforcé par la présence régulière dans l’estomac de petits cailloux (7g par individu). En détruisant les graines et/ou plantules d’espèces donnée, ils favoriseraient les végétaux délaissés ou dégageraient des sites de germination.<br>" +
+                    "<br>" +
+                    "Gros gibier à plumes 3 kg.<br>" +
+                    "Il est chassé toute l’année. C’est une espèce abondante mais difficilement prévisible de part ses nombreux déplacements.<br><br>Gibier de taille moyenne."
+                , picture: "hocco.jpg"
+            }
+            , pecari: {
+                name: "Pécari à Collier"
+                , latinName: "Tayassu tajacu"
+                , text: "C’est le plus gros des mammifères d’Amérique du Sud. Cet animal solitaire actif la nuit vit dans les forêts tropicales humides, en bordure des fleuves et des rivières.<br>" +
+                    "Strictement herbivore, il se nourrit de plantules, de fruits et de graines qu’il collecte à l’aide de sa courte trompe préhensile.<br>" +
+                    "Il joue un rôle clé dans la régénération de la forêt en disséminant avec ses déjections les graines de certaines espèces consommées.<br>" +
+                    "<br>" +
+                    "Gros gibier de plus de 200kg<br>" +
+                    "Il est chassé toute l’année. C’est une espèce abondante mais difficilement prévisible de part ses nombreux déplacements.<br>"
+                , picture: "pecari.jpg"
+            }
+            , tapir: {
+                name: "Tapir du Brésil"
+                , latinName: "Tapirus terrestris"
+                , text: "C’est le plus gros des mammifères d’Amérique du Sud. Cet animal solitaire actif la nuit vit dans les forêts tropicales humides, en bordure des fleuves et des rivières.<br>" +
+                    "<br>" +
+                    "Strictement herbivore, il se nourrit de plantules, de fruits et de graines qu’il collecte à l’aide de sa courte trompe préhensile.<br>" +
+                    "Il joue un rôle clé dans la régénération de la forêt en disséminant avec ses déjections les graines de certaines espèces consommées.<br>" +
+                    "<br>" +
+                    "Gros gibier de plus de 200kg<br>"
+                , picture: "tapir.jpg"
+            }
+            , agouti: {
+                name: "Agouti"
+                , latinName: "Dasyprocta Agouti"
+                , text: "Sa chair est appréciée, il est souvent mangé en fricassée. Facile à chasser, il sert de gibier d’appoint quand d’autres espèces moins prévisibles n’ont pas été fléchées.<br>" +
+                    "La femelle donne naissance à 2 à 4 petits par an dès ses 6 mois. Le quotas de chasse est de trois agoutis par sortie et par personne.<br>" +
+                    "C’est une espèce commercialisable en Guyane.<br>" +
+                    "Ce petit gibier de 3-6 kg nécessite une flèche à simple embout entaillé.<br>"
+                , picture: "agouti.jpg"
+            }
+            , daguet: {
+                name: "Daguet Rouge"
+                , latinName: "Mazama Americana"
+                , text: "C’est un cervidé actif de jour comme de nuit. Solitaire ou en couple, sa rencontre est difficilement prévisible.<br>" +
+                    "<br>" +
+                    "Gibier de taille moyenne 40 kg<br>"
+                , picture: "daguet.jpg"
+            }
+            , sapajou: {
+                name: "Sapajou Fauve"
+                , latinName: "Cebus apella"
+                , text: "C’est un petit singe est grand pour le continent américain. Il vit en communauté (5 à 17 individus) avec un mâle dominant souvent peu commode.<br>" +
+                    "Actif de jour, son activité n’est pas exclusivement arboricole. Il franchit d’assez longues distances au sol pour rejoindre un nouveau groupe d’arbres. Il peut aussi s’associer avec d’autres espèces de singe pour chercher sa nourriture.<br>" +
+                    "Cet animal vif et agile est capable de se servir de pierres pour ouvrir des noix à coque dure ou d’un bout de bois pour extirper un insecte d’un tronc."
+                , picture: "sapajou.jpg"
+            }
+            , pacu: {
+                name: "Pacu"
+                , latinName: "Myleus pacu"
+                , text: "Selon les saisons, le pacu est capturé à la ligne, chassé à l’épervier ou fléché. Il vit en bande dans les rivières rapides."
+                , picture: "pacu.jpg"
+            }
+
+        }
+
+        function update_sheet_info(infoId, innerHTML) {
+            document.getElementById(infoId).innerHTML = innerHTML
+        }
+
+        function update_sheet_picture(picture) {
+            document.getElementById("animalPicture").setAttribute("src", picture)
+        }
+
+        function show_sheet(animalId) {
+            console.log(animalId)
+            var animal = animals[animalId]
+
+            update_sheet_info("animalName", animal.name)
+            update_sheet_info("animalLatinName", animal.latinName)
+            update_sheet_info("animalText", animal.text)
+            update_sheet_picture(animal.picture)
+
+            popup_show()
+        }
+
+    </script>
+</body>

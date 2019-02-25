@@ -1,59 +1,58 @@
-var mouseCoordinates
+/*
+  Supported methods on callBacks :
 
-function addGesturesEventListeners(elementId) {
+   - mouseMoved(mouseCoordinates: {x, y}) where x and y are in canvas' coordinate space
+   - mouseClicked()
 
-    return function (e) {
-        var element = document.getElementById(elementId)
-        console.log("Installing event listeners")
-        element.addEventListener('dragstart', preventDefault)
-        element.addEventListener('touchstart', touchStart)
-        element.addEventListener('touchend', touchEnd)
-        element.addEventListener('touchmove', touchMove)
-        element.addEventListener('mousedown', mouseButtonDown)
-        element.addEventListener('mouseup', mouseButtonUp)
-        element.addEventListener('mouseleave', mouseButtonUp)
-        element.addEventListener('mousemove', updateMouseCoordinates)
-    }
+*/
 
-    function updateMouseCoordinates(e) {
-        var target = e.target
+function addGesturesEventListeners(elementId, callBacks) {
+
+    var element = document.getElementById(elementId)
+    element.addEventListener('dragstart', preventDefault, true)
+    element.addEventListener('touchstart', touchStart, true)
+    element.addEventListener('touchend', touchEnd, true)
+    element.addEventListener('touchmove', touchMove, true)
+    element.addEventListener('mousedown', mouseButtonDown, true)
+    element.addEventListener('mouseup', mouseButtonUp, true)
+    element.addEventListener('mouseleave', mouseButtonUp, true)
+    element.addEventListener('mousemove', mouseMoved, true)
+
+    function mouseMoved(e) {
+        var target = e.currentTarget
         var targetClientRect = target.getClientRects()[0]
 
         mouseCoordinates = {
-            x: (e.clientX - targetClientRect.left) * target.width / targetClientRect.width
-            , y: (e.clientY - targetClientRect.top) * target.height / targetClientRect.height
+            x: (e.clientX - targetClientRect.left) 
+            , y: (e.clientY - targetClientRect.top)
         }
+
+        callBacks.mouseMoved(mouseCoordinates)
     }
-    
+
     function preventDefault(e) {
         e.preventDefault()
     }
-    
+
     function touchStart(e) {
         e.preventDefault()
-        updateMouseCoordinates(e.touches[0])
-        moveSpeed = 5
+        mouseMoved(e.touches[0])
     }
-    
+
     function touchEnd(e) {
         e.preventDefault()
-        moveSpeed = 0
+        callBacks.mouseClicked()
     }
-    
+
     function touchMove(e) {
         e.preventDefault()
-        updateMouseCoordinates(e.touches[0])
+        mouseMoved(e.touches[0])
     }
-    
+
     function mouseButtonDown(e) {
-        moveSpeed = 5
     }
-    
+
     function mouseButtonUp(e) {
-        moveSpeed = 0
+        callBacks.mouseClicked()
     }
-    }
-
-
-console.log("gestures.js")
-window.addEventListener('load', addGesturesEventListeners('main_canvas'))
+}

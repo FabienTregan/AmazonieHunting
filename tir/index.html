@@ -1,36 +1,36 @@
 <head>
     <script src="../lib/wideScreen.js"></script>
+    <script src="lib/gestures.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
-    
-            body {
-                background: blue;
-                overflow: hidden;
-            }
-    
-            #main {
-                overflow: hidden;
-                background-color: pink;
-                perspective: 100px;
-            }
-    
-            #main>* {
-                position: absolute;
-                background-size: cover;
-                background-repeat: no-repeat;
-                left: 0;
-                top: 0;
-            }
-    
-            #main>div.plan {
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-            }
-    
-        </style>
+
+        body {
+            background: blue;
+            overflow: hidden;
+        }
+
+        #main {
+            overflow: hidden;
+            background-color: pink;
+            perspective: 100px;
+        }
+
+        #main>* {
+            position: absolute;
+            background-size: cover;
+            background-repeat: no-repeat;
+            left: 0;
+            top: 0;
+        }
+
+        #main>div.plan {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -41,29 +41,28 @@
         <div id="plan3" class="plan" style="background-image: url('plan3.png'); z-index: 70;"></div>
         <div id="plan2" class="plan" style="background-image: url('plan2.png'); z-index: 80;"></div>
         <div id="plan1" class="plan" style="background-image: url('plan1.png'); z-index: 90;"></div>
-        <img id="fleche" src="fleche.png" style="perspective: 100px; border: 1px solid tomato;">
-    </div>
-
-    <div style="text-align: center">
-        <button type="button" onmouseenter="move(-3)" onmouseleave="move(0)">&lt;</button>
-        <button type="button" onmouseenter="move(+3)" onmouseleave="move(0)">&gt;</button>
+        <img id="arrow" src="arrow.png" style="perspective: 100px; background-color: rgba(192, 255, 0, 0.25)">
     </div>
 
     <script>
 
+        var arrowAngle = 0;
+
         var nbPlans = 5
         var position = -50
         var scrollSpeed = 0
-        var flecheP = null
-        var flecheV = null
+        var arrowPosition = null
+        var arrowSpeed = null
         var flecheA = { x: 0, y: 0.05, z: 0 }
 
         function updateScreen() {
-            updatePlansNodes(position)
-            updatePlansNodes(position)
+            updatePlans()
+            updateArrow()
         }
 
-        function updatePlansNodes(position) {
+        function updatePlans() {
+
+            position += scrollSpeed
 
             for (var i = nbPlans; i > 0; i--) {
 
@@ -78,57 +77,78 @@
                 planNode.style.backgroundPositionX = (startX / 1920 * planNode.offsetWidth) + "px"
             }
 
-            // dessin fleche
-            var flecheNode = document.getElementById("fleche")
-            flecheNode.style.top = "0"
-            flecheNode.style.left = "0"
-            flecheNode.style.zIndex = Math.round(150 - flecheP.z)
+        }
 
-            flecheNode.style.transformOrigin = "left"
+        function initArrow() {
+            var arrow = document.getElementById("arrow")
+            arrow.style.top = "0"
+            arrow.style.left = "0"
+            arrow.style.transformOrigin = "left"
+
+            arrowPosition = { x: +17800, y: +640, z: -2000 }
+            arrowSpeed = { x: +000, y: +000, z: +000 }
+
+        }
+
+        function updateArrow() {
+
+            var arrow = document.getElementById("arrow")
+
+            initArrow()
+
+            arrow.style.zIndex = Math.round(150 - arrowPosition.z)
+
+            // arrowPhysics()
+
+
             var scale = main.offsetWidth / 1920
+            var angle = Math.atan(arrowSpeed.y / arrowSpeed.x) / Math.PI * 180 * 0.9
 
-            var angle = Math.atan(flecheV.y / flecheV.x) / Math.PI * 180 * 0.9
-
-
-            flecheNode.style.transform = ""
-                + " scale(" + scale + ") "                   // mise à la taille de l'écran
-                + " translate3d(1000px, 500px, 0px)"  // deplace la flèche dans son axe
-                + " rotate3d(0, 1, 0, -45deg)"               // angle tire droite-gauche
-                + " translate3d(" + flecheP.x + "px, " + flecheP.y + "px, " + flecheP.z + "px)"  // deplace la flèche dans son axe
-                + " rotate3d(0, 0, 1, " + angle + "deg)"               // angle de la flèche haut-bas
-                + " scale(0.25)"                              // echelle de la fleche
-                + " translate3d(0%, 50%, 0px)"               // decallage pour avoir les coordonnées par rapport au milieu gauche
+            arrow.style.transform = ""
+            + " translate3d(0px, -" + (arrow.naturalHeight / 2) + "px, 0px)"               // compensation de la position de l'image, qui est calculée par rapport au point haut-gauche et pas la pointe de la fleche.
+            + " scale(" + scale + ") "                   // mise à la taille de l'écran
+            + " translate3d(-5000px, 0px, 0px)"  // deplace la flèche dans son axe
+                + " translate3d(" + arrowPosition.x + "px, " + arrowPosition.y + "px, " + arrowPosition.z + "px)"  // deplace la flèche dans son axe
+                + " scale(10)"                              // echelle de la fleche
+                + " rotate3d(0, 1, 0, " + (-60) + "deg)"               // angle tire droite-gauche
+                + " translateX(80%)"
+                + " rotate3d(0, 0, 1, " + arrowAngle + "deg)"               // angle de la flèche haut-bas
+                + " translateX(-80%)"
 
         }
 
-        function updateCibleNode(position) {
-        }
-
-        function move(x) {
-            scrollSpeed = x
-        }
-
-        function autoScroll(timestamp) {
-            position += scrollSpeed
-
-            if ((flecheP == null) || (flecheP.x < -1000)) {
-                flecheP = { x: +250, y: -250, z: -500 }
-                flecheV = { x: -5, y: -5, z: 0 }
+        function arrowPhysics() {
+            if ((arrowPosition == null) || (arrowPosition.x < -1000)) {
+                arrowPosition = { x: +250, y: -250, z: -500 }
+                arrowSpeed = { x: -5, y: -5, z: 0 }
             }
 
-            flecheV.x += flecheA.x
-            flecheV.y += flecheA.y
-            flecheV.z += flecheA.z
+            arrowSpeed.x += flecheA.x
+            arrowSpeed.y += flecheA.y
+            arrowSpeed.z += flecheA.z
 
-            flecheP.x += flecheV.x
-            flecheP.y += flecheV.y
-            flecheP.z += flecheV.z
-
-            updateScreen()
-            requestAnimationFrame(autoScroll)
+            arrowPosition.x += arrowSpeed.x
+            arrowPosition.y += arrowSpeed.y
+            arrowPosition.z += arrowSpeed.z
         }
 
-        window.addEventListener('load', autoScroll)
+        var callbacks = {
+            mouseMoved: function (coordinates) {
+                const MIN_ANGLE = -345
+                const MAX_ANGLE = +345
+
+                var canvas = document.getElementById("main")
+                arrowAngle = coordinates.y / main.offsetHeight * (MAX_ANGLE - MIN_ANGLE) + MIN_ANGLE
+                updateArrow()
+            },
+
+            mouseClicked: function () {
+
+            },
+
+        }
+
+        window.addEventListener('load', function () { console.log("loaded"); addGesturesEventListeners("main", callbacks) })
 
     </script>
 

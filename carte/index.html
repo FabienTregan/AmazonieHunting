@@ -381,6 +381,23 @@
             },
             initGame
         )
+
+        function getParameter(paramName) {
+            var url = window.location.href;
+            var paramWithEgal = paramName+"="
+            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+            url = url.substring(paramStart)
+            var paramEnd = url.search("&")
+
+            var param = paramEnd > 0 ? 
+                url.substring(0,  paramEnd)
+                : url
+
+            return decodeURIComponent(param)
+        }
+
+        console.log({season: getParameter("season")})
+
     </script>
 
 
