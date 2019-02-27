@@ -97,7 +97,7 @@
         }
 
         .fiche {
-            position: absolute;
+            position: relative;
         }
 
         .fiche>* {
@@ -222,28 +222,27 @@
             map1: {
                 tracksId: "tracks1"
                 , areasId: "areas1"
-                , entry1: { x: 100, y: 550 }
-                , entry2: { x: 1400, y: 400 }
-                , entry3: { x: 100, y: 550 }
+                , entry1: {y: 940 }
+                , entry2: { x: 1780 }
             }
             , map2: {
                 tracksId: "tracks2"
                 , areasId: "areas2"
-                , startingPoint: { x: 1420, y: 300 }
-                , entry1: { x: 300, y: 550 }
-                , entry2: { x: 100, y: 550 }
+                , startingPoint: { x: 1560, y: 360 }
+                , entry1: { x: 140 }
+                , entry2: { y: 940 }
             }
             , map3: {
                 tracksId: "tracks3"
                 , areasId: "areas3"
-                , entry1: { x: 100, y: 550 }
-                , entry2: { x: 100, y: 550 }
+                , entry1: { y: 140 }
+                , entry2: { x: 140 }
             }
             , map4: {
                 tracksId: "tracks4"
                 , areasId: "areas4"
-                , entry1: { x: 100, y: 550 }
-                , entry2: { x: 100, y: 550 }
+                , entry1: { x: 1780}
+                , entry2: { y: 140 }
             }
         }
 
@@ -252,10 +251,10 @@
             map2: 'map2.jpg',
             map3: 'map3.jpg',
             map4: 'map4.jpg',
-            tracks1: 'tracks1.jpg',
-            tracks2: 'tracks2.jpg',
-            tracks3: 'tracks3.jpg',
-            tracks4: 'tracks4.jpg',
+            tracks1: 'tracks1.png',
+            tracks2: 'tracks2.png',
+            tracks3: 'tracks3.png',
+            tracks4: 'tracks4.png',
             areas1: 'areas1.png',
             areas2: 'areas2.png',
             areas3: 'areas3.png',
@@ -270,6 +269,7 @@
         var areasDescription = {
             0xFFFFFF: {}
             , 0x000000: { blocking: true }
+            , 0x00D5D9: { advice: "[Message d'explication]" }
             , 0xFFF799: { track: "hocco", advice: "Je reconnais ces empreintes à trois doigts devant et un derrière pourvu de griffes. Si je les suis, j’arriverai jusqu’au grand hocco !" }
             , 0x000001: { track: "agouti", advice: "Je reconnais ces empreintes avec quatre doigts à la patte avant et trois doigts à la patte arrière. Si je les suis, j’arriverai jusqu’à un agouti !" }
             , 0xED1F5A: {
@@ -283,18 +283,26 @@
                     fruit: { img: "fruit_tapir.png", text: "Mauritia Flexuosa<br>ca a l'air de se manger<br>joli<br>" },
                 }
             }
-            , 0x000002: { track: "sapajou", advice: "Ces empreintes sont facilement reconnaissables, ce sont des « mains » de singe Sapajou. Si je les suis, je devrais m’approcher d’une bande." }
+            , 0x3DA7D1: { track: "sapajou", advice: "Ces empreintes sont facilement reconnaissables, ce sont des « mains » de singe Sapajou. Si je les suis, je devrais m’approcher d’une bande." }
+
             , 0x00AA9D: { fruit: "hocco", advice: "C’est le fruit du Guarea kunthiana. Le grand hocco ne doit pas être loin ! Il ne me reste plus qu’à préparer ma flèche et à l’attirer." }
-            , 0xD71C00: { goto: { mapId: "map1", entryId: "entry2" } }
-            , 0x009ED1: { goto: { mapId: "map3", entryId: "entry1" } }
+            , 0xEFF70D: { fruit: "tapir", advice: "Voilà un fruit de la famille des Sapotacae. Un tapir pourrait s’y intéresser. Je vais choisir une flèche et l’attirer !" }
+            , 0x777B07: { fruit: "sapajou", advice: "Une gousse d’Inga disticha, c’est le fruit recherché par le singe sapajou à cette période de l’année." }
+
             , 0xAC2413: { goto: { mapId: "map2", entryId: "entry1" } }
             , 0x915066: { goto: { mapId: "map4", entryId: "entry2" } }
+            , 0xD71C00: { goto: { mapId: "map1", entryId: "entry2" } }
+            , 0xDB5C51: { goto: { mapId: "map3", entryId: "entry1" } }
+            , 0x7D4D49: { goto: { mapId: "map2", entryId: "entry2" } }
+            , 0xC86D66: { goto: { mapId: "map4", entryId: "entry1" } }
+            , 0x440803: { goto: { mapId: "map3", entryId: "entry2" } }
+            , 0x422422: { goto: { mapId: "map1", entryId: "entry1" } }
         }
 
         var initialized = false
         var mouseCoordinates
 
-        var position
+        var position = {}
         var moveSpeed
 
         var mainCanvas
@@ -321,7 +329,10 @@
 
         function initMap(mapId, entryId) {
 
-            position = mapDescriptions[mapId][entryId]
+            var entryPoint = mapDescriptions[mapId][entryId]
+            if(entryPoint.x) { position.x = entryPoint.x }
+            if(entryPoint.y) { position.y = entryPoint.y }
+            
             moveSpeed = 0
 
             map = images[mapId]
@@ -396,7 +407,7 @@
             var advice = area.advice || "..."
             advisor.innerHTML = advice
         }
-        
+
         function updateDatasheet(datasheet) {
             if (datasheet) {
                 document.getElementById("animalName").innerHTML = datasheet.name
@@ -411,17 +422,17 @@
         }
 
         function drawScreen() {
-            var revealed = { x: Math.round(position.x - maskImageData.width / 2), y: Math.round(position.y - maskImageData.height / 2), height: maskImageData.height, width: maskImageData.width }
+            var revealedPosition = { x: Math.round(position.x - maskImageData.width / 2), y: Math.round(position.y - maskImageData.height / 2), height: maskImageData.height, width: maskImageData.width }
 
-            reveal(revealedImageData, maskImageData, revealed)
+            reveal(revealedImageData, maskImageData, revealedPosition)
 
             var bufferContext2d = bufferCanvas.getContext('2d')
-            bufferContext2d.putImageData(revealedImageData, -revealed.x, -revealed.y, revealed.x, revealed.y, revealed.width, revealed.height)
+            bufferContext2d.putImageData(revealedImageData, -revealedPosition.x, -revealedPosition.y, revealedPosition.x, revealedPosition.y, revealedPosition.width, revealedPosition.height)
 
             var mainContext2d = mainCanvas.getContext('2d')
             mainContext2d.globalCompositeOperation = 'source-over'
-            mainContext2d.drawImage(map, revealed.x, revealed.y, revealed.width, revealed.height, revealed.x, revealed.y, revealed.width, revealed.height)
-            mainContext2d.drawImage(bufferCanvas, revealed.x, revealed.y)
+            mainContext2d.drawImage(map, revealedPosition.x, revealedPosition.y, revealedPosition.width, revealedPosition.height, revealedPosition.x, revealedPosition.y, revealedPosition.width, revealedPosition.height)
+            mainContext2d.drawImage(bufferCanvas, revealedPosition.x, revealedPosition.y)
 
             mainContext2d.drawImage(character, position.x - character.width / 2, position.y - character.height)
         }
@@ -435,22 +446,25 @@
             if (!destinationArea.blocking) {
                 position.x += moveDirection.x * moveSpeed
                 position.y += moveDirection.y * moveSpeed
-
-                if (destinationArea.goto) {
-                    initMap(destinationArea.goto.mapId, destinationArea.goto.entryId)
-                } else {
-                    updateAdvice(destinationArea)
-                    updateDatasheet(destinationArea.datasheet)
-                }
-
-                if (destinationArea.track) {
-                    advisorState("onTrack")
-                } else if (destinationArea.fruit) {
-                    advisorState("onFruit")
-                } else {
-                    advisorState("none")
-                }
             }
+
+            if (destinationArea.goto) {
+                initMap(destinationArea.goto.mapId, destinationArea.goto.entryId)
+            }
+
+            if (destinationArea.datasheet) {
+                updateDatasheet(destinationArea.datasheet)
+            }
+
+            if (destinationArea.track) {
+                advisorState("onTrack")
+            } else if (destinationArea.fruit) {
+                advisorState("onFruit")
+            } else {
+                advisorState("none")
+            }
+
+            updateAdvice(destinationArea)
         }
 
         function advisorState(version) {
@@ -518,10 +532,10 @@
             }
         }
 
-        function reveal(revealedImageData, maskImageData, revealed) {
+        function reveal(revealedImageData, maskImageData, revealedPosition) {
 
             var maskIndex = 3
-            var revealedIndex = (revealed.x + revealed.y * revealedImageData.width) * 4 + 3
+            var revealedIndex = (revealedPosition.x + revealedPosition.y * revealedImageData.width) * 4 + 3
 
             var revealedData = revealedImageData.data
             var maskData = maskImageData.data
@@ -551,6 +565,10 @@
             var colorHexCode = red * 0x010000 + green * 0x000100 + blue * 0x000001
 
             var area = areasDescription[colorHexCode]
+
+            if(!area) {
+                console.log({unknown_area: colorHexCode.toString(16) })
+            }
 
             return area
         }
