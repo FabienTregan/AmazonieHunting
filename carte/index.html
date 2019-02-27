@@ -222,7 +222,7 @@
             map1: {
                 tracksId: "tracks1"
                 , areasId: "areas1"
-                , entry1: {y: 940 }
+                , entry1: { y: 940 }
                 , entry2: { x: 1780 }
             }
             , map2: {
@@ -241,7 +241,7 @@
             , map4: {
                 tracksId: "tracks4"
                 , areasId: "areas4"
-                , entry1: { x: 1780}
+                , entry1: { x: 1780 }
                 , entry2: { y: 140 }
             }
         }
@@ -308,6 +308,7 @@
         var mainCanvas
         var bufferCanvas
         var revealedImageData
+        var revealedImageDataRepo = {}
         var maskImageData
         var areasImageData
         var currentArea
@@ -330,23 +331,30 @@
         function initMap(mapId, entryId) {
 
             var entryPoint = mapDescriptions[mapId][entryId]
-            if(entryPoint.x) { position.x = entryPoint.x }
-            if(entryPoint.y) { position.y = entryPoint.y }
-            
+            if (entryPoint.x) { position.x = entryPoint.x }
+            if (entryPoint.y) { position.y = entryPoint.y }
+
             moveSpeed = 0
 
             map = images[mapId]
             areasImageData = imageToImageData(images[mapDescriptions[mapId].areasId])
 
             // Drawing the map beneath the tracks instead of loading the tracks with map already painted reduces the size a lot.
-            var tracksImage = images[mapDescriptions[mapId].tracksId]
-            var revealedContext2d = imageToContext2d(tracksImage)
-            revealedContext2d.globalCompositeOperation = 'destination-over'
-            revealedContext2d.drawImage(map, 0, 0)
-            revealedImageData = revealedContext2d.getImageData(0, 0, tracksImage.width, tracksImage.height)
-            setTransparency(revealedImageData, 0)
+            
+            if (!revealedImageDataRepo[mapId]) {
+                var tracksId = mapDescriptions[mapId].tracksId
+                var tracksImage = images[tracksId]
+                var revealedContext2d = imageToContext2d(tracksImage)
+                revealedContext2d.globalCompositeOperation = 'destination-over'
+                revealedContext2d.drawImage(map, 0, 0)
+                revealedImageDataRepo[mapId] = revealedContext2d.getImageData(0, 0, tracksImage.width, tracksImage.height)
+                setTransparency(revealedImageDataRepo[mapId], 0)
+            }
+            revealedImageData = revealedImageDataRepo[mapId]
 
             var mainCanvasContext2d = mainCanvas.getContext('2d')
+            mainCanvasContext2d.putImageData(revealedImageData, 0, 0)
+            mainCanvasContext2d.globalCompositeOperation = 'destination-over'
             mainCanvasContext2d.drawImage(map, 0, 0)
 
             drawScreen()
@@ -566,8 +574,8 @@
 
             var area = areasDescription[colorHexCode]
 
-            if(!area) {
-                console.log({unknown_area: colorHexCode.toString(16) })
+            if (!area) {
+                console.log({ unknown_area: colorHexCode.toString(16) })
             }
 
             return area
