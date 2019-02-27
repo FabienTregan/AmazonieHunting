@@ -102,7 +102,7 @@
 
         .fiche>* {
             position: absolute;
-            left: 8.5%;
+            left: 8.19%;
             width: 83%;
         }
 
@@ -114,19 +114,21 @@
         }
 
         .fiche .text {
-            top: 20%;
+            top: 23.26%;
             margin-right: 0.20em;
-            font-size: 0.5em;
-            font-family: 'Source Sans Black';
+            font-size: 0.6em;
+            font-family: 'Source Sans';
         }
 
         .infos {
-            left: 45%;
-            font-size: 0.75em;
+            margin-top: -1%;
+            left: 50%;
+            font-size: 0.6em;
         }
 
         .infos::first-line {
-            color: violet;
+            color: #483F69;
+            font-family: 'Source Sans Black';
         }
 
         #picto {
@@ -136,24 +138,24 @@
 
         #picto,
         #pictoText {
-            top: 30%;
+            top: 34.46%;
         }
 
         #footprint,
         #fruit {
             width: 15.68%;
             height: 11.26%;
-            left: 12%;
+            left: 16.25%;
         }
 
         #footprint,
         #footprintText {
-            top: 60%;
+            top: 63.59%;
         }
 
         #fruit,
         #fruitText {
-            top: 80%;
+            top: 81.09%;
         }
 
         .popups {
@@ -179,7 +181,7 @@
     </div>
 
     <div id="popups" class="wideScreen displayed">
-        <div class="popup fiche">
+        <div id="datasheet" class="popup fiche">
             <div class="title">
                 Ce que l'on sait<br>
                 sur <span id="animalName">le Tapir</span>
@@ -199,13 +201,13 @@
             <img id="footprint" src="footprint_tapir.png">
             <div id="footprintText" class="infos">
                 Empreinte<br>
-                En forme de trèfle<br>
+                en forme de trèfle<br>
                 profonde dans la boue<br>
                 reniflements ou cri strident<br>
             </div>
             <img id="fruit" src="fruit_tapir.png">
             <div id="fruitText" class="infos">
-                Mauritia Flexuosa<br>
+                Mauritia flexuosa<br>
                 ca a l'air de se manger<br>
                 joli<br>
             </div>
@@ -270,7 +272,17 @@
             , 0x000000: { blocking: true }
             , 0xFFF799: { track: "hocco", advice: "Je reconnais ces empreintes à trois doigts devant et un derrière pourvu de griffes. Si je les suis, j’arriverai jusqu’au grand hocco !" }
             , 0x000001: { track: "agouti", advice: "Je reconnais ces empreintes avec quatre doigts à la patte avant et trois doigts à la patte arrière. Si je les suis, j’arriverai jusqu’à un agouti !" }
-            , 0xED1F5A: { track: "tapir", advice: "Je reconnais ces larges empreintes : quatre doigts à la patte avant et trois doigts à l’arrière. Si je les suis, j’arriverai jusqu’à un tapir !" }
+            , 0xED1F5A: {
+                track: "tapir",
+                advice: "Je reconnais ces larges empreintes : quatre doigts à la patte avant et trois doigts à l’arrière. Si je les suis, j’arriverai jusqu’à un tapir !",
+                datasheet: {
+                    name: "le Tapir",
+                    text: "Quota de chasse : Un par sorti et par personne<br>Mets de choix (cérémonie, repas traditionnels).",
+                    picto: { img: "picto_tapir.png", text: "200kg<br>solitaire<br>actif la nuit<br>aime l'eau<br>" },
+                    footprint: { img: "footprint_tapir.png", text: "Empreinte<br>En forme de trèfle<br>profonde dans la boue<br>reniflements ou cri strident<br>" },
+                    fruit: { img: "fruit_tapir.png", text: "Mauritia Flexuosa<br>ca a l'air de se manger<br>joli<br>" },
+                }
+            }
             , 0x000002: { track: "sapajou", advice: "Ces empreintes sont facilement reconnaissables, ce sont des « mains » de singe Sapajou. Si je les suis, je devrais m’approcher d’une bande." }
             , 0x00AA9D: { fruit: "hocco", advice: "C’est le fruit du Guarea kunthiana. Le grand hocco ne doit pas être loin ! Il ne me reste plus qu’à préparer ma flèche et à l’attirer." }
             , 0xD71C00: { goto: { mapId: "map1", entryId: "entry2" } }
@@ -384,6 +396,19 @@
             var advice = area.advice || "..."
             advisor.innerHTML = advice
         }
+        
+        function updateDatasheet(datasheet) {
+            if (datasheet) {
+                document.getElementById("animalName").innerHTML = datasheet.name
+                document.querySelector("#datasheet .text").innerHTML = datasheet.text
+                document.getElementById("picto").setAttribute("src", datasheet.picto.img)
+                document.getElementById("pictoText").innerHTML = datasheet.picto.text
+                document.getElementById("footprint").setAttribute("src", datasheet.footprint.img)
+                document.getElementById("footprintText").innerHTML = datasheet.footprint.text
+                document.getElementById("fruit").setAttribute("src", datasheet.fruit.img)
+                document.getElementById("fruitText").innerHTML = datasheet.fruit.text
+            }
+        }
 
         function drawScreen() {
             var revealed = { x: Math.round(position.x - maskImageData.width / 2), y: Math.round(position.y - maskImageData.height / 2), height: maskImageData.height, width: maskImageData.width }
@@ -414,8 +439,8 @@
                 if (destinationArea.goto) {
                     initMap(destinationArea.goto.mapId, destinationArea.goto.entryId)
                 } else {
-
                     updateAdvice(destinationArea)
+                    updateDatasheet(destinationArea.datasheet)
                 }
 
                 if (destinationArea.track) {
