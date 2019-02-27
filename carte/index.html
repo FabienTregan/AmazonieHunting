@@ -45,17 +45,42 @@
             position: absolute;
             bottom: 0px;
             left: 0px;
-            width: 36.3021%;
-            height: 26.1111%;
+            width: 34.38%;
+            height: 27.04%;
 
             box-sizing: border-box;
-            padding: 2.8% 3% 2.8% 11.14%;
+            padding: 1.25% 2% 2.8% 12%;
 
             background-origin: padding-box;
             background-image: url('advisor.png');
             background-size: 100% 100%;
 
-            font-size: 0.45em;
+            font-size: 0.6em;
+            line-height: 1.5em;
+        }
+
+        #advisorButton {
+            left: 77%;
+            top: 51.5%;
+            width: 37.5%;
+            height: 25.5%;
+            display: none;
+        }
+
+        #advisorButton.onTrack,
+        #advisorButton.onFruit {
+            display: block;
+        }
+
+        #advisorButton img {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        #advisorButton.onTrack .moreInfo,
+        #advisorButton.onFruit .goShoot {
+            display: block;
         }
     </style>
 </head>
@@ -69,9 +94,11 @@
         </div>
         <div id='advisor'>
             <div comment="this div is just here to move down the next one and allow text wrapping." style='height: 45%; width: 0px; float: right;'></div>
-            <div style='height: 45%; width: 25%; float: right; clear: right; '></div>
             <span id='advisor_text'></span>
-            <div id="more_information" class="clickArea" style="left: 77%; top: 50%; width: 23%; height: 28%;" onclick="alert('Mettre moins d\'info en bas a gauche et en ajouter ici ?')"></div>
+            <div id="advisorButton" class="clickArea">
+                <img class="goShoot" src="boutonPrepareratirer.png" onclick="alert('massacrez les !')">
+                <img class="moreInfo" src="boutonPlusdinfo.png" onclick="alert('blablabla')">
+            </div>
         </div>
     </div>
 
@@ -80,39 +107,65 @@
 
         const mapDescriptions = {
             map1: {
-                tracksId : "tracks1"
-                ,areasId: "areas1"
-                ,entry1: { x: 100, y: 550 } 
-                ,entry2: { x: 100, y: 550 } 
-                ,entry3: { x: 100, y: 550 } 
+                tracksId: "tracks1"
+                , areasId: "areas1"
+                , entry1: { x: 100, y: 550 }
+                , entry2: { x: 1400, y: 400 }
+                , entry3: { x: 100, y: 550 }
             }
             , map2: {
-                tracksId : "tracks2"
-                ,areasId: "areas2"
-                ,entry1: { x: 1550, y: 550 } 
-                ,entry2: { x: 100, y: 550 } 
+                tracksId: "tracks2"
+                , areasId: "areas2"
+                , startingPoint: { x: 1420, y: 300 }
+                , entry1: { x: 300, y: 550 }
+                , entry2: { x: 100, y: 550 }
             }
             , map3: {
-                tracksId : "tracks3"
-                ,areasId: "areas3"
-                ,entry1: { x: 100, y: 550 } 
-                ,entry2: { x: 100, y: 550 } 
+                tracksId: "tracks3"
+                , areasId: "areas3"
+                , entry1: { x: 100, y: 550 }
+                , entry2: { x: 100, y: 550 }
             }
             , map4: {
-                tracksId : "tracks4"
-                ,areasId: "areas4"
-                ,entry1: { x: 100, y: 550 } 
-                ,entry2: { x: 100, y: 550 } 
+                tracksId: "tracks4"
+                , areasId: "areas4"
+                , entry1: { x: 100, y: 550 }
+                , entry2: { x: 100, y: 550 }
             }
         }
 
+        var drySeasonImages = {
+            map1: 'map1.jpg',
+            map2: 'map2.jpg',
+            map3: 'map3.jpg',
+            map4: 'map4.jpg',
+            tracks1: 'tracks1.jpg',
+            tracks2: 'tracks2.jpg',
+            tracks3: 'tracks3.jpg',
+            tracks4: 'tracks4.jpg',
+            areas1: 'areas1.png',
+            areas2: 'areas2.png',
+            areas3: 'areas3.png',
+            areas4: 'areas4.png',
+        }
+
+        var allSeasonsImages = {
+            mask: 'mask.png',
+            character: 'character.png',
+        }
+
         var areasDescription = {
-            0x000000: {}
-            , 0xFF0000: {blocking: true}
-            , 0x0000F0: {advice: {name: "Tapir du Brésil", description: "Le tapir se nourrit de nombreux fruits dont ceux des palmiers.<br>Sa chasse est réglementée."}}
-            , 0x0000B0: {advice: {name: "Précari à collier", description: "A la saison sèche, il est difficile de prévoir où se trouve la pécari. Il se déplace, recherchant les graines, gousses et noix enterrées près de nombreux points d’eau résiduels."}}
-            , 0x000070: {advice: {name: "Daguet rouge", description: "Cet animal discret et craintif est difficile à rencontrer. Les fleurs de certains arbres peuvent toutefois l’attirer."}}
-            , 0x00F000: {goto: {mapId: "map1", entryId: "entry1" }}
+            0xFFFFFF: {}
+            , 0x000000: { blocking: true }
+            , 0xFFF799: { track: "hocco", advice: "Je reconnais ces empreintes à trois doigts devant et un derrière pourvu de griffes. Si je les suis, j’arriverai jusqu’au grand hocco !" }
+            , 0x000001: { track: "agouti", advice: "Je reconnais ces empreintes avec quatre doigts à la patte avant et trois doigts à la patte arrière. Si je les suis, j’arriverai jusqu’à un agouti !" }
+            , 0xED1F5A: { track: "tapir", advice: "Je reconnais ces larges empreintes : quatre doigts à la patte avant et trois doigts à l’arrière. Si je les suis, j’arriverai jusqu’à un tapir !" }
+            , 0x000002: { track: "sapajou", advice: "Ces empreintes sont facilement reconnaissables, ce sont des « mains » de singe Sapajou. Si je les suis, je devrais m’approcher d’une bande." }
+            , 0x00AA9D: { fruit: "hocco", advice: "C’est le fruit du Guarea kunthiana. Le grand hocco ne doit pas être loin ! Il ne me reste plus qu’à préparer ma flèche et à l’attirer." }
+            , 0xD71C00: { goto: { mapId: "map1", entryId: "entry2" } }
+            , 0x009ED1: { goto: { mapId: "map3", entryId: "entry1" } }
+            , 0xAC2413: { goto: { mapId: "map2", entryId: "entry1" } }
+            , 0x915066: { goto: { mapId: "map4", entryId: "entry2" } }
         }
 
         const AREA_FOREST = 0xFF0000
@@ -138,7 +191,7 @@
 
             initCanvasAndImageData()
 
-            initMap("map2", "entry1")
+            initMap("map2", "startingPoint")
 
             addEventListenersOnMainCanvas()
 
@@ -217,17 +270,10 @@
             window.requestAnimationFrame(mainLoop)
         }
 
-        function updateAdvice(advice) {
+        function updateAdvice(area) {
             var advisor = document.getElementById('advisor_text')
-
-            var innerHTML
-            if (advice) {
-                innerHTML = 'Ce sont des traces de <b>' + advice.name + '</b><br><br>' + advice.description
-            } else {
-                innerHTML = "..."
-            }
-
-            advisor.innerHTML = innerHTML
+            var advice = area.advice || "..."
+            advisor.innerHTML = advice
         }
 
         function drawScreen() {
@@ -252,17 +298,31 @@
             var destination = { x: position.x + moveDirection.x * moveSpeed, y: position.y + moveDirection.y * moveSpeed }
             var destinationArea = area(destination)
 
-            if (! destinationArea.blocking) {
+            if (!destinationArea.blocking) {
                 position.x += moveDirection.x * moveSpeed
                 position.y += moveDirection.y * moveSpeed
-            
-                var goto = destinationArea.goto
-                if(goto) {
-                    initMap(goto.mapId, goto.entryId)
+
+                if (destinationArea.goto) {
+                    initMap(destinationArea.goto.mapId, destinationArea.goto.entryId)
+                } else {
+
+                    updateAdvice(destinationArea)
                 }
 
-                updateAdvice(destinationArea.advice)
+                if (destinationArea.track) {
+                    advisorState("onTrack")
+                } else if (destinationArea.fruit) {
+                    advisorState("onFruit")
+                } else {
+                    advisorState("none")
+                }
             }
+        }
+
+        function advisorState(version) {
+            var button = document.getElementById("advisorButton")
+            button.classList.remove("onTrack", "onFruit", "none")
+            button.classList.add(version)
         }
 
         function updateMouseCoordinates(e) {
@@ -355,48 +415,37 @@
             var blue = areasImageData.data[index + 2]
 
             var colorHexCode = red * 0x010000 + green * 0x000100 + blue * 0x000001
-            
+
             var area = areasDescription[colorHexCode]
 
             return area
         }
 
 
-        loadImages(
-            {
-                map1: 'map1.jpg',
-                map2: 'map2.jpg',
-                map3: 'map3.jpg',
-                map4: 'map4.jpg',
-                tracks1: 'tracks1.png',
-                tracks2: 'tracks2.png',
-                tracks3: 'tracks3.png',
-                tracks4: 'tracks4.png',
-                areas1: 'areas1.png',
-                areas2: 'areas2.png',
-                areas3: 'areas3.png',
-                areas4: 'areas4.png',
-                mask: 'mask.png',
-                character: 'character.png',
-            },
-            initGame
-        )
+        var imagesToBeLoaded = allSeasonsImages;
+        for (var image in drySeasonImages) { imagesToBeLoaded[image] = drySeasonImages[image] }
+
+        loadImages(imagesToBeLoaded, initGame)
 
         function getParameter(paramName) {
             var url = window.location.href;
-            var paramWithEgal = paramName+"="
+            var paramWithEgal = paramName + "="
             var paramStart = url.search(paramWithEgal) + paramWithEgal.length
             url = url.substring(paramStart)
             var paramEnd = url.search("&")
 
-            var param = paramEnd > 0 ? 
-                url.substring(0,  paramEnd)
+            var param = paramEnd > 0 ?
+                url.substring(0, paramEnd)
                 : url
 
             return decodeURIComponent(param)
         }
 
-        console.log({season: getParameter("season")})
+        function trackToAdvice(track) {
+            'Ce sont des traces de <b>' + advice.name + '</b><br><br>' + advice.description
+        }
+
+        console.log({ season: getParameter("season") })
 
     </script>
 
