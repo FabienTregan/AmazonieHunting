@@ -5,14 +5,27 @@
 
     <script src="../lib/wideScreen.js"></script>
     <script src="../lib/preloader.js"></script>
+    <script src="../lib/popup.js"></script>
+
 
     <style>
         @import '../lib/wideScreen.css';
         @import '../lib/clickArea.css';
+        @import '../lib/popup.css';
 
         @font-face {
             font-family: 'Source Sans';
             src: url('../font/SourceSansPro-Regular.otf') format('woff');
+        }
+
+        @font-face {
+            font-family: 'Source Sans Black';
+            src: url('../font/SourceSansPro-Black.otf') format('woff');
+        }
+
+        @font-face {
+            font-family: 'Source Sans Italic';
+            src: url('../font/SourceSansPro-It.otf') format('woff');
         }
 
         body {
@@ -82,6 +95,70 @@
         #advisorButton.onFruit .goShoot {
             display: block;
         }
+
+        .fiche {
+            position: absolute;
+        }
+
+        .fiche>* {
+            position: absolute;
+            left: 8.5%;
+            width: 83%;
+        }
+
+        .fiche .title {
+            top: 5%;
+            margin-right: 0.20em;
+            font-size: 1.45em;
+            font-family: 'Source Sans Black';
+        }
+
+        .fiche .text {
+            top: 20%;
+            margin-right: 0.20em;
+            font-size: 0.5em;
+            font-family: 'Source Sans Black';
+        }
+
+        .infos {
+            left: 45%;
+            font-size: 0.75em;
+        }
+
+        .infos::first-line {
+            color: violet;
+        }
+
+        #picto {
+            width: 30.34%;
+            height: 21.76%;
+        }
+
+        #picto,
+        #pictoText {
+            top: 30%;
+        }
+
+        #footprint,
+        #fruit {
+            width: 15.68%;
+            height: 11.26%;
+            left: 12%;
+        }
+
+        #footprint,
+        #footprintText {
+            top: 60%;
+        }
+
+        #fruit,
+        #fruitText {
+            top: 80%;
+        }
+
+        .popups {
+            font-size: 48px;
+        }
     </style>
 </head>
 
@@ -93,12 +170,46 @@
             <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
         </div>
         <div id='advisor'>
-            <div comment="this div is just here to move down the next one and allow text wrapping." style='height: 45%; width: 0px; float: right;'></div>
             <span id='advisor_text'></span>
             <div id="advisorButton" class="clickArea">
-                <img class="goShoot" src="boutonPrepareratirer.png" onclick="alert('massacrez les !')">
-                <img class="moreInfo" src="boutonPlusdinfo.png" onclick="alert('blablabla')">
+                <img class="goShoot" src="boutonPrepareratirer.png" onclick="window.location.href='../tir'">
+                <img class="moreInfo" src="boutonPlusdinfo.png" onclick="popup_show()">
             </div>
+        </div>
+    </div>
+
+    <div id="popups" class="wideScreen displayed">
+        <div class="popup fiche">
+            <div class="title">
+                Ce que l'on sait<br>
+                sur <span id="animalName">le Tapir</span>
+            </div>
+            <div class="text">
+                Quota de chasse : Un par sorti et par personne
+                <br>
+                Mets de choix (cérémonie, repas traditionnels)
+            </div>
+            <img id="picto" src="picto_tapir.png">
+            <div id="pictoText" class="infos">
+                200kg<br>
+                solitaire<br>
+                actif la nuit<br>
+                aime l'eau<br>
+            </div>
+            <img id="footprint" src="footprint_tapir.png">
+            <div id="footprintText" class="infos">
+                Empreinte<br>
+                En forme de trèfle<br>
+                profonde dans la boue<br>
+                reniflements ou cri strident<br>
+            </div>
+            <img id="fruit" src="fruit_tapir.png">
+            <div id="fruitText" class="infos">
+                Mauritia Flexuosa<br>
+                ca a l'air de se manger<br>
+                joli<br>
+            </div>
+            <img src="close_button.png" class="clickArea" style="left: 91.67%; top: 94.44%; width: 16.8%;" onclick="popup_hide()">
         </div>
     </div>
 
@@ -167,8 +278,6 @@
             , 0xAC2413: { goto: { mapId: "map2", entryId: "entry1" } }
             , 0x915066: { goto: { mapId: "map4", entryId: "entry2" } }
         }
-
-        const AREA_FOREST = 0xFF0000
 
         var initialized = false
         var mouseCoordinates
