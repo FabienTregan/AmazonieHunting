@@ -39,7 +39,6 @@
             width: 100%;
             border: none;
             padding: 0;
-            background: transparent;
         }
 
         #breadcrumbs {
@@ -81,7 +80,8 @@
         }
 
         #advisorButton.onTrack,
-        #advisorButton.onFruit {
+        #advisorButton.onFruit,
+        #advisorButton.helping {
             display: block;
         }
 
@@ -92,7 +92,8 @@
         }
 
         #advisorButton.onTrack .moreInfo,
-        #advisorButton.onFruit .goShoot {
+        #advisorButton.onFruit .goShoot,
+        #advisorButton.helping .closeHelp {
             display: block;
         }
 
@@ -158,6 +159,26 @@
             top: 81.09%;
         }
 
+        #help {
+            display: none;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: rgba(72, 63, 105, 0.88);
+        }
+
+        #help.shown {
+            display: block;
+        }
+
+        #help img {
+            position: absolute;
+            width: 46.25%;
+            height: 27.78%;
+            left: 11.875%;
+            top: 30.65%;
+        }
+
         .popups {
             font-size: 48px;
         }
@@ -168,14 +189,18 @@
 
     <div id='main' class="wideScreen">
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
+        <div id="help">
+            <img src="help.gif">
+        </div>
         <div id='breadcrumbs'>
             <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
         </div>
         <div id='advisor'>
             <span id='advisor_text'></span>
             <div id="advisorButton" class="clickArea">
-                <img class="goShoot" src="boutonPrepareratirer.png" onclick="window.location.href='../tir'">
-                <img class="moreInfo" src="boutonPlusdinfo.png" onclick="popup_show()">
+                <img class="goShoot" src="buttonPrepareratirer.png" onclick="window.location.href='../tir'">
+                <img class="moreInfo" src="buttonPlusdinfo.png" onclick="popup_show()">
+                <img class="closeHelp" src="buttonCloseHelp.png" onclick="hideHelp()">
             </div>
         </div>
     </div>
@@ -349,7 +374,7 @@
                     name: "",
                     text: "",
                     picto: { img: "pacu.png", text: "<br><br><br>" },
-                    footprint: { img: "fruit_pacu.png", comment:"url of the fruit because fish have no footprint !", text: "" },
+                    footprint: { img: "fruit_pacu.png", comment: "url of the fruit because fish have no footprint !", text: "" },
                     fruit: { img: "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==", comment: "data url of an emppty image ;)", text: "" },
                 }
             }
@@ -519,10 +544,9 @@
             window.requestAnimationFrame(mainLoop)
         }
 
-        function updateAdvice(area) {
+        function updateAdvice(text) {
             var advisor = document.getElementById('advisor_text')
-            var advice = area.advice || "..."
-            advisor.innerHTML = advice
+            advisor.innerHTML = text || "..."
         }
 
         function updateDatasheet(datasheet) {
@@ -582,13 +606,13 @@
             }
 
             if (!destinationArea.blocking) {
-                updateAdvice(destinationArea)
+                updateAdvice(destinationArea.advice)
             }
         }
 
         function advisorState(version) {
             var button = document.getElementById("advisorButton")
-            button.classList.remove("onTrack", "onFruit", "none")
+            button.classList.remove("helping", "onTrack", "onFruit", "none")
             button.classList.add(version)
         }
 
@@ -692,12 +716,6 @@
             return area
         }
 
-        var imagesToBeLoaded = allSeasonsImages;
-        var seasonDependantImages = (getParameter('season') == 'wet') ? wetSeasonImages : drySeasonImages
-        for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
-
-        loadImages(imagesToBeLoaded, initGame)
-
         function getParameter(paramName) {
             var url = window.location.href;
             var paramWithEgal = paramName + "="
@@ -716,7 +734,24 @@
             'Ce sont des traces de <b>' + advice.name + '</b><br><br>' + advice.description
         }
 
-        console.log({ season: getParameter("season") })
+        function showHelp() {
+            updateAdvice("Déplacez vous sur le sentier pour pister un animal. Repérez des empreintes et remontez la piste !")
+            document.getElementById("help").classList.add("shown")
+            advisorState("helping")
+        }
+
+        function hideHelp() {
+            updateAdvice("")
+            document.getElementById("help").classList.remove("shown")
+            advisorState("none")
+        }
+
+        var imagesToBeLoaded = allSeasonsImages;
+        var seasonDependantImages = (getParameter('season') == 'wet') ? wetSeasonImages : drySeasonImages
+        for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
+
+        loadImages(imagesToBeLoaded, initGame)
+        showHelp()
 
     </script>
 
