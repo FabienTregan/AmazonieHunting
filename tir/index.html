@@ -6,29 +6,34 @@
         @import '../lib/wideScreen.css';
 
         body {
-            background: blue;
             overflow: hidden;
         }
 
         #main {
             overflow: hidden;
-            background-color: pink;
-            perspective: 100px;
         }
 
-        #main>* {
+        .plan {
             position: absolute;
-            background-size: cover;
-            background-repeat: no-repeat;
-            left: 0;
-            top: 0;
-        }
-
-        #main>div.plan {
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
+        }
+
+        .plan img {
+            position: absolute;
+            width: auto;
+            height: 100%;
+        }
+
+        #bow {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            bottom: 0px;
+            left: -50%;
+            margin-left: 50%;
         }
     </style>
 </head>
@@ -36,110 +41,68 @@
 <body>
 
     <div id="main" class="wideScreen">
-        <div id="plan5" class="plan" style="background-image: url('plan5.jpg'); z-index: 50;"></div>
-        <div id="plan4" class="plan" style="background-image: url('plan4.png'); z-index: 60;"></div>
-        <div id="plan3" class="plan" style="background-image: url('plan3.png'); z-index: 70;"></div>
-        <div id="plan2" class="plan" style="background-image: url('plan2.png'); z-index: 80;"></div>
-        <div id="plan1" class="plan" style="background-image: url('plan1.png'); z-index: 90;"></div>
-        <img id="arrow" src="arrow.png" style="perspective: 100px; background-color: rgba(192, 255, 0, 0.25)">
+        <div class="plan" style="z-index:60"><img id="plan5" src="plan5.jpg"></div>
+        <div class="plan" style="z-index:70"><img id="plan4" src="plan4.png"></div>
+        <div class="plan" style="z-index:80"><img id="plan3" src="plan3.png"></div>
+        <div class="plan" style="z-index:90"><img id="plan2" src="plan2.png"></div>
+        <div class="plan" style="z-index:100"><img id="plan1" src="plan1.png"></div>
+        <img id="bow" src="bow.png" style="z-index: 110;">
     </div>
 
     <script>
+        "use strict";
 
         var arrowAngle = 0;
 
         var nbPlans = 5
-        var position = -50
-        var scrollSpeed = 0
-        var arrowPosition = null
-        var arrowSpeed = null
-        var flecheA = { x: 0, y: 0.05, z: 0 }
+        var position = { x: 0, y: 0 }
+        var moveSpeed = { x: 0, y: 0 }
+
+        var plansSpeed = [1.333, 1.143, 1, 0.889, 0.800]
 
         function updateScreen() {
             updatePlans()
-            updateArrow()
+            requestAnimationFrame(updateScreen)
         }
 
         function updatePlans() {
 
-            position += scrollSpeed
+            const MAX_POSITION = { x: 340, y: 340 }
+
+            position.x += moveSpeed.x
+            position.x = Math.min(position.x, MAX_POSITION.x)
+            position.x = Math.max(position.x, -MAX_POSITION.x)
+
+            position.y += moveSpeed.y
+            position.y = Math.min(position.y, 0)
+            position.y = Math.max(position.y, -MAX_POSITION.y)
 
             for (var i = nbPlans; i > 0; i--) {
 
                 var planId = "plan" + i
                 var planNode = document.getElementById(planId)
 
-                var focale = 60
-                var zPlan = i * 10
-                var distancePlan = (focale + zPlan) / 60
-
-                var startX = (2500 - 1920) / 2 + position / distancePlan
-                planNode.style.backgroundPositionX = (startX / 1920 * planNode.offsetWidth) + "px"
+                var left = (1920 / 2 - 2880 / 2 + position.x * plansSpeed[i - 1]) / 1920 * 100
+                planNode.style.left = left + "%"
             }
 
-        }
+            var bowNode = document.getElementById("bow")
+            var bottom = position.y / 1080 * 100
+            var left = -position.x / 1920 * 100 - 50
+            bowNode.style.bottom = bottom + "%"
+            bowNode.style.left = left + "%"
 
-        function initArrow() {
-            var arrow = document.getElementById("arrow")
-            arrow.style.top = "0"
-            arrow.style.left = "0"
-            arrow.style.transformOrigin = "left"
-
-            arrowPosition = { x: +17800, y: +640, z: -2000 }
-            arrowSpeed = { x: +000, y: +000, z: +000 }
-
-        }
-
-        function updateArrow() {
-
-            var arrow = document.getElementById("arrow")
-
-            initArrow()
-
-            arrow.style.zIndex = Math.round(150 - arrowPosition.z)
-
-            // arrowPhysics()
-
-
-            var scale = main.offsetWidth / 1920
-            var angle = Math.atan(arrowSpeed.y / arrowSpeed.x) / Math.PI * 180 * 0.9
-
-            arrow.style.transform = ""
-            + " translate3d(0px, -" + (arrow.naturalHeight / 2) + "px, 0px)"               // compensation de la position de l'image, qui est calculée par rapport au point haut-gauche et pas la pointe de la fleche.
-            + " scale(" + scale + ") "                   // mise à la taille de l'écran
-            + " translate3d(-5000px, 0px, 0px)"  // deplace la flèche dans son axe
-                + " translate3d(" + arrowPosition.x + "px, " + arrowPosition.y + "px, " + arrowPosition.z + "px)"  // deplace la flèche dans son axe
-                + " scale(10)"                              // echelle de la fleche
-                + " rotate3d(0, 1, 0, " + (-60) + "deg)"               // angle tire droite-gauche
-                + " translateX(80%)"
-                + " rotate3d(0, 0, 1, " + arrowAngle + "deg)"               // angle de la flèche haut-bas
-                + " translateX(-80%)"
-
-        }
-
-        function arrowPhysics() {
-            if ((arrowPosition == null) || (arrowPosition.x < -1000)) {
-                arrowPosition = { x: +250, y: -250, z: -500 }
-                arrowSpeed = { x: -5, y: -5, z: 0 }
-            }
-
-            arrowSpeed.x += flecheA.x
-            arrowSpeed.y += flecheA.y
-            arrowSpeed.z += flecheA.z
-
-            arrowPosition.x += arrowSpeed.x
-            arrowPosition.y += arrowSpeed.y
-            arrowPosition.z += arrowSpeed.z
         }
 
         var callbacks = {
             mouseMoved: function (coordinates) {
-                const MIN_ANGLE = -345
-                const MAX_ANGLE = +345
+                const MAX_SPEED = 10
 
                 var canvas = document.getElementById("main")
-                arrowAngle = coordinates.y / main.offsetHeight * (MAX_ANGLE - MIN_ANGLE) + MIN_ANGLE
-                updateArrow()
+                moveSpeed = {
+                    x: (1 - coordinates.x / canvas.offsetWidth * 2) * MAX_SPEED
+                    , y: (1 - coordinates.y / canvas.offsetHeight * 2) * MAX_SPEED
+                }
             },
 
             mouseClicked: function () {
@@ -148,7 +111,7 @@
 
         }
 
-        window.addEventListener('load', function () { console.log("loaded"); addGesturesEventListeners("main", callbacks) })
+        window.addEventListener('load', function () { addGesturesEventListeners("main", callbacks); updateScreen(); })
 
     </script>
 
