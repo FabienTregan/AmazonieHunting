@@ -11,6 +11,7 @@
 
         #main {
             overflow: hidden;
+            cursor: none;
         }
 
         .plan {
@@ -25,6 +26,7 @@
             position: absolute;
             width: auto;
             height: 100%;
+            /* transition: left 0.5s ease-out, bottom 0.5s ease-out; */
         }
 
         #bow {
@@ -34,6 +36,7 @@
             bottom: 0px;
             left: -50%;
             margin-left: 50%;
+            /* transition: left 0.5s ease-out, bottom 0.5s ease-out; */
         }
     </style>
 </head>
@@ -56,62 +59,92 @@
 
         var nbPlans = 5
         var position = { x: 0, y: 0 }
+        var targetPosition = { x: 0, y: 0 }
         var moveSpeed = { x: 0, y: 0 }
 
         var plansSpeed = [1.333, 1.143, 1, 0.889, 0.800]
 
         function updateScreen() {
+            updatePosition()
             updatePlans()
+            updateBow()
             requestAnimationFrame(updateScreen)
         }
 
         function updatePlans() {
-
-            const MAX_POSITION = { x: 340, y: 340 }
-
-            position.x += moveSpeed.x
-            position.x = Math.min(position.x, MAX_POSITION.x)
-            position.x = Math.max(position.x, -MAX_POSITION.x)
-
-            position.y += moveSpeed.y
-            position.y = Math.min(position.y, 0)
-            position.y = Math.max(position.y, -MAX_POSITION.y)
 
             for (var i = nbPlans; i > 0; i--) {
 
                 var planId = "plan" + i
                 var planNode = document.getElementById(planId)
 
+                planNode.classList.remove("fluid-move")
+                planNode.classList.add("fluid-move")
+
                 var left = (1920 / 2 - 2880 / 2 + position.x * plansSpeed[i - 1]) / 1920 * 100
                 planNode.style.left = left + "%"
+            }
+        }
+
+        function updateBow() {
+
+            if (position.x != targetPosition.x) {
+                position.x = position.x * 0.98 + targetPosition.x * 0.02
+            }
+            if (position.y != targetPosition.y) {
+                position.y = position.y * 0.98 + targetPosition.y * 0.02
             }
 
             var bowNode = document.getElementById("bow")
             var bottom = position.y / 1080 * 100
             var left = -position.x / 1920 * 100 - 50
+
             bowNode.style.bottom = bottom + "%"
             bowNode.style.left = left + "%"
 
         }
 
-        var callbacks = {
-            mouseMoved: function (coordinates) {
-                const MAX_SPEED = 10
+        function updatePosition() {
 
-                var canvas = document.getElementById("main")
-                moveSpeed = {
-                    x: (1 - coordinates.x / canvas.offsetWidth * 2) * MAX_SPEED
-                    , y: (1 - coordinates.y / canvas.offsetHeight * 2) * MAX_SPEED
-                }
-            },
-
-            mouseClicked: function () {
-
-            },
+            if (position.x != targetPosition.x) {
+                position.x = position.x * 0.95 + targetPosition.x * 0.05
+            }
+            if (position.y != targetPosition.y) {
+                position.y = position.y * 0.95 + targetPosition.y * 0.05
+            }
 
         }
 
-        window.addEventListener('load', function () { addGesturesEventListeners("main", callbacks); updateScreen(); })
+        function callbacks() {
+
+            const MAX_POSITION = { x: 340, y: 340 }
+            var canvas = document.getElementById("main")
+            var canvasHeight = canvas.offsetHeight
+            var canvasWidth = canvas.offsetWidth
+
+            return {
+                mouseMoved: function (coordinates) {
+                    targetPosition = {
+                        x: (1 - coordinates.x / canvasWidth * 2) * 400
+                        , y: (1 - coordinates.y / canvasHeight * 2) * 400
+                    }
+
+
+                    targetPosition.x = Math.min(targetPosition.x, MAX_POSITION.x)
+                    targetPosition.x = Math.max(targetPosition.x, -MAX_POSITION.x)
+
+                    targetPosition.y = Math.min(targetPosition.y, 0)
+                    targetPosition.y = Math.max(targetPosition.y, -MAX_POSITION.y)
+
+                },
+
+                mouseClicked: function () {
+
+                },
+            }
+        }
+
+        window.addEventListener('load', function () { addGesturesEventListeners("main", callbacks()); updateScreen(); })
 
     </script>
 
