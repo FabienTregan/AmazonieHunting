@@ -46,6 +46,9 @@ function addGesturesEventListeners(elementId, callBacks) {
 
     function touchMove(e) {
         e.preventDefault()
+        var translatedEvent = e.touches[0]
+        translatedEvent.currentTarget = e.currentTarget
+    
         mouseMoved(e.touches[0])
     }
 
