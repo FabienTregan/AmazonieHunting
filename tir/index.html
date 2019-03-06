@@ -67,10 +67,27 @@
 
         var currentState
 
-        var currentAnimal = {
-            picture: "daguet.gif"
-            , position: { x: 200, y: 350, z: 3 }
+        var animals = {
+            daguet: {
+                picture: "daguet.gif"
+                , position: { x: 200, y: 350, z: 3 }
+            }
+            , pecari: {
+                picture: "pecari.gif"
+                , position: { x: 600, y: 500, z: 3 }
+            }
         }
+
+        var currentAnimal
+
+        function initCurrentAnnimal(){
+            var animalId = getParameter("animal")
+            console.log(animalId)
+            currentAnimal = animals[animalId]
+
+        }
+
+        initCurrentAnnimal()
 
         const states = {
             animalAppearing: appearing(document.getElementById("animal"), "bowAppearing")
@@ -88,6 +105,20 @@
         function updateScreen() {
             state(currentState.updateScreen())
             requestAnimationFrame(updateScreen)
+        }
+
+        function getParameter(paramName) {
+            var url = window.location.href;
+            var paramWithEgal = paramName + "="
+            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+            url = url.substring(paramStart)
+            var paramEnd = url.search("&")
+
+            var param = paramEnd > 0 ?
+                url.substring(0, paramEnd)
+                : url
+
+            return decodeURIComponent(param)
         }
 
         function callbacks() {

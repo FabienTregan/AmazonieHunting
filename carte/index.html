@@ -92,7 +92,7 @@
         }
 
         #advisorButton.onTrack .moreInfo,
-        #advisorButton.onFruit .goShoot,
+        #advisorButton.onFruit #goShoot,
         #advisorButton.helping .closeHelp {
             display: block;
         }
@@ -198,7 +198,7 @@
         <div id='advisor'>
             <span id='advisor_text'></span>
             <div id="advisorButton" class="clickArea">
-                <img class="goShoot" src="buttonPrepareratirer.png" onclick="window.location.href='../tir'">
+                <img id="goShoot" src="buttonPrepareratirer.png" onclick="shoot()">
                 <img class="moreInfo" src="buttonPlusdinfo.png" onclick="popup_show()">
                 <img class="closeHelp" src="buttonCloseHelp.png" onclick="hideHelp()">
             </div>
@@ -601,6 +601,11 @@
                 advisorState("onTrack")
             } else if (destinationArea.fruit) {
                 advisorState("onFruit")
+                document.getElementById("goShoot").onclick = function () {
+                    window.location.href = '../tir?animal=' + destinationArea.fruit
+                }
+
+
             } else {
                 advisorState("none")
             }
