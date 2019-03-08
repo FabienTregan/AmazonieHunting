@@ -13,8 +13,13 @@
         }
 
         #main {
+            position: absolute;
             overflow: hidden;
             cursor: none;
+        }
+
+        #main * {
+            position: absolute;
         }
 
         .plan {
@@ -70,12 +75,29 @@
         var animals = {
             daguet: {
                 picture: "daguet.gif"
-                , position: { x: 200, y: 350, z: 3 }
+                , position: { x: 200, y: 346, z: 3 }
+            }
+            , sapajou: {
+                picture: "sapajou.gif"
+                , position: { x: 1472, y: 200, z: 2 }
+            }
+            , hocco: {
+                picture: "hocco.gif"
+                , position: { x: 1254, y: 443, z: 3 }
+            }
+            , tapir: {
+                picture: "tapir.gif"
+                , position: { x: 533, y: 319, z: 3 }
             }
             , pecari: {
                 picture: "pecari.gif"
-                , position: { x: 600, y: 500, z: 3 }
+                , position: { x: 523, y: 660, z: 2 }
             }
+            , agouti: {
+                picture: "agouti.gif"
+                , position: { x: 230, y: 692, z: 2 }
+            }
+
         }
 
         var currentAnimal
@@ -99,6 +121,7 @@
         function state(s) {
             if (s) {
                 currentState = states[s]
+                currentState.start()
             }
         }
 

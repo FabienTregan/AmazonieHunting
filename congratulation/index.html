@@ -1,0 +1,71 @@
+<head>
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="../lib/wideScreen.js"></script>
+
+    <style>
+        @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
+
+        body {
+            font-family: 'Source Sans';
+            color: white;
+        }
+
+        .fond {
+            height: 100%;
+            width: 100%;
+        }
+
+        #picto {
+            position: absolute;
+            width: 13.00%;
+            height: 21.00%;
+            top: 44.00%;
+            left: 43.30%;
+        }
+    </style>
+</head>
+
+<body oncontextmenu='event.preventDefault()'>
+
+    <div id="main" class="wideScreen">
+        <div id="back_home" class="clickArea" style="left: 2.5%; top: 5.7%; width: 5.5%; height: 8%;" onclick="window.location.href='..'"></div>
+        <img class="fond" src="index.jpg" />
+        <img id="picto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+        <div class="clickArea" style="top: 87%; left: 45%; width: 10%; height: 7%;" onclick="window.location.href='./season'"></div>
+    </div>
+    
+    <script>
+
+        function getParameter(paramName) {
+            var url = window.location.href;
+            var paramWithEgal = paramName + "="
+            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+            url = url.substring(paramStart)
+            var paramEnd = url.search("&")
+
+            var param = paramEnd > 0 ?
+                url.substring(0, paramEnd)
+                : url
+
+            return decodeURIComponent(param)
+        }
+
+        var pictos = {
+            hocco: "../carte/hocco.png",
+            hocco_wet: "../carte/hocco_wet.png",
+            agouti: "../carte/agouti.png",
+            tapir: "../carte/tapir.png",
+            sapajou: "../carte/sapajou.png",
+            daguet: "../carte/daguet.png",
+            pacu: "../carte/pacu.png",
+            pecari: "../carte/pecari.png",
+        }
+
+        var animalId = getParameter("animal")
+        document.getElementById("picto").src = pictos[animalId]
+
+    </script>
+</body>

@@ -10,9 +10,24 @@ function appearing(element, nextState) {
         }
     }
 
+    function getParameter(paramName) {
+        var url = window.location.href;
+        var paramWithEgal = paramName + "="
+        var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+        url = url.substring(paramStart)
+        var paramEnd = url.search("&")
+
+        var param = paramEnd > 0 ?
+            url.substring(0, paramEnd)
+            : url
+
+        return decodeURIComponent(param)
+    }    
+
     return {
         updateScreen: updateScreen
         , mouseMoved: function() {}
         , clicked: function () {}
+        , start: function() {}
     }
 }

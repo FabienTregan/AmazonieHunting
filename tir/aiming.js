@@ -28,7 +28,7 @@ function aiming() {
 
         var animal = document.getElementById("animal")
 
-        var left = (currentAnimal.position.x + position.x * plansSpeed[currentAnimal.position.z]) / 1920 * 100
+        var left = (currentAnimal.position.x + position.x * plansSpeed[currentAnimal.position.z - 1]) / 1920 * 100
         var top = (currentAnimal.position.y) / 1080 * 100
         animal.style.left = left + "%"
         animal.style.top = top + "%"
@@ -37,7 +37,6 @@ function aiming() {
         var height = animal.naturalHeight / 1080 * 100
         animal.style.height = height + "%"
         animal.style.   width = width + "%"
-
 
         animal.style.zIndex = planIndexToZIndex(currentAnimal.position.z)
     }
@@ -104,5 +103,6 @@ function aiming() {
         updateScreen: updateScreen
         , mouseMoved: mouseMoved
         , clicked: function () { return "shooting"}
+        , start: function() {}
     }
 }
