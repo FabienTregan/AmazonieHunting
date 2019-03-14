@@ -601,7 +601,7 @@
             } else if (destinationArea.fruit) {
                 advisorState("onFruit")
                 document.getElementById("goShoot").onclick = function () {
-                    window.location.href = '../tir?animal=' + destinationArea.fruit
+                    window.location.href = '../arrow?season=' + season + '&animal=' + destinationArea.fruit
                 }
 
 
@@ -711,6 +711,8 @@
 
             var colorHexCode = red * 0x010000 + green * 0x000100 + blue * 0x000001
 
+            console.log({position: position, colorHexCode: colorHexCode})
+
             var area = areasDescription[colorHexCode]
 
             if (!area) {
@@ -751,7 +753,8 @@
         }
 
         var imagesToBeLoaded = allSeasonsImages;
-        var seasonDependantImages = (getParameter('season') == 'wet') ? wetSeasonImages : drySeasonImages
+        var season = getParameter('season')
+        var seasonDependantImages = (season == 'wet') ? wetSeasonImages : drySeasonImages
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
 
         loadImages(imagesToBeLoaded, initGame)

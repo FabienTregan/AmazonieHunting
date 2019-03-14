@@ -1,5 +1,6 @@
 function shooting() {
     var arrow = document.getElementById("arrow")
+    var bow = document.getElementById("bow")
 
     function updateScreen() {
     }
@@ -10,9 +11,8 @@ function shooting() {
         arrow.src = src
 
         arrow.style.opacity = 1
-
-        document.getElementById("bow").style.opacity = 0
-
+        bow.style.opacity = 0
+        
         var animalId = getParameter("animal")
         window.setTimeout(function() {window.location.href = "../congratulation?animal=" + animalId}, 1500)
     }

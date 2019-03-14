@@ -1,0 +1,247 @@
+<head>
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="../lib/wideScreen.js"></script>
+    <script src="lib/gestures.js"></script>
+
+    <style>
+        @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
+
+        @font-face {
+            font-family: 'Source Sans';
+            src: url('../font/SourceSansPro-Regular.otf') format('woff');
+        }
+
+        body {
+            font-family: 'Source Sans';
+            color: white;
+        }
+
+        #main {
+            position: absolute;
+            overflow: hidden;
+        }
+
+        #main img {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0px;
+            left: 0px;
+        }
+
+        #main svg {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+
+        .arrow {
+            fill: transparent;
+            cursor: pointer;
+        }
+
+        #breadcrumbs {
+            position: absolute;
+            top: 2.0833%;
+            left: 0;
+            width: 33.3333%;
+            height: 11.1111%;
+
+            background-origin: padding-box;
+            background-image: url('breadcrumbs.png');
+            background-size: 100% 100%;
+        }
+
+        #advisor {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 34.38%;
+            height: 27.04%;
+
+            box-sizing: border-box;
+            padding: 1.25% 2% 2.8% 12%;
+
+            background-origin: padding-box;
+            background-image: url('advisor.png');
+            background-size: 100% 100%;
+
+            font-size: 0.6em;
+            line-height: 1.5em;
+        }
+
+        #main #advisorButton {
+            left: 77%;
+            top: 51.5%;
+            width: 37.5%;
+            height: 25.5%;
+            display: none;
+        }
+
+        #main #advisorButton.shown {
+            display: block;
+            cursor: pointer;
+        }
+
+        svg {
+            display: none;
+        }
+
+        svg.shown {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main" class="wideScreen">
+
+        <img id="background" src="">
+
+        <img id="selectedImg" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+
+        <svg id="areas" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin meet">
+            <g class="zone_fleche">
+
+                <path class="arrow" d="m 1128.5714,118.0765 102.8572,-80.000001 520,814.285711 -65.7143,42.85715 z"
+                    onclick="selectArrow('hocco')" />
+
+                <path class=" arrow" d="M 691.42857,249.50507 760,163.79078 l 922.8572,737.14286 -54.2858,62.85714 z"
+                    onclick="selectArrow('tapir')" />
+
+                <path class=" arrow" d="m 1497.1429,1043.7908 40,-74.28572 L 588.57143,415.21936 540,500.93364 Z"
+                    onclick="selectArrow('sapajou')" />
+            </g>
+        </svg>
+
+        <svg id="areas_wet" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin meet">
+            <g class="zone_fleche">
+                <path class="arrow" d="m 1141.5998,103.14082 66.67,-49.497481 575.787,768.726091 -42.4264,36.36549 z"
+                    onclick="selectArrow('hocco_wet')" />
+                <path class="arrow" d="m 1747.6913,882.97858 -36.3655,38.3858 -783.87836,-806.10173 52.52793,-46.467021 z"
+                    onclick="selectArrow('agouti')" />
+                <path class="arrow" d="m 1697.1837,917.32378 -27.2741,41.4162 -969.74649,-786.90879 51.51778,-58.58885 z"
+                    onclick="selectArrow('pecari')" />
+                <path class="arrow" d="M 1656.7776,965.81108 1634.5542,1003.1868 565.81283,381.94292 598.13771,333.4556 Z"
+                    onclick="selectArrow('daguet')" />
+                <path class="arrow" d="m 1558.7928,1002.1766 -30.3046,48.4873 -1088.94444,-571.74634 48.48732,-72.73098 z"
+                    onclick="selectArrow('pacu')" />
+            </g>
+        </svg>
+
+        <div id='advisor'>
+            <span id='advisor_text'></span>
+            <img id="advisorButton" src="validate.png" onclick="validate()">
+        </div>
+
+        <div id="back_home" class="clickArea" style="left: 2.5%; top: 5.7%; width: 6%; height: 7.5%; " onclick="window.location.href='..'"></div>
+    </div>
+
+    <script>
+        "use strcit";
+
+        var arrows = {
+            hocco: {
+                selectedImg: 'hocco.png'
+                , advice: 'L’embout assomoir en carapace de tortue ou en bois est utile pour ne pas abîmer les plumes.'
+            }
+            , tapir: {
+                selectedImg: 'tapir.png'
+                , advice: 'L’embout élancé en bambou est parfait pour un gros gibier. Son empennage en plume va permettre à la flèche d’aller loin et droit.'
+            }
+            , sapajou: {
+                selectedImg: 'sapajou.png'
+                , advice: 'A l’arc, la flèche doit présenter une longue armature de bois dur, dentelée ou lancéolée. Avec un peu de curare, c’est encore plus efficace !'
+            }
+            , daguet: {
+                selectedImg: 'daguet.png'
+                , advice: 'Une flèche avec une pointe en bambou est nécessaire pour ce gros gibier.'
+            }
+            , hocco_wet: {
+                selectedImg: 'hocco_wet.png'
+                , advice: 'L’ embout assomoir en carapace de tortue ou en bois est utile pour ne pas abîmer les plumes.'
+            }
+            , pacu: {
+                selectedImg: 'pacu.png'
+                , advice: 'Une pointe à plusieurs aiguilles en métal sera adaptée au poisson. Ma flèche est sans empennage pour filer dans l’eau.'
+            }
+            , pecari: {
+                selectedImg: 'pecari.png'
+                , advice: 'Pour flécher ce gros gibier, une pointe à bambou élancée type poignard est indispensable. L’empennage est en plumes de rapaces.'
+            }
+            , agouti: {
+                selectedImg: 'agouti.png'
+                , advice: 'Pour ce petit gibier, un simple embout entaillé fera l’affaire.'
+            }
+        }
+
+        function selectArrow(arrow) {
+            document
+                .getElementById('selectedImg')
+                .setAttribute('src', arrows[arrow].selectedImg)
+
+            var animal = getParameter('animal')
+            console.log({ animal: animal, arrow: arrow, test: animal == arrow })
+
+            var advisorText
+            var advisorButton = document.getElementById('advisorButton')
+            if (arrow == animal) {
+                advisorText = arrows[arrow].advice
+                advisorButton.classList.add('shown')
+            } else {
+                advisorText = "Ce n'est pas la bonne flèche. Choisis-en une autre..."
+                advisorButton.classList.remove('shown')
+            }
+
+            document
+                .getElementById('advisor_text')
+                .innerHTML = advisorText
+        }
+
+        function getParameter(paramName) {
+            var url = window.location.href;
+            var paramWithEgal = paramName + '='
+            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+            url = url.substring(paramStart)
+            var paramEnd = url.search('&')
+
+            var param = paramEnd > 0 ?
+                url.substring(0, paramEnd)
+                : url
+
+            return decodeURIComponent(param)
+        }
+
+        function setSeason(season) {
+
+            var src
+            var areasId
+
+            if (season == 'wet') {
+                src = 'index_wet.jpg'
+                areasId = 'areas_wet'
+            } else {
+                src = 'index.jpg'
+                areasId = 'areas'
+            }
+
+            document.getElementById('background').src = src
+            document.getElementById(areasId).classList.add('shown')
+        }
+
+        function validate() {
+            window.location.href="../tir?animal=" + getParameter("animal")
+        }
+
+        var season = getParameter('season')
+        setSeason(season)
+
+    </script>
+
+</body>

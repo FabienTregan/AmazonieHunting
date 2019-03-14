@@ -30,7 +30,7 @@
             color: white;
         }
 
-        #main img {
+        .background {
             width: 100%;
             height: 100%;
         }
@@ -74,27 +74,47 @@
         .popups {
             font-size: 48px;
         }
+
+        .animal {
+            position: absolute;
+            cursor: pointer;
+            width: 12.50%;
+            height: 20.37%;
+
+            filter: drop-shadow(-0.1vh 0vh 0px white) drop-shadow(+0.1vh 0vh 0px white) drop-shadow(0vh -0.1vh 0px white) drop-shadow(0vh +0.1vh 0px white);
+
+            animation: 1s ease-in-out 0s infinite alternate swing;
+        }
+
+        @keyframes swing {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.02);
+            }
+        }
     </style>
 </head>
 
 <body oncontextmenu='event.preventDefault()'>
 
     <div id="main" class="wideScreen">
-        <img src="index.jpg" />
+        <img class="background" src="index.jpg" />
 
         <div class="clickArea" style="left: 4.1%; top: 5.5%; width: 5.7%; height: 7.5%;" onclick="window.location.href='..'"></div>
 
-        <div class="clickArea" style="left: 11.4%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('hocco')"></div>
-        <div class="clickArea" style="left: 26.0%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('sapajou')"></div>
+        <img class="clickArea animal" src="..\carte\hocco.png" style="left: 11.4%; top: 35.1%;" onclick="show_sheet('hocco')">
+        <img class="clickArea animal" src="..\carte\sapajou.png" style="left: 26.0%; top: 35.1%;" onclick="show_sheet('sapajou')">
 
-        <div class="clickArea" style="left: 18.7%; top: 59.2%; width: 12.6%; height: 20.5%;" onclick="show_sheet('tapir')"></div>
+        <img class="clickArea animal" src="..\carte\tapir.png" style="left: 18.7%; top: 59.2%;" onclick="show_sheet('tapir')">
 
-        <div class="clickArea" style="left: 54.1%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('hocco')"></div>
-        <div class="clickArea" style="left: 68.7%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('agouti')"></div>
-        <div class="clickArea" style="left: 83.3%; top: 35.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('daguet')"></div>
+        <img class="clickArea animal" src="..\carte\hocco_wet.png" style="left: 54.1%; top: 35.1%;" onclick="show_sheet('hocco')">
+        <img class="clickArea animal" src="..\carte\agouti.png" style="left: 68.7%; top: 35.1%;" onclick="show_sheet('agouti')">
+        <img class="clickArea animal" src="..\carte\daguet.png" style="left: 83.3%; top: 35.1%;" onclick="show_sheet('daguet')">
 
-        <div class="clickArea" style="left: 61.4%; top: 59.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('pecari')"></div>
-        <div class="clickArea" style="left: 76.0%; top: 59.1%; width: 12.6%; height: 20.5%;" onclick="show_sheet('pacu')"></div>
+        <img class="clickArea animal" src="..\carte\pecari.png" style="left: 61.4%; top: 59.1%;" onclick="show_sheet('pecari')">
+        <img class="clickArea animal" src="..\carte\pacu.png" style="left: 76.0%; top: 59.1%;" onclick="show_sheet('pacu')">
 
         <div id="saison_seche" class="clickArea" style="left: 19%; top: 87%; width: 12%; height: 7.5%;" onclick="window.location.href='../carte?season=dry'"></div>
         <div id="saison_humide" class="clickArea" style="left: 69%; top: 87%; width: 12%; height: 7.5%;" onclick="window.location.href='../carte?season=wet'"></div>
