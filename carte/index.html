@@ -167,16 +167,24 @@
             background: rgba(72, 63, 105, 0.88);
         }
 
-        #help.shown {
+        #help.step0,
+        #help.step1,
+        #help.step2 {
             display: block;
         }
 
         #help img {
             position: absolute;
-            width: 46.25%;
-            height: 27.78%;
-            left: 11.875%;
-            top: 30.65%;
+            width: 100%;
+            height: 100%;
+            left: 0%;
+            top: 0%;
+            display: none;
+        }
+
+        #help.step1 .step1,
+        #help.step2 .step2 {
+            display: block;
         }
 
         .popups {
@@ -190,7 +198,8 @@
     <div id='main' class="wideScreen">
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
         <div id="help">
-            <img src="help.gif">
+            <img class="step1" src="help.gif">
+            <img class="step2" src="help2.png">
         </div>
         <div id='breadcrumbs'>
             <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
@@ -200,7 +209,7 @@
             <div id="advisorButton" class="clickArea">
                 <img id="goShoot" src="buttonPrepareratirer.png" onclick="shoot()">
                 <img class="moreInfo" src="buttonPlusdinfo.png" onclick="popup_show()">
-                <img class="closeHelp" src="buttonCloseHelp.png" onclick="hideHelp()">
+                <img id="helpButton" class="closeHelp" src="buttonNextHelp.png" onclick="nextHelp()">
             </div>
         </div>
     </div>
@@ -208,32 +217,15 @@
     <div id="popups" class="wideScreen displayed">
         <div id="datasheet" class="popup fiche">
             <div class="title">
-                <span id="animalName">le Tapir</span>
+                <span id="animalName"></span>
             </div>
-            <div class="text">
-                Quota de chasse : Un par sorti et par personne<br>
-                Mets de choix (cérémonie, repas traditionnels)
-            </div>
-            <img id="picto" src="picto_tapir.png">
-            <div id="pictoText" class="infos">
-                200kg<br>
-                solitaire<br>
-                actif la nuit<br>
-                aime l'eau<br>
-            </div>
+            <div class="text"></div>
+            <img id="picto" src="">
+            <div id="pictoText" class="infos"></div>
             <img id="footprint" src="footprint_tapir.png">
-            <div id="footprintText" class="infos">
-                Empreinte<br>
-                en forme de trèfle<br>
-                profonde dans la boue<br>
-                reniflements ou cri strident<br>
-            </div>
+            <div id="footprintText" class="infos"></div>
             <img id="fruit" src="fruit_tapir.png">
-            <div id="fruitText" class="infos">
-                Mauritia flexuosa<br>
-                ca a l'air de se manger<br>
-                joli<br>
-            </div>
+            <div id="fruitText" class="infos"></div>
             <img src="close_button.png" class="clickArea" style="left: 91.67%; top: 94.44%; width: 16.8%;" onclick="popup_hide()">
         </div>
     </div>
@@ -339,7 +331,7 @@
                 datasheet: {
                     name: "CHASSER LE TAPIR",
                     text: "Quota de chasse : 1 / sortie / personne Mets de choix (cérémonie, repas traditionnel)",
-                    picto: { img: "picto_tapir.png", text: "Solitaire<br>Actif la nuit<br>Qui aime l'eau<br>200 kg" },
+                    picto: { img: "tapir.png", text: "Solitaire<br>Actif la nuit<br>Qui aime l'eau<br>200 kg" },
                     footprint: { img: "footprint_tapir.png", text: "Empreinte<br>en forme de trèfle<br>profonde dans la boue<br>Reniflements ou cris stridents" },
                     fruit: { img: "fruit_tapir.png", text: "Strictement herbivore<br>Se délecte de fruits<br>Mauritia flexuosa (saison sèche)" },
                 }
@@ -433,6 +425,8 @@
         var position = {}
         var moveSpeed
 
+        var helpStep = 0
+
         var mainCanvas
         var bufferCanvas
         var revealedImageData
@@ -481,7 +475,7 @@
                 revealedContext2d.drawImage(map, 0, 0)
 
                 revealedImageDataRepo[mapId] = revealedContext2d.getImageData(0, 0, tracksImage.width, tracksImage.height)
-                setTransparency(revealedImageDataRepo[mapId], 20)
+                setTransparency(revealedImageDataRepo[mapId], 10)
             }
             revealedImageData = revealedImageDataRepo[mapId]
 
@@ -711,7 +705,7 @@
 
             var colorHexCode = red * 0x010000 + green * 0x000100 + blue * 0x000001
 
-            console.log({position: position, colorHexCode: colorHexCode})
+            console.log({ position: position, colorHexCode: colorHexCode })
 
             var area = areasDescription[colorHexCode]
 
@@ -740,10 +734,29 @@
             'Ce sont des traces de <b>' + advice.name + '</b><br><br>' + advice.description
         }
 
-        function showHelp() {
-            updateAdvice("Déplacez vous sur le sentier pour pister un animal. Repérez des empreintes et remontez la piste !")
-            document.getElementById("help").classList.add("shown")
+        function nextHelp() {
+            var help = document.getElementById("help")
+            help.classList.remove("step0", "step1", "step2")
             advisorState("helping")
+
+            switch (helpStep) {
+                case 0:
+                    updateAdvice("La forêt est grande.<br>Connaissance et stratégie sont utiles pour débusquer le gibier ! A vous de jouer.")
+                    help.classList.add("step0")
+                    break
+                case 1:
+                    updateAdvice("Repérez des empreintes et remontez la piste jusqu'à tomber sur le fruit dont l'animal se nourrit !")
+                    help.classList.add("step1")
+                    break
+                case 2:
+                    updateAdvice("Des informations vous seront données à la découverte de l'empreinte. Vous pourrez consulter la fiche de l'animal en cliquant sur <b>Plus d'infos</b>.")
+                    help.classList.add("step2")
+                    document.getElementById("helpButton").src="buttonCloseHelp.png"
+                    break
+                default:
+                    hideHelp()
+            }
+            helpStep++
         }
 
         function hideHelp() {
@@ -758,7 +771,7 @@
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
 
         loadImages(imagesToBeLoaded, initGame)
-        showHelp()
+        nextHelp()
 
     </script>
 
