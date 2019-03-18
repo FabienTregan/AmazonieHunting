@@ -15,7 +15,7 @@ function addGesturesEventListeners(elementId, callBacks) {
     element.addEventListener('touchmove', touchMove, true)
     element.addEventListener('mousedown', mouseButtonDown, true)
     element.addEventListener('mouseup', mouseButtonUp, true)
-    element.addEventListener('mouseleave', mouseButtonUp, true)
+    //element.addEventListener('mouseleave', mouseButtonUp, true)
     element.addEventListener('mousemove', mouseMoved, true)
 
     function mouseMoved(e) {

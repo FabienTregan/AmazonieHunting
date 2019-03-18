@@ -9,34 +9,34 @@ function aiming() {
 
     const MAX_POSITION = { x: 340, y: 340 }
     var canvas = document.getElementById("main")
-    var canvasHeight = canvas.offsetHeight
-    var canvasWidth = canvas.offsetWidth
 
     function updatePlans() {
+        var main = document.getElementById("main")
 
         for (var i = nbPlans; i > 0; i--) {
 
             var planId = "plan" + i
             var planNode = document.getElementById(planId)
 
-            var left = (1920 / 2 - 2880 / 2 + position.x * plansSpeed[i - 1]) / 1920 * 100
-            planNode.style.left = left + "%"
+            var left = ( (1920 - 2880) / 2 + position.x * plansSpeed[i-1]) / 1920 * main.offsetWidth
+            planNode.style.left = left + "px"
         }
     }
 
     function updateAnimal() {
 
         var animal = document.getElementById("animal")
+        var main = document.getElementById("main")
 
-        var left = (currentAnimal.position.x + position.x * plansSpeed[currentAnimal.position.z - 1]) / 1920 * 100
+        var left = (currentAnimal.position.x + position.x * plansSpeed[currentAnimal.position.z - 1]) / 1920 * main.offsetWidth
         var top = (currentAnimal.position.y) / 1080 * 100
-        animal.style.left = left + "%"
+        animal.style.left = left + "px"
         animal.style.top = top + "%"
 
         var width = animal.naturalWidth / 1920 * 100
         var height = animal.naturalHeight / 1080 * 100
         animal.style.height = height + "%"
-        animal.style.   width = width + "%"
+        animal.style.width = width + "%"
 
         animal.style.zIndex = planIndexToZIndex(currentAnimal.position.z)
     }
@@ -57,6 +57,7 @@ function aiming() {
     }
 
     function updateBow() {
+        var main = document.getElementById("main")
 
         if (position.x != targetPosition.x) {
             position.x = position.x * 0.98 + targetPosition.x * 0.02
@@ -66,15 +67,15 @@ function aiming() {
         }
 
         var bottom = position.y / 1080 * 100
-        var left = -position.x / 1920 * 100 - 50
-        
+        var left = -position.x / 1920 * main.offsetWidth
+
         var bowNode = document.getElementById("bow")
         bowNode.style.bottom = bottom + "%"
-        bowNode.style.left = left + "%"
+        bowNode.style.left = left + "px"
 
         var arrowNode = document.getElementById("arrow")
         arrowNode.style.bottom = bottom + "%"
-        arrowNode.style.left = left + "%"
+        arrowNode.style.left = left + "px"
     }
 
     function updateScreen() {
@@ -85,6 +86,9 @@ function aiming() {
     }
 
     function mouseMoved(coordinates) {
+        var canvasHeight = canvas.offsetHeight
+        var canvasWidth = canvas.offsetWidth
+    
         targetPosition = {
             x: (1 - coordinates.x / canvasWidth * 2) * 400
             , y: (1 - coordinates.y / canvasHeight * 2) * 400
@@ -102,7 +106,7 @@ function aiming() {
     return {
         updateScreen: updateScreen
         , mouseMoved: mouseMoved
-        , clicked: function () { return "shooting"}
-        , start: function() {}
+        , clicked: function () { return "shooting" }
+        , start: function () { }
     }
 }
