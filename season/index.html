@@ -61,13 +61,18 @@
             color: #513D70;
         }
 
+        #animalText p {
+            margin-bottom: 0.5em;
+            margin-top: 0px;
+        }
+
         .fiche .photo {
             top: 15.2%;
         }
 
         .fiche .info {
             top: 63.0%;
-            font-size: 0.63em;
+            font-size: 0.59em;
             line-height: 1.5em;
         }
 
@@ -107,7 +112,7 @@
 
         <img class="clickArea animal" src="..\carte\tapir.png" style="left: 18.7%; top: 59.2%;" onclick="show_sheet('tapir')">
 
-        <img class="clickArea animal" src="..\carte\hocco_wet.png" style="left: 54.1%; top: 35.1%;" onclick="show_sheet('hocco')">
+        <img class="clickArea animal" src="..\carte\hocco_wet.png" style="left: 54.1%; top: 35.1%;" onclick="show_sheet('hocco_wet')">
         <img class="clickArea animal" src="..\carte\agouti.png" style="left: 68.7%; top: 35.1%;" onclick="show_sheet('agouti')">
         <img class="clickArea animal" src="..\carte\daguet.png" style="left: 83.3%; top: 35.1%;" onclick="show_sheet('daguet')">
 
@@ -145,45 +150,50 @@
             , hocco: {
                 name: "Hocco alector"
                 , latinName: "Crax alector"
-                , text: "Il marche la tête haute, pattes jointes et la queue déployée en éventail. S’il est en danger, il peut voler par petits coups d’ailes jusqu’à la canopée.<br><br>C’est un grand mangeur de fruits (96 % de son alimentation), de graines, de plantules et de jeunes pousses. Il recherche sa nourriture aux pieds des arbres fruitiers gros producteurs, rendant sa rencontre prévisible."
+                , text: "<p>Il marche la tête haute, pattes jointes et la queue déployée en éventail. S’il est en danger, il peut voler par petits coups d’ailes jusqu’à la canopée.</p><p>C’est un grand mangeur de fruits (96% de son alimentation),<br>de graines, de plantules et de jeunes pousses. Il recherche sa nourriture aux pieds des arbres fruitiers gros producteurs, rendant sa rencontre prévisible.</p>"
+                , picture: "hocco.jpg"
+            }
+            , hocco_wet: {
+                name: "Hocco alector"
+                , latinName: "Crax alector"
+                , text: "<p>Il marche la tête haute, pattes jointes et la queue déployée en éventail. S’il est en danger, il peut voler par petits coups d’ailes jusqu’à la canopée.</p><p>C’est un grand mangeur de fruits (96% de son alimentation),<br>de graines, de plantules et de jeunes pousses. A la saison des pluies, c’est la période des amours et des couvaisons. L’hocco est particulièrement vulnérable.</p>"
                 , picture: "hocco.jpg"
             }
             , pecari: {
                 name: "Pécari à Collier"
                 , latinName: "Tayassu tajacu"
-                , text: "Le pécari ressemble à un cochon avec un collier de poils blanc autour du cou. Il est chassé toute l’année. C’est une espèce abondante mais difficilement prévisible de part ses nombreux déplacements."
+                , text: "<p>Le pécari ressemble à un cochon avec un collier de poils blanc autour du cou.</p><p>Il est chassé toute l’année. C’est une espèce abondante mais difficilement prévisible de part ses nombreux déplacements.</p>"
                 , picture: "pecari.jpg"
             }
             , tapir: {
                 name: "Tapir du Brésil"
                 , latinName: "Tapirus terrestris"
-                , text: "Il est le plus gros des mammifères d’Amérique du Sud.<br><br>Strictement herbivore, il se nourrit de plantules, de fruits et de graines. Avec ses déjections, il dissémine certaines graines jouant ainsi un rôle clé dans la régénération de la forêt.<br><br>La femelle a un petit tous les deux ans. Espèce vulnérable non commerciable."
+                , text: "<p>Il est le plus gros des mammifères d’Amérique du Sud.<p></p>Strictement herbivore, il se nourrit de plantules, de fruits et de graines. Avec ses déjections, il dissémine certaines graines jouant ainsi un rôle clé dans la régénération de la forêt.</p><p>La femelle a un petit tous les deux ans. Espèce vulnérable non commerciable.</p>"
                 , picture: "tapir.jpg"
             }
             , agouti: {
                 name: "Agouti"
-                , latinName: "Dasyprocta Agouti"
-                , text: "Ce rongeur est très présent en Guyane. Ses pattes postérieures robustes lui permettent de faire des bonds et d’être un excellent coureur.<br>Frugivore, il se nourrit de fruits et graines tombés au sol, qu’il transporte et enterre parfois, participant ainsi activement à la dissémination et à la germination de nombreuses espèces d’arbres.<br>La femelle donne naissance à 2 à 4 petits par an dès ses 6 mois."
+                , latinName: "Dasyprocta leporina"
+                , text: "<p>Ce rongeur est très présent en Guyane. Ses pattes postérieures robustes lui permettent de faire des bonds et d’être un excellent coureur.</p><p>Frugivore, il se nourrit de fruits et graines tombés au sol, qu’il transporte et enterre parfois, participant ainsi activement à la dissémination et à la germination de nombreuses espèces d’arbres.</p><p>La femelle donne naissance à 2 à 4 petits par an dès ses 6 mois.</p>"
                 , picture: "agouti.jpg"
             }
             , daguet: {
                 name: "Daguet Rouge"
-                , latinName: "Mazama Americana"
-                , text: "C’est un petit cervidé forestier à la robe brun rouge. Seul le mâle porte des bois.<br><br>Actif de jour et de nuit, il se nourrit essentiellement de fruits tombés à terre, de fleurs et de champignons.<br><br>Le daguet rouge est une espèce protégée : il est chassable mais ne peut pas être commercialisé."
+                , latinName: "Mazama americana"
+                , text: "<p>C’est un petit cervidé forestier à la robe brun rouge.<br>Seul le mâle porte des bois.</p><p>Actif de jour et de nuit, il se nourrit essentiellement de fruits tombés à terre, de fleurs et de champignons.</p><p>Le daguet rouge est une espèce protégée : il est chassable mais ne peut pas être commercialisé.</p>"
                 , picture: "daguet.jpg"
             }
             , sapajou: {
                 name: "Sapajou Fauve"
-                , latinName: "Cebus apella"
-                , text: "C’est un petit singe est grand pour le continent américain. Il vit en communauté (5 à 17 individus) avec un mâle dominant souvent peu commode.<br>" +
-                    "Actif de jour, son activité n’est pas exclusivement arboricole. Il franchit d’assez longues distances au sol pour rejoindre un nouveau groupe d’arbres. Il peut aussi s’associer avec d’autres espèces de singe pour chercher sa nourriture.<br>" +
-                    "Cet animal vif et agile est capable de se servir de pierres pour ouvrir des noix à coque dure ou d’un bout de bois pour extirper un insecte d’un tronc."
+                , latinName: "Sapajus apella"
+                , text: "<p>Actif de jour, son activité n’est pas exclusivement arboricole.<br>Il franchit d’assez longues distances au sol pour rejoindre un nouveau groupe d’arbres. Il peut aussi s’associer avec d’autres espèces de singe pour chercher sa nourriture.</p>" +
+                    "<p>Cet animal vif et agile est capable de se servir de pierres pour ouvrir des noix à coque dure ou d’un bout de bois pour extirper un insecte d’un tronc.</p>"
                 , picture: "sapajou.jpg"
             }
             , pacu: {
                 name: "Pacu"
                 , latinName: "Myleus pacu"
-                , text: "Ce poisson de rivière est un cousin herbivore du piranha. Ses puissantes mâchoires et ses dents carrées lui permettent de broyer des graines de palmiers très dures.<br>Il se nourrit également d’escargots d’eau douce, de larves diverses, d’insectes aquatiques, crustacés, gastéropodes et petits poissons.<br>Selon les saisons, le pacu est capturé à la ligne, chassé à l’épervier ou fléché. "
+                , text: "<p>Ce poisson de rivière est un cousin herbivore du piranha.</p><p>Ses puissantes mâchoires et ses dents carrées lui permettent de broyer des graines de palmiers très dures. Il se nourrit également d’escargots d’eau douce, de larves diverses, d’insectes aquatiques, crustacés, gastéropodes et petits poissons.</p><p>Selon les saisons, le pacu est capturé à la ligne, chassé à l’épervier ou fléché.</p>"
                 , picture: "pacu.jpg"
             }
 
