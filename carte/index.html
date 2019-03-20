@@ -165,11 +165,10 @@
             height: 100%;
             width: 100%;
             background: rgba(72, 63, 105, 0.88);
+            z-index: 2000;
         }
 
-        #help.step0,
-        #help.step1,
-        #help.step2 {
+        #help.shown {
             display: block;
         }
 
@@ -179,12 +178,11 @@
             height: 100%;
             left: 0%;
             top: 0%;
-            display: none;
         }
 
-        #help.step1 .step1,
-        #help.step2 .step2 {
-            display: block;
+        .animation {
+            left: 18.75%;
+            top: 36.39%;
         }
 
         .popups {
@@ -197,9 +195,10 @@
 
     <div id='main' class="wideScreen">
         <canvas id='main_canvas' height='1080' width='1920'></canvas>
-        <div id="help">
-            <img class="step1" src="help.gif">
-            <img class="step2" src="help2.png">
+        <div id="help" class="shown">
+            <img class="background" src="help.jpg">
+            <img class="animation" src="help.gif">
+            <div class="clickArea" style="right: 4%; bottom: 6%; width: 13.5%; height: 8%;" onclick="hideHelp()"></div>
         </div>
         <div id='breadcrumbs'>
             <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
@@ -209,7 +208,6 @@
             <div id="advisorButton" class="clickArea">
                 <img id="goShoot" src="buttonPrepareratirer.png" onclick="shoot()">
                 <img class="moreInfo" src="buttonPlusdinfo.png" onclick="popup_show()">
-                <img id="helpButton" class="closeHelp" src="buttonNextHelp.png" onclick="nextHelp()">
             </div>
         </div>
     </div>
@@ -428,8 +426,6 @@
 
         var position = {}
         var moveSpeed
-
-        var helpStep = 0
 
         var mainCanvas
         var bufferCanvas
@@ -749,31 +745,6 @@
             'Ce sont des traces de <b>' + advice.name + '</b><br><br>' + advice.description
         }
 
-        function nextHelp() {
-            var help = document.getElementById("help")
-            help.classList.remove("step0", "step1", "step2")
-            advisorState("helping")
-
-            switch (helpStep) {
-                case 0:
-                    updateAdvice("La forêt est grande.<br>Connaissance et stratégie sont utiles pour débusquer le gibier ! A vous de jouer.")
-                    help.classList.add("step0")
-                    break
-                case 1:
-                    updateAdvice("Repérez des empreintes et remontez la piste jusqu'à tomber sur le fruit dont l'animal se nourrit !")
-                    help.classList.add("step1")
-                    break
-                case 2:
-                    updateAdvice("Des informations vous seront données à la découverte de l'empreinte. Vous pourrez consulter la fiche de l'animal en cliquant sur <b>Plus d'infos</b>.")
-                    help.classList.add("step2")
-                    document.getElementById("helpButton").src = "buttonCloseHelp.png"
-                    break
-                default:
-                    hideHelp()
-            }
-            helpStep++
-        }
-
         function hideHelp() {
             document.getElementById("help").classList.remove("shown")
             executeArea()
@@ -785,8 +756,6 @@
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
 
         loadImages(imagesToBeLoaded, initGame)
-        nextHelp()
-
     </script>
 
 
