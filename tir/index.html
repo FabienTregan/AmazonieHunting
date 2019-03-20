@@ -7,6 +7,7 @@
 
     <style>
         @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
 
         body {
             overflow: hidden;
@@ -15,12 +16,24 @@
         #main {
             position: absolute;
             overflow: hidden;
-            cursor: none;
         }
 
         #main * {
             position: absolute;
         }
+
+        #breadcrumbs {
+            position: absolute;
+            top: 2.0833%;
+            left: 0;
+            width: 33.3333%;
+            height: 11.1111%;
+
+            background-origin: padding-box;
+            background-image: url('breadcrumbs.png');
+            background-size: 100% 100%;
+        }
+
 
         .plan {
             position: absolute;
@@ -55,7 +68,7 @@
 
 <body>
 
-    <div id="main" class="wideScreen" style="border : 1px solid lime">
+    <div id="main" class="wideScreen">
         <div class="plan" style="z-index:60"><img id="plan5" src="plan5.jpg"></div>
         <div class="plan" style="z-index:70"><img id="plan4" src="plan4.png"></div>
         <div class="plan" style="z-index:80"><img id="plan3" src="plan3.png"></div>
@@ -64,6 +77,9 @@
         <img id="animal" style="z-index: 10;" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
         <img id="arrow" src="shooting.gif" style="z-index: 110;">
         <img id="bow" src="bow.png" style="z-index: 120;">
+        <div id="breadcrumbs" style="z-index: 1000;">
+            <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
+        </div>
     </div>
 
     <script>
@@ -105,7 +121,7 @@
 
         var currentAnimal
 
-        function initCurrentAnnimal(){
+        function initCurrentAnnimal() {
             var animalId = getParameter("animal")
             currentAnimal = animals[animalId]
 
