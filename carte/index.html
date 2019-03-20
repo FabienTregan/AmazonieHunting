@@ -110,15 +110,20 @@
         .fiche .title {
             top: 5%;
             margin-right: 0.20em;
-            font-size: 1.45em;
+        }
+
+        .fiche #animalName {
             font-family: 'Source Sans Black';
+            font-size: 1.45em;
+        }
+
+        .fiche #animalName.hocco {
+            font-size: 1.28em;
         }
 
         .fiche .text {
-            top: 23.26%;
-            margin-right: 0.20em;
+            margin-top: 4%;
             font-size: 0.6em;
-            font-family: 'Source Sans';
         }
 
         .infos {
@@ -218,9 +223,9 @@
     <div id="popups" class="wideScreen displayed">
         <div id="datasheet" class="popup fiche">
             <div class="title">
-                <span id="animalName"></span>
+                <div id="animalName"></div>
+                <div class="text"></div>
             </div>
-            <div class="text"></div>
             <img id="picto" src="">
             <div id="pictoText" class="infos"></div>
             <img id="footprint" src="footprint_tapir.png">
@@ -554,6 +559,12 @@
                 document.getElementById("footprintText").innerHTML = datasheet.footprint.text
                 document.getElementById("fruit").setAttribute("src", datasheet.fruit.img)
                 document.getElementById("fruitText").innerHTML = datasheet.fruit.text
+
+                if (datasheet.name.includes("HOCCO")) {
+                    document.getElementById("animalName").classList.add("hocco")
+                } else {
+                    document.getElementById("animalName").classList.remove("hocco")
+                }
             }
         }
 
@@ -753,7 +764,7 @@
                 case 2:
                     updateAdvice("Des informations vous seront données à la découverte de l'empreinte. Vous pourrez consulter la fiche de l'animal en cliquant sur <b>Plus d'infos</b>.")
                     help.classList.add("step2")
-                    document.getElementById("helpButton").src="buttonCloseHelp.png"
+                    document.getElementById("helpButton").src = "buttonCloseHelp.png"
                     break
                 default:
                     hideHelp()
