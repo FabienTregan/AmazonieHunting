@@ -153,7 +153,7 @@
             }
             , tapir: {
                 selectedImg: 'tapir.png'
-                , advice: 'C’est un bon choix ! L’ embout assomoir en carapace de tortue est utile pour ne pas abîmer les plumes.'
+                , advice: 'L’ embout élancé en bambou est parfait pour un gros gibier. Son empennage en plume va permettre à la flèche d’aller loin et droit.'
             }
             , sapajou: {
                 selectedImg: 'sapajou.png'
@@ -195,7 +195,7 @@
                 advisorText = arrows[arrow].advice
                 advisorButton.classList.add('shown')
             } else {
-                advisorText = "Ce n'est pas la bonne flèche. Choisis-en une autre..."
+                advisorText = "Je préfère en choisir une plus adaptée. J’en sélectionne une autre."
                 advisorButton.classList.remove('shown')
             }
 
@@ -236,7 +236,7 @@
         }
 
         function validate() {
-            window.location.href="../tir?animal=" + getParameter("animal")
+            window.location.href = "../tir?animal=" + getParameter("animal")
         }
 
         var season = getParameter('season')
