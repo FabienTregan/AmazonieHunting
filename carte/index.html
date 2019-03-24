@@ -52,7 +52,7 @@
             background-image: url('breadcrumbs.png');
             background-size: 100% 100%;
 
-            z-index: 3000;
+            z-index: 2000;
         }
 
         #advisor {
@@ -167,7 +167,7 @@
             height: 100%;
             width: 100%;
             background: rgba(72, 63, 105, 0.88);
-            z-index: 2000;
+            z-index: 3000;
         }
 
         #help.shown {
@@ -211,6 +211,10 @@
                 <img id="goShoot" src="buttonPrepareratirer.png" onclick="shoot()">
                 <img class="moreInfo" src="buttonPlusdinfo.png" onclick="popup_show()">
             </div>
+        </div>
+
+        <div style="position: absolut; top: 0px; left: 0px; transforme: translate(-50%, -50%)">
+            <img src="viseur.png">
         </div>
     </div>
 
@@ -384,7 +388,7 @@
             , 0x00AA9D: { fruit: "hocco", advice: "C’est un fruit que le grand hocco affectionne ! Il ne me reste plus qu’à préparer ma flèche et à l’attirer." }
             , 0xB04900: { fruit: "hocco_wet", advice: "C’est un fruit que le grand hocco affectionne ! Il ne me reste plus qu’à préparer ma flèche et à l’attirer." }
             , 0x4F602F: { fruit: "agouti", advice: "C’est un fruit d’<i>Eugenia patisii</i>. L’agouti en raffole ! Je me poste ici, je choisi une flèche et je l’attire." }
-            , 0xEFF70D: { fruit: "tapir", advice: "Voilà le fruit <i>Mauritia flexuosa<i> recherché à cette saison par le tapir. Je vais choisir une flèche et l’attirer !" }
+            , 0xEFF70D: { fruit: "tapir", advice: "Voilà le fruit <i>Mauritia flexuosa</i> recherché à cette saison par le tapir. Je vais choisir une flèche et l’attirer !" }
             , 0x777B07: { fruit: "sapajou", advice: "Ce sont des fruits du genre <i>Inga</i>. Le sapajou s’en régale à cette saison. Je prépare ma flèche pour l’atteindre très haut dans les arbres !" }
             , 0x202A33: { fruit: "daguet", advice: "C’est la saison de la fleur de <i>Pachira aquaticum</i>. La daguet en raffole ! Je me mets à l’affût et je choisis une flèche." }
             , 0x585B88: { fruit: "pacu", advice: "Ce sont les plantes aquatiques à fleurs mauves dont raffolent les pacu à cette saison. Parfait, je prépare ma flèche !" }

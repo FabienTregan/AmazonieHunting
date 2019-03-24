@@ -18,7 +18,7 @@ function aiming() {
             var planId = "plan" + i
             var planNode = document.getElementById(planId)
 
-            var left = ( (1920 - 2880) / 2 + position.x * plansSpeed[i-1]) / 1920 * main.offsetWidth
+            var left = ( (1920 - 2880) / 2 - position.x * plansSpeed[i-1]) / 1920 * main.offsetWidth
             planNode.style.left = left + "px"
         }
     }
@@ -28,7 +28,7 @@ function aiming() {
         var animal = document.getElementById("animal")
         var main = document.getElementById("main")
 
-        var left = (currentAnimal.position.x + position.x * plansSpeed[currentAnimal.position.z - 1]) / 1920 * main.offsetWidth
+        var left = (currentAnimal.position.x - position.x * plansSpeed[currentAnimal.position.z - 1]) / 1920 * main.offsetWidth
         var top = (currentAnimal.position.y) / 1080 * 100
         animal.style.left = left + "px"
         animal.style.top = top + "%"
@@ -59,15 +59,8 @@ function aiming() {
     function updateBow() {
         var main = document.getElementById("main")
 
-        if (position.x != targetPosition.x) {
-            position.x = position.x * 0.98 + targetPosition.x * 0.02
-        }
-        if (position.y != targetPosition.y) {
-            position.y = position.y * 0.98 + targetPosition.y * 0.02
-        }
-
-        var bottom = position.y / 1080 * 100
-        var left = -position.x / 1920 * main.offsetWidth
+        var bottom = - position.y / 1080 * 100
+        var left = position.x / 1920 * main.offsetWidth
 
         var bowNode = document.getElementById("bow")
         bowNode.style.bottom = bottom + "%"
@@ -76,6 +69,10 @@ function aiming() {
         var arrowNode = document.getElementById("arrow")
         arrowNode.style.bottom = bottom + "%"
         arrowNode.style.left = left + "px"
+
+        // REMOVE
+        viseur.style.left = (1920/2 + position.x) / 1920 * main.offsetWidth
+        viseur.style.top = position.y / 1080 * main.offsetHeight
     }
 
     function updateScreen() {
@@ -90,15 +87,18 @@ function aiming() {
         var canvasWidth = canvas.offsetWidth
     
         targetPosition = {
-            x: (1 - coordinates.x / canvasWidth * 2) * 400
-            , y: (1 - coordinates.y / canvasHeight * 2) * 400
+            x: (coordinates.x / canvasWidth * 2 - 1) * 400
+            , y: (coordinates.y / canvasHeight * 2 - 1) * 400
         }
 
+        show.innerHTML = JSON.stringify(targetPosition)
+        
         targetPosition.x = Math.min(targetPosition.x, MAX_POSITION.x)
         targetPosition.x = Math.max(targetPosition.x, -MAX_POSITION.x)
+        
+        targetPosition.y = Math.min(targetPosition.y, MAX_POSITION.y)
+        targetPosition.y = Math.max(targetPosition.y, 0)
 
-        targetPosition.y = Math.min(targetPosition.y, 0)
-        targetPosition.y = Math.max(targetPosition.y, -MAX_POSITION.y)
     }
 
     document.getElementById("animal").src = currentAnimal.picture
