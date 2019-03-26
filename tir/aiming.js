@@ -1,8 +1,8 @@
 function aiming() {
 
     var nbPlans = 5
-    var position = { x: 0, y: 0 }
-    var targetPosition = { x: 0, y: 0 }
+    var position = { x: 0, y: 340 }
+    var targetPosition = { x: 0, y: 340 }
 
     var arrowHittingPoint = { x: 924, y: 320 }
 
@@ -119,8 +119,6 @@ function aiming() {
         var pixelData = context2d.getImageData(0, 0, 1, 1).data
         var transparency = pixelData[3]
 
-        show.innerHTML = JSON.stringify(transparency)
-
         return transparency > 196
     }
 
@@ -163,6 +161,6 @@ function aiming() {
         updateScreen: updateScreen
         , mouseMoved: mouseMoved
         , clicked: function () { return "shooting" }
-        , start: function () { }
+        , start: function () { document.getElementById("bow").classList.remove("hidden")}
     }
 }

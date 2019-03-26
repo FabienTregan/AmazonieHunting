@@ -16,10 +16,19 @@ function shooting() {
     }
 
     function showAnimationFrame(n) {
-        arrow.classList.remove("arrow0", "arrow1", "arrow2", "arrow3", "arrow4", "arrow5", "arrow6")
+        arrow.classList.remove("arrow0")
+        arrow.classList.remove("arrow1")
+        arrow.classList.remove("arrow2")
+        arrow.classList.remove("arrow3")
+        arrow.classList.remove("arrow4")
+        arrow.classList.remove("arrow5")
+        arrow.classList.remove("arrow6")
         arrow.classList.add(arrowAnimationFrameClass(n))
 
-        bow.classList.remove("bow0", "bow1", "bow2", "bow3")
+        bow.classList.remove("bow0")
+        bow.classList.remove("bow1")
+        bow.classList.remove("bow2")
+        bow.classList.remove("bow3")
         bow.classList.add(bowAnimationFrameClass(n))
     }
 

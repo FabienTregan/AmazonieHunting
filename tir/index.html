@@ -14,7 +14,7 @@
         }
 
         #main {
-            position: absolute;
+            /* position: absolute; */
             overflow: hidden;
         }
 
@@ -49,7 +49,6 @@
         }
 
         #animal,
-        #bow,
         {
             opacity: 0;
         }
@@ -62,10 +61,18 @@
             width: 110%;
             z-index: 120;
         }
+        
+        #bow.hidden {
+            opacity: 0;
+        }
+        
+        #bow {
+            transition: opacity 0.5s;
+        }
 
         #bow img,
         #arrow img {
-            display: none;
+            opacity: 0;
             width: 100%;
             height: auto;
         }
@@ -75,7 +82,7 @@
         #bow.bow2 .bow2,
         #bow.bow3 .bow3,
         #bow.bow4 .bow4 {
-            display: block;
+            opacity: 1;
         }
 
         #arrow.arrow1 .arrow1,
@@ -83,8 +90,10 @@
         #arrow.arrow3 .arrow3,
         #arrow.arrow4 .arrow4,
         #arrow.arrow5 .arrow5 {
-            display: block;
+            opacity: 1;
         }
+
+        
     </style>
 </head>
 
@@ -98,7 +107,7 @@
         <div class="plan" style="z-index:100"><img id="plan1" src="plan1.png"></div>
         <img id="animal" style="z-index: 10;" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
 
-        <div id="bow" class="bow0">
+        <div id="bow" class="bow0 hidden">
             <img src="bow0.png" class="bow0">
             <img src="bow1.png" class="bow1">
             <img src="bow2.png" class="bow2">
@@ -170,8 +179,7 @@
         initCurrentAnimal()
 
         const states = {
-            animalAppearing: appearing(document.getElementById("animal"), "bowAppearing")
-            , bowAppearing: appearing(document.getElementById("bow"), "aiming")
+            animalAppearing: appearing(document.getElementById("animal"), "aiming")
             , aiming: aiming()
             , shooting: shooting()
         }
