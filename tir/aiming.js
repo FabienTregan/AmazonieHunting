@@ -96,24 +96,17 @@ function aiming() {
             && (impact.y > animalCoords.y)
             && (impact.y < animalCoords.y + animalImg.naturalHeight)
 
-        // REMOVE
+        var hitting = false
         if (isImpactInAnimalRectangle) {
             var impactInAnimalImage = {
                 x: impact.x - animalCoords.x
                 , y: impact.y - animalCoords.y
             }
             if (isPixelOpac(animalImg, impactInAnimalImage)) {
-                viseur.style.borderColor = "red"
-            } else {
-                viseur.style.borderColor = "orange"
+                hitting = true
             }
-        } else {
-            viseur.style.borderColor = "lime"
         }
 
-        var impactScreenCoords = scaleToActualScreenSize(impact)
-        viseur.style.left = impactScreenCoords.x
-        viseur.style.top = impactScreenCoords.y
     }
 
     function isPixelOpac(img, coords) {
