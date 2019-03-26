@@ -96,17 +96,16 @@ function aiming() {
             && (impact.y > animalCoords.y)
             && (impact.y < animalCoords.y + animalImg.naturalHeight)
 
-        var hitting = false
+        targetHit = false
         if (isImpactInAnimalRectangle) {
             var impactInAnimalImage = {
                 x: impact.x - animalCoords.x
                 , y: impact.y - animalCoords.y
             }
             if (isPixelOpac(animalImg, impactInAnimalImage)) {
-                hitting = true
+                targetHit = true
             }
         }
-
     }
 
     function isPixelOpac(img, coords) {
@@ -161,6 +160,6 @@ function aiming() {
         updateScreen: updateScreen
         , mouseMoved: mouseMoved
         , clicked: function () { return "shooting" }
-        , start: function () { document.getElementById("bow").classList.remove("hidden")}
+        , start: function () { document.getElementById("bow").classList.remove("hidden") }
     }
 }

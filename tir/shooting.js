@@ -52,8 +52,10 @@ function shooting() {
     function start() {
         startTimeMs = Date.now()
 
-        // var animalId = getParameter("animal")
-        // window.setTimeout(function() {window.location.href = "../congratulation?animal=" + animalId}, 1500)
+        if (targetHit) {
+            var animalId = getParameter("animal")
+            window.setTimeout(function () { window.location.href = "../congratulation?animal=" + animalId }, 1500)
+        }
     }
 
     return {
