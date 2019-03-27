@@ -4,6 +4,7 @@
 
     <script src="../lib/wideScreen.js"></script>
     <script src="../lib/popup.js"></script>
+    <script src="../lib/jsonParameter.js"></script>
 
     <style>
         @import '../lib/popup.css';
@@ -139,8 +140,8 @@
         <img class="clickArea animal" src="..\carte\pecari.png" style="left: 61.4%; top: 59.1%;" onclick="show_sheet('pecari')">
         <img class="clickArea animal" src="..\carte\pacu.png" style="left: 76.0%; top: 59.1%;" onclick="show_sheet('pacu')">
 
-        <div id="saison_seche" class="clickArea" style="left: 19%; top: 87%; width: 12%; height: 7.5%;" onclick="window.location.href='../carte?season=dry'"></div>
-        <div id="saison_humide" class="clickArea" style="left: 69%; top: 87%; width: 12%; height: 7.5%;" onclick="window.location.href='../carte?season=wet'"></div>
+        <div id="saison_seche" class="clickArea" style="left: 19%; top: 87%; width: 12%; height: 7.5%;" onclick="gotoMap('dry')"></div>
+        <div id="saison_humide" class="clickArea" style="left: 69%; top: 87%; width: 12%; height: 7.5%;" onclick="gotoMap('wet')"></div>
 
         <div class="clickArea" style="left: 4%; bottom: 7%; width: 1.5%; height: 2.5%;" onclick="showCredits()"></div>
         <div id="credits">
@@ -255,5 +256,12 @@
             popup_show()
         }
 
+        function gotoMap(which) {
+            var state = {
+                season: which
+            }
+
+            window.location.href='../carte?state=' + jsonParameter.encode(state)
+        }
     </script>
 </body>

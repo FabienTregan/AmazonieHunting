@@ -6,7 +6,7 @@
     <script src="../lib/wideScreen.js"></script>
     <script src="../lib/preloader.js"></script>
     <script src="../lib/popup.js"></script>
-
+    <script src="../lib/jsonParameter.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
@@ -616,7 +616,9 @@
             } else if (currentArea.fruit) {
                 advisorState("onFruit")
                 document.getElementById("goShoot").onclick = function () {
-                    window.location.href = '../arrow?season=' + season + '&animal=' + currentArea.fruit
+                    state.animal = currentArea.fruit
+                    var encodedState = jsonParameter.encode(state)
+                    window.location.href = '../arrow?state=' + encodedState
                 }
             } else {
                 advisorState("none")
@@ -732,20 +734,6 @@
             return area
         }
 
-        function getParameter(paramName) {
-            var url = window.location.href;
-            var paramWithEgal = paramName + "="
-            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
-            url = url.substring(paramStart)
-            var paramEnd = url.search("&")
-
-            var param = paramEnd > 0 ?
-                url.substring(0, paramEnd)
-                : url
-
-            return decodeURIComponent(param)
-        }
-
         function trackToAdvice(track) {
             'Ce sont des traces de <b>' + advice.name + '</b><br><br>' + advice.description
         }
@@ -756,8 +744,8 @@
         }
 
         var imagesToBeLoaded = allSeasonsImages;
-        var season = getParameter('season')
-        var seasonDependantImages = (season == 'wet') ? wetSeasonImages : drySeasonImages
+        var state = jsonParameter.read("state")
+        var seasonDependantImages = (state.season == 'wet') ? wetSeasonImages : drySeasonImages
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
 
         loadImages(imagesToBeLoaded, initGame)

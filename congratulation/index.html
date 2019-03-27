@@ -3,6 +3,7 @@
     <meta charset="utf-8" />
 
     <script src="../lib/wideScreen.js"></script>
+    <script src="../lib/jsonParameter.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
@@ -34,23 +35,14 @@
         <div id="back_home" class="clickArea" style="left: 2.5%; top: 5.7%; width: 5.5%; height: 8%;" onclick="window.location.href='..'"></div>
         <img class="fond" src="index.jpg" />
         <img id="picto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
-        <div class="clickArea" style="top: 87%; left: 45%; width: 10%; height: 7%;" onclick="window.location.href='./season'"></div>
+        <div class="clickArea" style="top: 87%; left: 32.5%; width: 14.5%; height: 7%;" onclick="continueHunting()"></div>
+        <div class="clickArea" style="top: 87%; left: 53.0%; width: 14.5%; height: 7%;" onclick="window.location.href='./season'"></div>
     </div>
     
     <script>
 
-        function getParameter(paramName) {
-            var url = window.location.href;
-            var paramWithEgal = paramName + "="
-            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
-            url = url.substring(paramStart)
-            var paramEnd = url.search("&")
-
-            var param = paramEnd > 0 ?
-                url.substring(0, paramEnd)
-                : url
-
-            return decodeURIComponent(param)
+        function continueHunting() {
+            window.location="../carte/?state=" + jsonParameter.encode(state)
         }
 
         var pictos = {
@@ -64,8 +56,9 @@
             pecari: "../carte/pecari.png",
         }
 
-        var animalId = getParameter("animal")
-        document.getElementById("picto").src = pictos[animalId]
+        var state = jsonParameter.read("state")
+        var hunted = state.hunted
+        document.getElementById("picto").src = pictos[hunted[0]]
 
     </script>
 </body>

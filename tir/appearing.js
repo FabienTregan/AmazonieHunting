@@ -1,4 +1,4 @@
-function appearing(element, nextState) {
+function appearing(element, nextActivity) {
     var opacity = 0
 
     function updateScreen() {
@@ -6,23 +6,9 @@ function appearing(element, nextState) {
         element.style.opacity = opacity
 
         if (opacity >= 1) {
-            return nextState
+            return nextActivity
         }
     }
-
-    function getParameter(paramName) {
-        var url = window.location.href;
-        var paramWithEgal = paramName + "="
-        var paramStart = url.search(paramWithEgal) + paramWithEgal.length
-        url = url.substring(paramStart)
-        var paramEnd = url.search("&")
-
-        var param = paramEnd > 0 ?
-            url.substring(0, paramEnd)
-            : url
-
-        return decodeURIComponent(param)
-    }    
 
     return {
         updateScreen: updateScreen

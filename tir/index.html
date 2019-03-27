@@ -4,6 +4,7 @@
     <script src="aiming.js"></script>
     <script src="appearing.js"></script>
     <script src="shooting.js"></script>
+    <script src="../lib/jsonParameter.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
@@ -134,7 +135,7 @@
     <script>
         "use strict";
 
-        var currentState
+        var currentActivity
         var targetHit = false
 
         var animals = {
@@ -168,65 +169,44 @@
             }
 
         }
+        
+        var state = jsonParameter.read("state")
+        var currentAnimal = animals[state.animal]
 
-        var currentAnimal
-
-        function initCurrentAnimal() {
-            var animalId = getParameter("animal")
-            currentAnimal = animals[animalId]
-
-        }
-
-        initCurrentAnimal()
-
-        const states = {
+        const activities = {
             animalAppearing: appearing(document.getElementById("animal"), "aiming")
             , aiming: aiming()
             , shooting: shooting()
         }
 
-        function state(s) {
+        function activity(s) {
             if (s) {
-                currentState = states[s]
-                currentState.start()
+                currentActivity = activities[s]
+                currentActivity.start()
             }
         }
 
         function updateScreen() {
-            state(currentState.updateScreen())
+            activity(currentActivity.updateScreen())
             requestAnimationFrame(updateScreen)
-        }
-
-        function getParameter(paramName) {
-            var url = window.location.href;
-            var paramWithEgal = paramName + "="
-            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
-            url = url.substring(paramStart)
-            var paramEnd = url.search("&")
-
-            var param = paramEnd > 0 ?
-                url.substring(0, paramEnd)
-                : url
-
-            return decodeURIComponent(param)
         }
 
         function callbacks() {
             return {
                 mouseMoved: function (e) {
-                    var nextState = currentState.mouseMoved(e)
-                    state(nextState)
+                    var nextActivity = currentActivity.mouseMoved(e)
+                    activity(nextActivity)
                 }
                 , mouseClicked: function (e) {
-                    var nextState = currentState.clicked(e)
-                    state(nextState)
+                    var nextActivity = currentActivity.clicked(e)
+                    activity(nextActivity)
                 }
             }
         }
 
-        state("animalAppearing")
+        activity("animalAppearing")
         window.addEventListener('load', function () {
-            states.aiming.updateScreen()
+            activities.aiming.updateScreen()
             addGesturesEventListeners("main", callbacks())
             updateScreen()
         })

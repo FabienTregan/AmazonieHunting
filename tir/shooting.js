@@ -9,7 +9,7 @@ function shooting() {
 
         if (animationFrameNumber > 8) {
             animationFrameNumber = 0
-            state("aiming")
+            activity("aiming")
         }
 
         showAnimationFrame(animationFrameNumber)
@@ -53,8 +53,15 @@ function shooting() {
         startTimeMs = Date.now()
 
         if (targetHit) {
-            var animalId = getParameter("animal")
-            window.setTimeout(function () { window.location.href = "../congratulation?animal=" + animalId }, 1500)
+            var state = jsonParameter.read("state") 
+
+            if(!state.hunted) {
+                state.hunted = []
+            }
+            state.hunted.push(state.animal)
+            delete state.animal
+
+            window.setTimeout(function () { window.location.href = "../congratulation?state=" + jsonParameter.encode(state) }, 1500)
         }
     }
 

@@ -4,6 +4,7 @@
 
     <script src="../lib/wideScreen.js"></script>
     <script src="lib/gestures.js"></script>
+    <script src="../lib/jsonParameter.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
@@ -186,12 +187,9 @@
                 .getElementById('selectedImg')
                 .setAttribute('src', arrows[arrow].selectedImg)
 
-            var animal = getParameter('animal')
-            console.log({ animal: animal, arrow: arrow, test: animal == arrow })
-
             var advisorText
             var advisorButton = document.getElementById('advisorButton')
-            if (arrow == animal) {
+            if (arrow == state.animal) {
                 advisorText = arrows[arrow].advice
                 advisorButton.classList.add('shown')
             } else {
@@ -202,20 +200,6 @@
             document
                 .getElementById('advisor_text')
                 .innerHTML = advisorText
-        }
-
-        function getParameter(paramName) {
-            var url = window.location.href;
-            var paramWithEgal = paramName + '='
-            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
-            url = url.substring(paramStart)
-            var paramEnd = url.search('&')
-
-            var param = paramEnd > 0 ?
-                url.substring(0, paramEnd)
-                : url
-
-            return decodeURIComponent(param)
         }
 
         function setSeason(season) {
@@ -236,11 +220,12 @@
         }
 
         function validate() {
-            window.location.href = "../tir?animal=" + getParameter("animal")
+            var stateAsString = jsonParameter.encode(state)
+            window.location.href = "../tir?state=" + stateAsString
         }
 
-        var season = getParameter('season')
-        setSeason(season)
+        var state = jsonParameter.read("state")
+        setSeason(state.season)
 
     </script>
 
