@@ -29,8 +29,8 @@
             position: absolute;
             height: 100%;
             width: 100%;
-            top:0;
-            left:0;
+            top: 0;
+            left: 0;
         }
 
         #main svg {
@@ -58,8 +58,8 @@
 
         #advisor {
             position: absolute;
-            bottom:0;
-            left:0;
+            bottom: 0;
+            left: 0;
             width: 34.38%;
             height: 27.04%;
 
@@ -148,37 +148,45 @@
         "use strcit";
 
         var arrows = {
-            hocco: {
-                selectedImg: 'hocco.png'
-                , advice: 'C’est un bon choix ! L’ embout assomoir en carapace de tortue est utile pour ne pas abîmer les plumes.'
-            }
-            , tapir: {
+            tapir: {
                 selectedImg: 'tapir.png'
                 , advice: 'L’ embout élancé en bambou est parfait pour un gros gibier. Son empennage en plume va permettre à la flèche d’aller loin et droit.'
+                , hint: "Pour ce gros gibier, je choisis une flèche avec un embout solide, imposant et saillant."
             }
-            , sapajou: {
-                selectedImg: 'sapajou.png'
-                , advice: 'A l’arc, la flèche doit présenter une longue armature de bois dur, dentelée ou lancéolée. Avec un peu de curare, c’est encore plus efficace !'
-            }
-            , daguet: {
-                selectedImg: 'daguet.png'
-                , advice: 'Une flèche avec une pointe en os est nécessaire pour ce gros gibier.'
+            , hocco: {
+                selectedImg: 'hocco.png'
+                , advice: 'C’est un bon choix ! L’ embout assomoir en carapace de tortue est utile pour ne pas abîmer les plumes.'
+                , hint: "Chez l’hocco, je récupère aussi les plumes. Je choisis ma flèche en conséquence."
             }
             , hocco_wet: {
                 selectedImg: 'hocco_wet.png'
                 , advice: 'L’ embout assomoir en carapace de tortue ou en bois est utile pour ne pas abîmer les plumes.'
+                , hint: "Chez l’hocco, je récupère aussi les plumes. Je choisis ma flèche en conséquence."
+            }
+            , sapajou: {
+                selectedImg: 'sapajou.png'
+                , advice: 'A l’arc, la flèche doit présenter une longue armature de bois dur, dentelée ou lancéolée. Avec un peu de curare, c’est encore plus efficace !'
+                , hint: ""
             }
             , pacu: {
                 selectedImg: 'pacu.png'
                 , advice: 'Bon choix ! Une pointe à plusieurs aiguilles en métal sera adaptée au poisson.'
+                , hint: "Le poisson est une proie particulière. Je dois me donner toutes les chances de le piquer !"
             }
             , pecari: {
                 selectedImg: 'pecari.png'
                 , advice: 'Pour flécher ce gros gibier, une pointe à bambou élancée type poignard est indispensable. L’empennage est en plumes de rapaces.'
+                , hint: "C’est un gibier gros et large, je vais choisir la flèche la plus adaptée..."
+            }
+            , daguet: {
+                selectedImg: 'daguet.png'
+                , advice: 'Une flèche avec une pointe en os est nécessaire pour ce gros gibier.'
+                , hint: "Pour un cervidé, je vais privilégier une flèche fine à l’embout très robuste. Je choisis…"
             }
             , agouti: {
                 selectedImg: 'agouti.png'
                 , advice: 'Pour ce petit gibier, un simple embout entaillé fera l’affaire.'
+                , hint: "Pour choisir ma flèche, je pense au type de gibier. L’agouti est petit..."
             }
         }
 
@@ -197,9 +205,13 @@
                 advisorButton.classList.remove('shown')
             }
 
+            showAsvisorMessage(advisorText)
+        }
+
+        function showAsvisorMessage(s) {
             document
                 .getElementById('advisor_text')
-                .innerHTML = advisorText
+                .innerHTML = s
         }
 
         function setSeason(season) {
@@ -226,6 +238,7 @@
 
         var state = jsonParameter.read("state")
         setSeason(state.season)
+        showAsvisorMessage(arrows[state.animal].hint)
 
     </script>
 
