@@ -9,8 +9,13 @@
         @import '../lib/wideScreen.css';
         @import '../lib/clickArea.css';
 
+        @font-face {
+            font-family: 'Source Sans Black';
+            src: url('../font/SourceSansPro-Black.otf') format('woff');
+        }
+
         body {
-            font-family: 'Source Sans';
+            font-family: 'Source Sans Black';
             color: white;
         }
 
@@ -19,12 +24,73 @@
             width: 100%;
         }
 
-        #picto {
+        #picto1,
+        #picto2,
+        #picto3 {
             position: absolute;
             width: 13.00%;
             height: 21.00%;
             top: 44.00%;
-            left: 43.30%;
+        }
+
+        #picto1 {
+            left: 28.125%;
+        }
+
+        #picto2 {
+            left: 43.75%;
+        }
+
+        #picto3 {
+            left: 59.375%;
+        }
+
+        #buttons {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #buttons.complete,
+        #buttons.incomplete {
+            display: block;
+        }
+
+        #buttons img {
+            position: absolute;
+            cursor: pointer;
+            width: 13.80%;
+            height: 7.41%;
+            top: 87.04%;
+        }
+
+        .huntAgain {
+            left: 32.55%
+        }
+
+        .toVillage {
+            left: 53.70%
+        }
+
+        .complete .toVillage {
+            left: 43.10%;
+        }
+
+        .or {
+            position: absolute;
+            left: 45%;
+            top: 89.5%;
+            width: 10%;
+            text-align: center;
+            font-size: 0.5em;
+        }
+
+        .complete .or,
+        .complete .huntAgain {
+            display: none;
         }
     </style>
 </head>
@@ -34,15 +100,24 @@
     <div id="main" class="wideScreen">
         <div id="back_home" class="clickArea" style="left: 2.5%; top: 5.7%; width: 5.5%; height: 8%;" onclick="window.location.href='..'"></div>
         <img class="fond" src="index.jpg" />
-        <img id="picto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
-        <div class="clickArea" style="top: 87%; left: 32.5%; width: 14.5%; height: 7%;" onclick="continueHunting()"></div>
-        <div class="clickArea" style="top: 87%; left: 53.0%; width: 14.5%; height: 7%;" onclick="window.location.href='./season'"></div>
+        <img id="picto1" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+        <img id="picto2" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+        <img id="picto3" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+
+        <div id="buttons">
+            <img class="huntAgain" src="hunt_again.png" onclick="continueHunting()">
+            <div class="or">OU</div>
+            <img class="toVillage" src="to_village.png" onclick="window.location.href='./season'">
+
+        </div>
     </div>
-    
+
     <script>
 
+        const MAX_NB_ANIMALS = 3
+
         function continueHunting() {
-            window.location="../carte/?state=" + jsonParameter.encode(state)
+            window.location = "../carte/?state=" + jsonParameter.encode(state)
         }
 
         var pictos = {
@@ -57,8 +132,30 @@
         }
 
         var state = jsonParameter.read("state")
-        var hunted = state.hunted
-        document.getElementById("picto").src = pictos[hunted[0]]
+
+        function showPictos() {
+            var hunted = state.hunted
+
+            for (var i = 0; i < hunted.length; i++) {
+                document.getElementById("picto" + (i + 1)).src = pictos[hunted[i]]
+            }
+        }
+
+        function showButtons() {
+            var buttons = document.getElementById("buttons")
+
+            var status
+            if (state.hunted.length >= MAX_NB_ANIMALS) {
+                status = "complete"
+            } else {
+                status = "incomplete"
+            }
+
+            buttons.classList.add(status)
+        }
+
+        showButtons()
+        showPictos()
 
     </script>
 </body>
