@@ -101,7 +101,7 @@
             width: 12.50%;
             height: 20.37%;
 
-            animation: 0.8s ease-in-out 0s infinite alternate swing;
+            animation: 1s ease-in-out 0s infinite alternate picto_animation;
         }
 
         .popup {
@@ -112,13 +112,21 @@
             background-size: cover;
         }
 
-        @keyframes swing {
+        @keyframes picto_animation {
             0% {
                 transform: scale(1);
             }
 
-            100% {
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
                 transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
             }
         }
     </style>
