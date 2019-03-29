@@ -449,6 +449,8 @@
 
             addEventListenersOnMainCanvas()
 
+            executeArea()
+
             window.requestAnimationFrame(mainLoop)
         }
 
@@ -736,13 +738,16 @@
 
         function hideHelp() {
             document.getElementById("help").classList.remove("shown")
-            executeArea()
         }
 
         var imagesToBeLoaded = allSeasonsImages;
         var state = jsonParameter.read("state")
         var seasonDependantImages = (state.season == 'wet') ? wetSeasonImages : drySeasonImages
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
+
+        if(state.hunted && (state.hunted.length > 0) ) {
+            hideHelp()
+        }
 
         loadImages(imagesToBeLoaded, initGame)
     </script>
