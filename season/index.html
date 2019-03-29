@@ -104,25 +104,6 @@
             animation: 0.8s ease-in-out 0s infinite alternate swing;
         }
 
-        #credits {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1000;
-        }
-
-        #credits.shown {
-            display: block;
-        }
-
-        #credits img {
-            height: 100%;
-            width: 100%;
-        }
-
         .popup {
             height: 88.89vh;
             width: 88.89vh;
@@ -165,11 +146,6 @@
         <div id="saison_seche" class="clickArea" style="left: 19%; top: 87%; width: 12%; height: 7.5%;" onclick="gotoMap('dry')"></div>
         <div id="saison_humide" class="clickArea" style="left: 69%; top: 87%; width: 12%; height: 7.5%;" onclick="gotoMap('wet')"></div>
 
-        <div class="clickArea" style="left: 4%; bottom: 7%; width: 1.5%; height: 2.5%;" onclick="showCredits()"></div>
-        <div id="credits">
-            <img src="credits.png">
-            <div class="clickArea" style="right: 9%; bottom: 13%; width: 7%; height: 7.5%;" onclick="hideCredits()"></div>
-        </div>
     </div>
 
     <div id="popups" class="wideScreen displayed">
@@ -264,16 +240,6 @@
 
         function update_sheet_picture(picture) {
             document.getElementById("animalPicture").setAttribute("src", picture)
-        }
-
-        function showCredits() {
-            var credits = document.getElementById("credits")
-            credits.classList.add("shown")
-        }
-
-        function hideCredits() {
-            var credits = document.getElementById("credits")
-            credits.classList.remove("shown")
         }
 
         function show_sheet(animalId) {
