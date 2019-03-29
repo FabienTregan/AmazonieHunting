@@ -156,7 +156,7 @@ function aiming() {
         targetPosition.x = Math.max(targetPosition.x, -MAX_POSITION.x)
 
         targetPosition.y = Math.min(targetPosition.y, MAX_POSITION.y)
-        targetPosition.y = Math.max(targetPosition.y, 97)
+        targetPosition.y = Math.max(targetPosition.y, 0)
 
     }
 
