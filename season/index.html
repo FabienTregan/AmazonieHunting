@@ -100,8 +100,6 @@
             cursor: pointer;
             width: 12.50%;
             height: 20.37%;
-
-            animation: 1s ease-in-out 0s infinite alternate picto_animation;
         }
 
         .popup {
@@ -112,16 +110,23 @@
             background-size: cover;
         }
 
-        @keyframes picto_animation {
+        .bumping {
+            animation: 4s linear 0s infinite bumping;
+        }
+        @keyframes bumping {
             0% {
                 transform: scale(1);
             }
 
-            50% {
+            90% {
                 transform: scale(1);
             }
 
-            75% {
+            92% {
+                transform: scale(0.98);
+            }
+
+            96% {
                 transform: scale(1.02);
             }
 
@@ -270,5 +275,22 @@
 
             window.location.href = '../carte?state=' + jsonParameter.encode(state)
         }
-    </script>
+
+        function startBumping() {
+            var animals = document.getElementsByClassName("animal")
+            
+            const inbetweenDelay = 350
+            for(var i=0; i < animals.length; i++) {
+                setTimeout(startBumping(animals[i]), i * inbetweenDelay)
+            }
+
+            function startBumping(animal) {
+                return function() {
+                    animal.classList.add("bumping")
+                }
+            }
+        }
+
+        startBumping();
+        </script>
 </body>
