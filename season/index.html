@@ -57,7 +57,7 @@
         }
 
         #animalName {
-            line-height: 1.15em; 
+            line-height: 1.15em;
             margin-right: 0.20em;
             font-size: 1.45em;
             font-family: 'Source Sans Black';
@@ -113,21 +113,26 @@
         .bumping {
             animation: 4s linear 0s infinite bumping;
         }
+
         @keyframes bumping {
             0% {
                 transform: scale(1);
             }
 
-            90% {
+            30% {
                 transform: scale(1);
             }
 
-            92% {
+            32% {
                 transform: scale(0.98);
             }
 
-            96% {
+            36% {
                 transform: scale(1.02);
+            }
+
+            40% {
+                transform: scale(1);
             }
 
             100% {
@@ -184,7 +189,7 @@
                 , latinName: "Anima"
                 , text: "<br>" +
                     "<br>" +
-                        ""
+                    ""
                 , picture: ".jpg"
             }
             , hocco: {
@@ -278,19 +283,19 @@
 
         function startBumping() {
             var animals = document.getElementsByClassName("animal")
-            
+
             const inbetweenDelay = 350
-            for(var i=0; i < animals.length; i++) {
+            for (var i = 0; i < animals.length; i++) {
                 setTimeout(startBumping(animals[i]), i * inbetweenDelay)
             }
 
             function startBumping(animal) {
-                return function() {
+                return function () {
                     animal.classList.add("bumping")
                 }
             }
         }
 
         startBumping();
-        </script>
+    </script>
 </body>
