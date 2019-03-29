@@ -1,0 +1,55 @@
+<head>
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="../lib/wideScreen.js"></script>
+
+    <style>
+        @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
+
+        body {
+            font-family: 'Source Sans';
+            color: white;
+        }
+
+        #main img {
+            height: 100%;
+            width: 100%;
+        }
+
+        #credits {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        #credits.shown {
+            display: block;
+        }
+
+        #credits img {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body oncontextmenu='event.preventDefault()'>
+
+    <div id="main" class="wideScreen">
+        <img src="index.jpg" />
+
+        <div class="clickArea" style="top: 87%; left: 12.5%; width: 13.5%; height: 7%;" onclick="window.location.href='../season'"></div>
+
+        <div class="clickArea" style="top: 87%; left: 61.5%; width: 7.5%; height: 7%;" onclick="window.location.href='../season'"></div>
+
+    </div>
+
+    <script>
+    </script>
+</body>
