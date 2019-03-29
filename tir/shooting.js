@@ -5,11 +5,26 @@ function shooting() {
     var startTimeMs
 
     function updateScreen() {
-        var animationFrameNumber = Math.floor(1 + (Date.now() - startTimeMs) / ARROW_FRAME_DURATION)
 
+        var animationProgress = 1 + (Date.now() - startTimeMs) / ARROW_FRAME_DURATION
+
+        if (targetHit) {
+            if (animationProgress > 5.5) {
+                var impact = document.getElementById("impact")
+                if (animationProgress < 6.25) {
+                    impact.classList.add("shown")
+                } else {
+                    impact.classList.remove("shown")
+                }
+            }
+        }
+
+        var animationFrameNumber = Math.floor(animationProgress)
         if (animationFrameNumber > 8) {
-            animationFrameNumber = 0
-            activity("aiming")
+            if (!targetHit) {
+                animationFrameNumber = 0
+                activity("aiming")
+            }
         }
 
         showAnimationFrame(animationFrameNumber)
@@ -53,15 +68,15 @@ function shooting() {
         startTimeMs = Date.now()
 
         if (targetHit) {
-            var state = jsonParameter.read("state") 
+            var state = jsonParameter.read("state")
 
-            if(!state.hunted) {
+            if (!state.hunted) {
                 state.hunted = []
             }
             state.hunted.push(state.animal)
             delete state.animal
 
-            window.setTimeout(function () { window.location.href = "../congratulation?state=" + jsonParameter.encode(state) }, 1500)
+            window.setTimeout(function () { window.location.href = "../congratulation?state=" + jsonParameter.encode(state) }, 1250)
         }
     }
 

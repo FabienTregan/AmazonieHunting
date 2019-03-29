@@ -106,6 +106,12 @@ function aiming() {
                 targetHit = true
             }
         }
+
+        var impactImagePosition = scaleToActualScreenSize(impact)
+        var impactImage = document.getElementById("impact")
+        impactImage.style.left = impactImagePosition.x
+        impactImage.style.top = impactImagePosition.y
+        impactImage.style.zIndex = animalImg.style.zIndex+1
     }
 
     function isPixelOpac(img, coords) {

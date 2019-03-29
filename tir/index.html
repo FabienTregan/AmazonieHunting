@@ -15,7 +15,6 @@
         }
 
         #main {
-            /* position: absolute; */
             overflow: hidden;
         }
 
@@ -24,7 +23,6 @@
         }
 
         #breadcrumbs {
-            position: absolute;
             top: 2.0833%;
             left: 0;
             width: 33.3333%;
@@ -36,7 +34,6 @@
         }
 
         .plan {
-            position: absolute;
             left: 0;
             top: 0;
             width: 100%;
@@ -44,7 +41,6 @@
         }
 
         .plan img {
-            position: absolute;
             width: auto;
             height: 100%;
         }
@@ -69,6 +65,15 @@
         
         #bow {
             transition: opacity 0.5s;
+        }
+
+        #impact {
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .shown {
+            display: block !important;
         }
 
         #bow img,
@@ -126,6 +131,8 @@
             <img src="arrow5.png" class="arrow5">
         </div>
 
+        <img id="impact" src="impact.png">
+
         <div id="breadcrumbs" style="z-index: 1000;">
             <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
         </div>
@@ -167,11 +174,21 @@
                 picture: "agouti.gif"
                 , position: { x: 230, y: 630, z: 2 }
             }
+            , pacu: {
+                picture: "pacu.gif"
+                , position: { x: 1000, y: 630, z: 2 }
+            }
 
         }
         
         var state = jsonParameter.read("state")
         var currentAnimal = animals[state.animal]
+
+        if(state.animal == "pacu") {
+            document
+                .getElementById("plan2")
+                .src = "plan2_pacu.png"
+        }
 
         const activities = {
             animalAppearing: appearing(document.getElementById("animal"), "aiming")
