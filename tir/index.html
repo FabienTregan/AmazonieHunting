@@ -3,6 +3,7 @@
     <script src="lib/gestures.js"></script>
     <script src="aiming.js"></script>
     <script src="appearing.js"></script>
+    <script src="imitating.js"></script>
     <script src="shooting.js"></script>
     <script src="../lib/jsonParameter.js"></script>
 
@@ -10,8 +11,15 @@
         @import '../lib/wideScreen.css';
         @import '../lib/clickArea.css';
 
+        @font-face {
+            font-family: 'Source Sans';
+            src: url('../font/SourceSansPro-Regular.otf') format('woff');
+        }
+
         body {
             overflow: hidden;
+            font-family: 'Source Sans';
+            color: white;
         }
 
         #main {
@@ -23,6 +31,7 @@
         }
 
         #breadcrumbs {
+            z-index: 1000;
             top: 2.0833%;
             left: 0;
             width: 33.3333%;
@@ -45,8 +54,7 @@
             height: 100%;
         }
 
-        #animal,
-        {
+        #animal {
             opacity: 0;
         }
 
@@ -58,11 +66,11 @@
             width: 110%;
             z-index: 120;
         }
-        
+
         #bow.hidden {
             opacity: 0;
         }
-        
+
         #bow {
             transition: opacity 0.5s;
         }
@@ -99,7 +107,34 @@
             opacity: 1;
         }
 
-        
+        #imitation {
+            display: none;
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+        }
+
+        #imitation img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #advisor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 34.38%;
+            height: 27.04%;
+
+            box-sizing: border-box;
+            padding: 1.25% 2% 2.8% 12%;
+
+            background-origin: padding-box;
+            background-size: 100% 100%;
+
+            font-size: 0.6em;
+            line-height: 1.5em;
+        }
     </style>
 </head>
 
@@ -133,7 +168,13 @@
 
         <img id="impact" src="impact.png">
 
-        <div id="breadcrumbs" style="z-index: 1000;">
+        <div id="imitation">
+            <img src="imitation.png">
+            <div class="clickArea" style="left: 28%; bottom: 5%; width: 9.5%; height: 8%;" onclick="imitate()"></div>
+            <div id='advisor'></div>
+        </div>
+
+        <div id="breadcrumbs">
             <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
         </div>
 
@@ -147,44 +188,55 @@
 
         var animals = {
             daguet: {
-                picture: "daguet.gif"
+                name: "daguet"
+                , picture: "daguet.gif"
                 , position: { x: 200, y: 346, z: 3 }
             }
             , sapajou: {
-                picture: "sapajou.gif"
+                name: "sapajou"
+                , picture: "sapajou.gif"
                 , position: { x: 1472, y: 200, z: 2 }
             }
             , hocco: {
-                picture: "hocco.gif"
+                name: "hocco"
+                , picture: "hocco.gif"
                 , position: { x: 1254, y: 443, z: 3 }
+                , sound: "hocco.mp3"
             }
             , hocco_wet: {
-                picture: "hocco.gif"
+                name: "hocco"
+                , picture: "hocco.gif"
                 , position: { x: 1254, y: 443, z: 3 }
+                , sound: "hocco.mp3"
             }
             , tapir: {
-                picture: "tapir.gif"
+                name: "tapir"
+                , picture: "tapir.gif"
                 , position: { x: 533, y: 319, z: 3 }
             }
             , pecari: {
-                picture: "pecari.gif"
+                name: "pecari"
+                , picture: "pecari.gif"
                 , position: { x: 523, y: 600, z: 2 }
+                , sound: "pecari.mp3"
             }
             , agouti: {
-                picture: "agouti.gif"
+                name: "agouti"
+                , picture: "agouti.gif"
                 , position: { x: 230, y: 580, z: 2 }
+                , sound: "agouti.mp3"
             }
             , pacu: {
-                picture: "pacu.gif"
+                name: "pacu"
+                , picture: "pacu.gif"
                 , position: { x: 1000, y: 630, z: 2 }
             }
-
         }
-        
+
         var state = jsonParameter.read("state")
         var currentAnimal = animals[state.animal]
 
-        if(state.animal == "pacu") {
+        if (state.animal == "pacu") {
             document
                 .getElementById("plan2")
                 .src = "plan2_pacu.png"
@@ -221,12 +273,37 @@
             }
         }
 
-        activity("animalAppearing")
-        window.addEventListener('load', function () {
+        function startActivities() {
+            activity("animalAppearing")
+
+            if (document.readyState == "loading") {
+                window.addEventListener('load', go)
+            } else {
+                go()
+            }
+
+            function go() {
+                activities.aiming.updateScreen()
+                addGesturesEventListeners("main", callbacks())
+                updateScreen()
+            }
+        }
+
+        function imitate() {
             activities.aiming.updateScreen()
-            addGesturesEventListeners("main", callbacks())
-            updateScreen()
-        })
+            document.getElementById("imitation").classList.remove("shown")
+
+            var audio = new Audio(currentAnimal.sound)
+            audio.addEventListener("ended", startActivities)
+            audio.play()
+        }
+
+        if (currentAnimal.sound) {
+            document.getElementById("advisor").innerHTML = "Je vais imitier le cri du " + currentAnimal.name + " pour essayer de l'attirer"
+            document.getElementById("imitation").classList.add("shown")
+        } else {
+            startActivities()
+        }
 
     </script>
 
