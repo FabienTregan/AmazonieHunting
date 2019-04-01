@@ -13,6 +13,12 @@
             src: url('../font/SourceSansPro-Regular.otf') format('woff');
         }
 
+        @font-face {
+            font-family: 'Source Sans Italic';
+            src: url('../font/SourceSansPro-It.otf') format('woff');
+        }
+
+
         body {
             font-family: 'Source Sans';
             color: white;
@@ -58,6 +64,9 @@
             width: 100%;
             height: 20%;
             text-align: center;
+            font-size: 0.6em;
+            font-family: 'Source Sans Italic';
+            line-height: 1.75em;
         }
     </style>
 </head>
@@ -87,10 +96,10 @@
         var currentImageNumber = 1
 
         var content = [
-            { src: "image1.jpg", legend: "blabla A" }
-            , { src: "image2.jpg", legend: "blabla B" }
-            , { src: "image3.jpg", legend: "blabla C" }
-            , { src: "image4.jpg", legend: "blabla D" }
+            { src: "arc.jpg", legend: "Arc en bois de culture Parà (Brésil) décoré de fils de coton, d'une vannerie, de plumes noires. Corde en fibres végétales. L 160 cm.<br>Collection du Muséum de Toulouse, MHNT ETH 2015 18 55. Collecte 2014. " }
+            , { src: "pacu.jpg", legend: "Flèche de culture Parà (Brésil) avec 4 pointes en métal ligaturées sur le bois avec de la ficelle en coton vert clair. Penne en plumes. H 122 cm.<br>Collection du Muséum de Toulouse, MHNT ETH 2015 18 59. Collecte 2014. " }
+            , { src: "daguet.jpg", legend: "Flèche de culture Kayapò (Brésil) en bois, bambou, fibres végétales, plumes (empennage) et os (pointe). H 168 cm.<br>Collection du Muséum de Toulouse, ETH AC 1087 4 et 20. Don CARREROT, 1993." }
+            , { src: "agouti.jpg", legend: "Flèche de culture Kayapò (Brésil) en bois, bambou, fibres végétales et plumes. H 156 cm.<br>Collection du Muséum de Toulouse, MHNT ETH AC 1087 13. Don CARREROT, 1993. " }
         ]
 
         function change(n) {
@@ -115,7 +124,7 @@
 
         function legend(n) {
             var legend = document.getElementById("legend")
-            legend.innerHTML = content[n-1].legend
+            legend.innerHTML = content[n - 1].legend
         }
 
         function initContent() {
