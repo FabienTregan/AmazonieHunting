@@ -57,8 +57,8 @@
 
         #advisor {
             position: absolute;
-            bottom:0;
-            left:0;
+            bottom: 0;
+            left: 0;
             width: 34.38%;
             height: 27.04%;
 
@@ -129,7 +129,9 @@
         }
 
         .infos {
-            margin-top: -1%;
+            display: flex;
+            align-items: center;
+            width: 45%;
             left: 50%;
             font-size: 0.6em;
         }
@@ -142,6 +144,10 @@
         #picto,
         #pictoText {
             top: 34.46%;
+        }
+
+        #pictoText {
+            height: 22%;
         }
 
         #footprint,
@@ -159,6 +165,11 @@
         #fruit,
         #fruitText {
             top: 81.09%;
+        }
+
+        #footprintText,
+        #fruitText {
+            height: 11.5%;
         }
 
         #help {
@@ -216,7 +227,7 @@
                 transform: scale(1);
             }
         }
-</style>
+    </style>
 </head>
 
 <body oncontextmenu='event.preventDefault()'>
@@ -226,10 +237,12 @@
         <div id="help" class="shown">
             <img class="background" src="help.jpg">
             <img class="animation" src="help.gif">
-            <div class="clickArea" style="left: 45.10%; top: 6.48%; width: 9.90%; height: 7.13%;" onclick="hideHelp()"></div>
+            <div class="clickArea" style="left: 45.10%; top: 6.48%; width: 9.90%; height: 7.13%;" onclick="hideHelp()">
+            </div>
         </div>
         <div id='breadcrumbs'>
-            <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
+            <div id="back_home" class="clickArea" style="left: 12.5%; top: 16.7%; width: 16.5%; height: 65%;"
+                onclick="window.location.href='..'"></div>
         </div>
         <div id='advisor'>
             <span id='advisor_text'></span>
@@ -252,7 +265,8 @@
             <div id="footprintText" class="infos"></div>
             <img id="fruit" src="fruit_tapir.png">
             <div id="fruitText" class="infos"></div>
-            <img src="close_button.png" class="clickArea" style="left: 91.67%; top: 94.44%; width: 16.8%;" onclick="popup_hide()">
+            <img src="close_button.png" class="clickArea" style="left: 91.67%; top: 94.44%; width: 16.8%;"
+                onclick="popup_hide()">
         </div>
     </div>
 
@@ -576,11 +590,11 @@
                 document.getElementById("animalName").innerHTML = datasheet.name
                 document.querySelector("#datasheet .text").innerHTML = datasheet.text
                 document.getElementById("picto").setAttribute("src", datasheet.picto.img)
-                document.getElementById("pictoText").innerHTML = datasheet.picto.text
+                document.getElementById("pictoText").innerHTML = "<div>" + datasheet.picto.text + "</div>"
                 document.getElementById("footprint").setAttribute("src", datasheet.footprint.img)
-                document.getElementById("footprintText").innerHTML = datasheet.footprint.text
+                document.getElementById("footprintText").innerHTML = "<div>" + datasheet.footprint.text + "</div>"
                 document.getElementById("fruit").setAttribute("src", datasheet.fruit.img)
-                document.getElementById("fruitText").innerHTML = datasheet.fruit.text
+                document.getElementById("fruitText").innerHTML = "<div>" + datasheet.fruit.text + "</div>"
 
                 if (datasheet.name.includes("HOCCO")) {
                     document.getElementById("animalName").classList.add("hocco")
@@ -771,7 +785,7 @@
         var seasonDependantImages = (state.season == 'wet') ? wetSeasonImages : drySeasonImages
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
 
-        if(state.hunted && (state.hunted.length > 0) ) {
+        if (state.hunted && (state.hunted.length > 0)) {
             hideHelp()
         }
 
