@@ -786,12 +786,15 @@
             document.getElementById("help").classList.remove("shown")
         }
 
-        var imagesToBeLoaded = allSeasonsImages;
+        var imagesToBeLoaded = allSeasonsImages
         var state = jsonParameter.read("state")
         var seasonDependantImages = (state.season == 'wet') ? wetSeasonImages : drySeasonImages
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
 
-        if (state.hunted && (state.hunted.length > 0)) {
+        if(!state.hunted) {
+            state.hunted=[]
+        }
+        if (state.hunted.length > 0) {
             hideHelp()
         }
 
