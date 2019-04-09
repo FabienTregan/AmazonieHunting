@@ -86,23 +86,31 @@
 
         <div class="clickArea" style="top: 17%; left: 0.5%; width: 20%; height: 67%;" onclick="change(-1)"></div>
         <div class="clickArea" style="top: 17%; left: 80%; width: 20%; height: 67%;" onclick="change(+1)"></div>
-        <div class="clickArea" style="top: 87%; left: 89.5%; width: 6.5%; height: 7%;" onclick="window.location.href='../village'"></div>
+        <div class="clickArea" style="top: 87%; left: 89.5%; width: 6.5%; height: 7%;"
+            onclick="window.location.href='../village'"></div>
 
     </div>
 
     <script>
 
-        var NB_IMAGES = 4
         var currentImageNumber = 1
 
         var content = [
-            { src: "arc.jpg", legend: "Arc en bois de culture Parà (Brésil) décoré de fils de coton, d'une vannerie, de plumes noires. Corde en fibres végétales. L 160 cm.<br>Collection du Muséum de Toulouse, MHNT ETH 2015 18 55. Collecte 2014. " }
-            , { src: "pacu.jpg", legend: "Flèche de culture Parà (Brésil) avec 4 pointes en métal ligaturées sur le bois avec de la ficelle en coton vert clair. Penne en plumes. H 122 cm.<br>Collection du Muséum de Toulouse, MHNT ETH 2015 18 59. Collecte 2014. " }
+            { src: "agouti.jpg", legend: "Flèche de culture Kayapò (Brésil) en bois, bambou, fibres végétales et plumes. H 156 cm.<br>Collection du Muséum de Toulouse, MHNT ETH AC 1087 13. Don CARREROT, 1993. " }
             , { src: "daguet.jpg", legend: "Flèche de culture Kayapò (Brésil) en bois, bambou, fibres végétales, plumes (empennage) et os (pointe). H 168 cm.<br>Collection du Muséum de Toulouse, ETH AC 1087 4 et 20. Don CARREROT, 1993." }
+            , { src: "hocco.jpg", legend: "Flèche de culture Wayana (Guyane française) en  bois, fibres végétales.<br>Collection du Muséum de Toulouse, MHNT ETH 2019 2 6. Date de création : 4e quart 20e siècle. Don Gérard Collomb, 2019." }
+            , { src: "pacu.jpg", legend: "Flèche de culture Parà (Brésil) avec 4 pointes en métal ligaturées sur le bois avec de la ficelle en coton vert clair. Penne en plumes. H 122 cm.<br>Collection du Muséum de Toulouse, MHNT ETH 2015 18 59. Collecte 2014. " }
+            , { src: "pecari.jpg", legend: "Flèche de culture Kayapò (Brésil) en bois, bambou, fibres végétales et plumes. H 159 cm.<br>Collection du Muséum de Toulouse,  MHNT ETH AC 1087 12. Don CARREROT, 1993." }
             , { src: "agouti.jpg", legend: "Flèche de culture Kayapò (Brésil) en bois, bambou, fibres végétales et plumes. H 156 cm.<br>Collection du Muséum de Toulouse, MHNT ETH AC 1087 13. Don CARREROT, 1993. " }
+            , { src: "tapir.jpg", legend: "Flèche de culture Parà (Brésil) avec pointe en bambou ligaturée sur le bois avec de la ficelle en coton. Empennage en plumes. H 144 cm.<br>Collection du Muséum de Toulouse, MHNT ETH 2015 18 57. Collecte 2014." }
+            , { src: "arc.jpg", legend: "Arc et flèches Api’awa tapirape (Brésil central) utilisés par les enfants. Pour pêcher des petits poissons dans des petits « igarapés »<br>ou des mares, ou pour s’entrainer à viser sur des proies factices." }
+            , { src: "MHNT_ETH_2019_2_5.jpg", legend: "Flèche de culture Wayana (Haut Maroni, Guyane). Collection du Muséum de Toulouse, MHNT ETH 2019 2 5.<br>Date de création : 4e quart 20e siècle. Don Gérard Collomb, 2019." }
+            , { src: "MHNT_ETH_2019_2_7.jpg", legend: "Flèche de culture Wayana (Haut Maroni, Guyane) pour la pêche. Collection du Muséum de Toulouse, MHNT ETH 2019 2 7.<br>Date de création : 4e quart 20e siècle. Don Gérard Collomb, 2019." }
+            , { src: "MHNT_ETH_2019_2_4.jpg", legend: "Flèche de culture Wayana (Haut Maroni, Guyane). Collection du Muséum de Toulouse, MHNT ETH 2019 2 4.<br>Date de création : 4e quart 20e siècle. Don Gérard Collomb, 2019." }
         ]
 
         function change(n) {
+            const NB_IMAGES = content.length
 
             currentImageNumber += n
             if (currentImageNumber > NB_IMAGES) { currentImageNumber = 1 }
