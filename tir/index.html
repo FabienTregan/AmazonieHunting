@@ -1,4 +1,6 @@
 <head>
+    <meta charset="utf-8" />
+
     <script src="../lib/wideScreen.js"></script>
     <script src="lib/gestures.js"></script>
     <script src="aiming.js"></script>
@@ -152,7 +154,8 @@
             <div class="plan" style="z-index:80"><img id="plan3" src="plan3.png"></div>
             <div class="plan" style="z-index:90"><img id="plan2" src="plan2.png"></div>
             <div class="plan" style="z-index:100"><img id="plan1" src="plan1.png"></div>
-            <img id="animal" style="z-index: 10;" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+            <img id="animal" style="z-index: 10;"
+                src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
 
             <div id="bow" class="bow0 hidden">
                 <img src="bow0.png" class="bow0">
@@ -176,13 +179,15 @@
 
             <div id="imitation">
                 <img src="imitation.png">
-                <div class="clickArea" style="left: 28%; bottom: 5%; width: 9.5%; height: 8%;" onclick="imitate()"></div>
+                <div class="clickArea" style="left: 28%; bottom: 5%; width: 9.5%; height: 8%;" onclick="imitate()">
+                </div>
                 <div id='advisor'></div>
             </div>
         </div>
 
         <div id="breadcrumbs">
-            <div id="back_home" class="clickArea" style="left: 8%; top: 16.7%; width: 16.5%; height: 65%;" onclick="window.location.href='..'"></div>
+            <div id="back_home" class="clickArea" style="left: 8%; top: 16.7%; width: 16.5%; height: 65%;"
+                onclick="window.location.href='..'"></div>
         </div>
 
     </div>
