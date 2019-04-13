@@ -1,4 +1,6 @@
 function shooting() {
+    const DELAY_BETWEEN_START_OF_SHOOTING_AND_CONGRATULATION = 700
+
     const ARROW_FRAME_DURATION = 100
     var arrow = document.getElementById("arrow")
     var bow = document.getElementById("bow")
@@ -76,7 +78,7 @@ function shooting() {
             state.hunted.push(state.animal)
             delete state.animal
 
-            window.setTimeout(function () { window.location.href = "../congratulation?state=" + jsonParameter.encode(state) }, 1250)
+            window.setTimeout(function () { window.location.href = "../congratulation?state=" + jsonParameter.encode(state) }, DELAY_BETWEEN_START_OF_SHOOTING_AND_CONGRATULATION)
         }
     }
 
