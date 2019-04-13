@@ -83,7 +83,7 @@
         }
 
         #advisorButton.onTrack,
-        #advisorButton.onFruit,
+        #advisorButton.canShoot,
         #advisorButton.helping {
             display: block;
         }
@@ -95,7 +95,7 @@
         }
 
         #advisorButton.onTrack .moreInfo,
-        #advisorButton.onFruit #goShoot,
+        #advisorButton.canShoot #goShoot,
         #advisorButton.helping .closeHelp {
             display: block;
         }
@@ -444,6 +444,17 @@
 
         }
 
+        var animalNames = {
+            hocco: "hocco",
+            hocco_wet: "hocco",
+            agouti: "agouti",
+            tapir: "tapir",
+            sapajou: "capucin brun",
+            daguet: "daguet",
+            pacu: "pacu",
+            pecari: "pécari"
+        }
+
         var wetSeasonImages = {
             map1: 'map1_wet.jpg',
             map2: 'map2_wet.jpg',
@@ -637,10 +648,8 @@
         function executeArea() {
 
             var currentArea = area(position)
-
-            if (currentArea.goto) {
-                initMap(currentArea.goto.mapId, currentArea.goto.entryId)
-            }
+            var advice = currentArea.advice
+            var newAdvisorState = "default"
 
             if (currentArea.goto) {
                 initMap(currentArea.goto.mapId, currentArea.goto.entryId)
@@ -650,32 +659,35 @@
                 updateDatasheet(currentArea.datasheet)
             }
 
-            updateAdvice(currentArea.advice)
-
-            if (currentArea.track) {
-                advisorState("onTrack")
-            } else if (currentArea.fruit) {
-                if (state.hunted.includes(currentArea.fruit)) {
-                    advisorState("none")
-                    updateAdvice("Je vais chasser un autre animal pour diversifier mes prises.")
-                } else {
-                    advisorState("onFruit")
-                    document.getElementById("goShoot").onclick = function () {
-                        state.animal = currentArea.fruit
-                        var encodedState = jsonParameter.encode(state)
-                        window.location.href = '../arrow?state=' + encodedState
-                    }
+            if (currentArea.fruit && !alreadyHunted(currentArea.fruit)) {
+                newAdvisorState = "canShoot"
+                document.getElementById("goShoot").onclick = function () {
+                    state.animal = currentArea.fruit
+                    var encodedState = jsonParameter.encode(state)
+                    window.location.href = '../arrow?state=' + encodedState
                 }
-            } else {
-                advisorState("none")
             }
 
+            if (currentArea.track) {
+                newAdvisorState = "onTrack"
+            }
 
+            var trackOrFruitAnimalId = currentArea.track || currentArea.fruit
+            if ( trackOrFruitAnimalId && alreadyHunted(trackOrFruitAnimalId)) {
+                advice = "J’ai déjà chassé un " + animalNames[trackOrFruitAnimalId] + ". Pour diversifier mes prises, je vais chercher d’autres empreintes."
+            }
+
+            updateAdvice(advice)
+            advisorState(newAdvisorState)
+        }
+
+        function alreadyHunted(animalId) {
+            return state.hunted.includes(animalId)
         }
 
         function advisorState(version) {
             var button = document.getElementById("advisorButton")
-            button.classList.remove("helping", "onTrack", "onFruit", "none")
+            button.classList.remove("helping", "onTrack", "canShoot", "default")
             button.classList.add(version)
         }
 
@@ -792,8 +804,8 @@
         var seasonDependantImages = (state.season == 'wet') ? wetSeasonImages : drySeasonImages
         for (var image in seasonDependantImages) { imagesToBeLoaded[image] = seasonDependantImages[image] }
 
-        if(!state.hunted) {
-            state.hunted=[]
+        if (!state.hunted) {
+            state.hunted = []
         }
         if (state.hunted.length > 0) {
             hideHelp()
