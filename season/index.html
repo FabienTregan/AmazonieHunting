@@ -2,6 +2,8 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
+    <script src="../config.js"></script>
+    <script src="../lib/hideMouse.js"></script>
     <script src="../lib/wideScreen.js"></script>
     <script src="../lib/popup.js"></script>
     <script src="../lib/jsonParameter.js"></script>
@@ -262,7 +264,6 @@
         }
 
         function show_sheet(animalId) {
-            console.log(animalId)
             var animal = animals[animalId]
 
             update_sheet_info("animalName", animal.name)

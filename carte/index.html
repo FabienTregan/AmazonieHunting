@@ -3,6 +3,8 @@
     <meta name='viewport' content='width=device-width,user-scalable=no'>
     <meta charset="utf-8" />
 
+    <script src="../config.js"></script>
+    <script src="../lib/hideMouse.js"></script>
     <script src="../lib/wideScreen.js"></script>
     <script src="../lib/preloader.js"></script>
     <script src="../lib/popup.js"></script>
@@ -608,7 +610,7 @@
                 document.getElementById("fruit").setAttribute("src", datasheet.fruit.img)
                 document.getElementById("fruitText").innerHTML = "<div>" + datasheet.fruit.text + "</div>"
 
-                if (datasheet.name.includes("HOCCO")) {
+                if (datasheet.name.indexOf("HOCCO") > 0) {
                     document.getElementById("animalName").classList.add("hocco")
                 } else {
                     document.getElementById("animalName").classList.remove("hocco")
@@ -682,13 +684,17 @@
         }
 
         function alreadyHunted(animalId) {
-            return state.hunted.includes(animalId)
+            return (state.hunted.indexOf(animalId) > -1)
         }
 
         function advisorState(version) {
             var button = document.getElementById("advisorButton")
-            button.classList.remove("helping", "onTrack", "canShoot", "default")
-            button.classList.add(version)
+            var classList = button.classList
+            classList.remove("default")
+            classList.remove("helping")
+            classList.remove("onTrack")
+            classList.remove("canShoot")
+            classList.add(version)
         }
 
         function updateMouseCoordinates(e) {
