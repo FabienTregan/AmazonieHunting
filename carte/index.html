@@ -670,7 +670,7 @@
                 }
             }
 
-            if (currentArea.track) {
+            if (currentArea.track && !alreadyHunted(currentArea.track)) {
                 newAdvisorState = "onTrack"
             }
 
