@@ -39,23 +39,36 @@
             height: 100%;
             width: 100%;
         }
+
+        #fullscreenFrame {
+            position: absolute;
+            height: 0px;
+            width: 0px;
+            border: none;
+            padding: none;
+        }
     </style>
 </head>
 
 <body oncontextmenu='event.preventDefault()'>
 
+    <iframe id="fullscreenFrame" src="./season/"></iframe>
+
     <div id="main" class="wideScreen">
         <img src="index.jpg" />
 
-        <div class="clickArea" style="top: 87%; left: 45%; width: 10%; height: 7%;" onclick="window.location.href='./season'"></div>
+        <div class="clickArea" style="top: 87%; left: 45%; width: 10%; height: 7%;"
+            onclick="document.getElementById('fullscreenFrame').requestFullscreen()"></div>
 
         <div class="clickArea" style="left: 4%; bottom: 8%; width: 1.5%; height: 2.5%;" onclick="showCredits()"></div>
         <div id="credits">
             <img src="credit.png">
-            <div class="clickArea" style="right: 9%; bottom: 13%; width: 7%; height: 7.5%;" onclick="hideCredits()"></div>
+            <div class="clickArea" style="right: 9%; bottom: 13%; width: 7%; height: 7.5%;" onclick="hideCredits()">
+            </div>
         </div>
 
     </div>
+
 
     <script>
         function showCredits() {
