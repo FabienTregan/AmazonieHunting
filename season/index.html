@@ -40,7 +40,7 @@
         }
 
         .fiche {
-            position: absolute;
+            position: relative;
         }
 
         .fiche>* {
@@ -180,11 +180,21 @@
             <div id="animalText" class="info">
                 Text
             </div>
-            <img src="close_button.png" class="clickArea" style="left: 94%; top: 95%; width: 12.6%; height:auto;" onclick="popup_hide()">
+            <img src="close_button.png" class="clickArea" style="left: 94%; top: 95%; width: 12.6%; height:auto;" onclick="plop()">
         </div>
     </div>
 
     <script>
+
+        function plop() {
+            popup_hide();
+            document.body.style.padding = "20px"
+            document.body.style.padding = "0px"
+            document.body.style.padding = "20px"
+            document.body.style.padding = "0px"
+            document.body.style.padding = "20px"
+            document.body.style.padding = "0px"
+        }
 
         animals = {
             template: {

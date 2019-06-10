@@ -58,7 +58,7 @@
         <img src="index.jpg" />
 
         <div class="clickArea" style="top: 87%; left: 45%; width: 10%; height: 7%;"
-            onclick="document.getElementById('fullscreenFrame').requestFullscreen()"></div>
+            onclick="tryFullscreen('./season/')"></div>
 
         <div class="clickArea" style="left: 4%; bottom: 8%; width: 1.5%; height: 2.5%;" onclick="showCredits()"></div>
         <div id="credits">
@@ -71,6 +71,19 @@
 
 
     <script>
+
+        function tryFullscreen(url) {
+
+            var iframe = document.getElementById('fullscreenFrame')
+
+            if (iframe.requestFullscreen) {
+                iframe.src = url
+                iframe.requestFullscreen()
+            } else {
+                document.location = url
+            }
+        }
+
         function showCredits() {
             var credits = document.getElementById("credits")
             credits.classList.add("shown")

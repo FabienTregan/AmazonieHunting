@@ -24,7 +24,6 @@
         }
 
         #main {
-            position: absolute;
             overflow: hidden;
         }
 
@@ -90,11 +89,11 @@
             cursor: pointer;
         }
 
-        svg {
+        .svgBox {
             display: none;
         }
 
-        svg.shown {
+        .svgBox.shown {
             display: block;
         }
     </style>
@@ -108,43 +107,54 @@
 
         <img id="selectedImg" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
 
-        <svg id="areas" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin meet">
-            <g class="zone_fleche">
+        <div id="areas" class="svgBox">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin meet">
+                <g class="zone_fleche">
 
-                <path class="arrow" d="m 1128.5714,118.0765 102.8572,-80.000001 520,814.285711 -65.7143,42.85715 z"
-                    onclick="selectArrow('hocco')" />
+                    <path class="arrow" d="m 1128.5714,118.0765 102.8572,-80.000001 520,814.285711 -65.7143,42.85715 z"
+                        onclick="selectArrow('hocco')" />
 
-                <path class=" arrow" d="M 691.42857,249.50507 760,163.79078 l 922.8572,737.14286 -54.2858,62.85714 z"
-                    onclick="selectArrow('tapir')" />
+                    <path class=" arrow"
+                        d="M 691.42857,249.50507 760,163.79078 l 922.8572,737.14286 -54.2858,62.85714 z"
+                        onclick="selectArrow('tapir')" />
 
-                <path class=" arrow" d="m 1497.1429,1043.7908 40,-74.28572 L 588.57143,415.21936 540,500.93364 Z"
-                    onclick="selectArrow('sapajou')" />
-            </g>
-        </svg>
+                    <path class=" arrow" d="m 1497.1429,1043.7908 40,-74.28572 L 588.57143,415.21936 540,500.93364 Z"
+                        onclick="selectArrow('sapajou')" />
+                </g>
+            </svg>
+        </div>
 
-        <svg id="areas_wet" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin meet">
-            <g class="zone_fleche">
-                <path class="arrow" d="m 1141.5998,103.14082 66.67,-49.497481 575.787,768.726091 -42.4264,36.36549 z"
-                    onclick="selectArrow('hocco_wet')" />
-                <path class="arrow" d="m 1747.6913,882.97858 -36.3655,38.3858 -783.87836,-806.10173 52.52793,-46.467021 z"
-                    onclick="selectArrow('agouti')" />
-                <path class="arrow" d="m 1697.1837,917.32378 -27.2741,41.4162 -969.74649,-786.90879 51.51778,-58.58885 z"
-                    onclick="selectArrow('pecari')" />
-                <path class="arrow" d="M 1656.7776,965.81108 1634.5542,1003.1868 565.81283,381.94292 598.13771,333.4556 Z"
-                    onclick="selectArrow('daguet')" />
-                <path class="arrow" d="m 1558.7928,1002.1766 -30.3046,48.4873 -1088.94444,-571.74634 48.48732,-72.73098 z"
-                    onclick="selectArrow('pacu')" />
-            </g>
-        </svg>
+        <div id="areas_wet" class="svgBox">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin meet">
+                <g class="zone_fleche">
+                    <path class="arrow"
+                        d="m 1141.5998,103.14082 66.67,-49.497481 575.787,768.726091 -42.4264,36.36549 z"
+                        onclick="selectArrow('hocco_wet')" />
+                    <path class="arrow"
+                        d="m 1747.6913,882.97858 -36.3655,38.3858 -783.87836,-806.10173 52.52793,-46.467021 z"
+                        onclick="selectArrow('agouti')" />
+                    <path class="arrow"
+                        d="m 1697.1837,917.32378 -27.2741,41.4162 -969.74649,-786.90879 51.51778,-58.58885 z"
+                        onclick="selectArrow('pecari')" />
+                    <path class="arrow"
+                        d="M 1656.7776,965.81108 1634.5542,1003.1868 565.81283,381.94292 598.13771,333.4556 Z"
+                        onclick="selectArrow('daguet')" />
+                    <path class="arrow"
+                        d="m 1558.7928,1002.1766 -30.3046,48.4873 -1088.94444,-571.74634 48.48732,-72.73098 z"
+                        onclick="selectArrow('pacu')" />
+                </g>
+            </svg>
+        </div>
 
         <div id='advisor'>
             <span id='advisor_text'></span>
             <img id="advisorButton" src="validate.png" onclick="validate()">
         </div>
 
-        <div id="back_home" class="clickArea" style="left: 2.5%; top: 5.7%; width: 6%; height: 7.5%; " onclick="window.top.location.href='..'"></div>
+        <div id="back_home" class="clickArea" style="left: 2.5%; top: 5.7%; width: 6%; height: 7.5%; "
+            onclick="window.top.location.href='..'"></div>
     </div>
 
     <script>
@@ -219,6 +229,8 @@
 
         function setSeason(season) {
 
+            console.log("Trying to set season : " + season)
+
             var src
             var areasId
 
@@ -231,6 +243,7 @@
             }
 
             document.getElementById('background').src = src
+            console.log(areasId)
             document.getElementById(areasId).classList.add('shown')
         }
 
@@ -241,7 +254,7 @@
 
         var state = jsonParameter.read("state")
         setSeason(state.season)
-        
+
         showAsvisorMessage(arrows[state.animal].hint)
 
         autobackhome("..")
